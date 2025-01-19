@@ -1,83 +1,34 @@
 {
-  "name": "Custom snippets",
-  "author": "Shion Shimizu",
+  "name": "vscode-like-nvim-snippets",
+  "author": "Sharma, Vikas",
   "engines": {
     "vscode": "^1.11.0"
   },
   "contributes": {
     "snippets": [
       {
-        "language": [
-          "plaintex",
-          "tex"
-        ],
-        "path": "./latex.json"
+        "language": ["go"],
+        "path": "./go.json"
       },
       {
-        "language": "julia",
-        "path": "./julia.json"
+        "language": ["markdown"],
+        "path": "./markdown.json"
       },
       {
-        "language": [
-          "plaintex",
-          "tex"
-        ],
-        "path": "./latex/latex-snippets.json"
-      },
-      {
-        "language": [
-          "plaintex",
-          "tex"
-        ],
-        "path": "./latex/vscode-latex-snippets.json"
-      },
-      {
-        "language": [
-          "plaintex",
-          "tex"
-        ],
-        "path": "./latex/mylatex_snippets.json"
-      },
-      {
-        "language": [
-          "bibtex",
-          "bib"
-        ],
-        "path": "./latex/bibtex.json"
-      },
-      {
-        "language": [
-          "fortran",
-          "markdown",
-          "quarto"
-        ],
-        "path": "./easifem-fortran.json"
-      },
-      {
-        "language": [
-          "markdown",
-          "quarto"
-        ],
+        "language": ["markdown"],
         "path": "./easifem-markdown.json"
       },
       {
-        "language": [
-          "markdown",
-          "quarto"
-        ],
-        "path": "./mymarkdown_snippets.json"
+        "language": ["fortran", "markdown"],
+        "path": "./easifem-fortran.json"
       },
       {
-        "language": [
-          "csv"
-        ],
-        "path": "./mycsv_snippets.json"
+        "language": "cmake",
+        "path": "./cmake.json"
       },
       {
-        "language": [
-          "quarto"
-        ],
-        "path": "./quarto.json"
+        "language": "tex",
+        "path": "./latex.json"
       }
     ]
   }
