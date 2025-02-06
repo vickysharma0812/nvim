@@ -19,12 +19,12 @@ return {
   },
   {
     "RRethy/vim-illuminate",
-    event = { "BufReadPost", "BufNewFile" },
+    event = "VeryLazy",
     opts = {
       delay = 200,
       large_file_cutoff = 2000,
       large_file_overrides = {
-        providers = { "lsp" },
+        providers = { "lsp", "treesitter", "regex" },
       },
     },
     config = function(_, opts)
@@ -39,6 +39,7 @@ return {
       map("]]", "next")
       map("[[", "prev")
 
+      -- also set it after loading ftplugins, since a lot overwrite [[ and ]]
       vim.api.nvim_create_autocmd("FileType", {
         callback = function()
           local buffer = vim.api.nvim_get_current_buf()
@@ -250,7 +251,7 @@ return {
       },
     },
   },
-  
+
   {
     "andymass/vim-matchup",
     enabled = false,

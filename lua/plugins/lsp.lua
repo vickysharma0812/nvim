@@ -103,14 +103,22 @@ return {
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend("force", capabilities, require("blink.cmp").get_lsp_capabilities())
 
-      lspconfig.marksman.setup({
-        capabilities = capabilities,
-        filetypes = { "markdown", "quarto" },
-        root_dir = util.root_pattern(".git", ".marksman.toml", "_quarto.yml"),
-      })
+      -- lspconfig.marksman.setup({
+      --   capabilities = capabilities,
+      --   filetypes = { "markdown", "quarto" },
+      --   root_dir = util.root_pattern(".git", ".marksman.toml", "_quarto.yml"),
+      -- })
 
-      lspconfig.markdown_oxide.setup({
-        capabilities = capabilities, -- again, ensure that capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
+      require("lspconfig").markdown_oxide.setup({
+        -- Ensure that dynamicRegistration is enabled! This allows the LS to take into account actions like the
+        -- Create Unresolved File code action, resolving completions for unindexed code blocks, ...
+        capabilities = vim.tbl_deep_extend("force", capabilities, {
+          workspace = {
+            didChangeWatchedFiles = {
+              dynamicRegistration = true,
+            },
+          },
+        }),
       })
 
       lspconfig.lua_ls.setup({
