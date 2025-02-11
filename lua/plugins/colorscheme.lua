@@ -4,7 +4,7 @@ return {
     name = "catppuccin",
     priority = 1000,
     opts = {
-      flavour = "mocha", -- latte, frappe, macchiato, mocha
+      flavour = "latte", -- latte, frappe, macchiato, mocha
       background = { -- :h background
         light = "latte",
         dark = "mocha",
@@ -295,9 +295,9 @@ return {
   {
     "LazyVim/LazyVim",
     opts = function(_, opts)
-      opts.colorscheme = "tokyonight"
+      -- opts.colorscheme = "tokyonight"
       -- opts.colorscheme = "gruvbuddy"
-      -- opts.colorscheme = "catppuccin"
+      opts.colorscheme = "catppuccin"
     end,
   },
 }
