@@ -76,6 +76,8 @@ vim.g.markdown_recommended_style = 0
 
 vim.g.trouble_lualine = false
 
+vim.g.lazyvim_check_order = false
+
 vim.g.currentCSNum = 1
 vim.g.CSLists = {
   "aurora",

@@ -69,21 +69,6 @@ return {
     },
   },
   {
-    "numToStr/Comment.nvim",
-    lazy = false,
-    opts = {},
-  },
-  {
-    "folke/todo-comments.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-    opts = {
-      signs = false,
-    },
-  },
-  {
     "echasnovski/mini.nvim",
     event = { "BufReadPre", "BufNewFile" },
     config = function()

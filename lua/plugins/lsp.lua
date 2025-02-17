@@ -1,4 +1,4 @@
-return {
+return 
   {
     "neovim/nvim-lspconfig",
     dependencies = {
@@ -31,8 +31,6 @@ return {
           "taplo",
           "lua_ls",
           "texlab",
-          "bashls",
-          "vimls",
           "mdformat",
           "marksman",
           "markdownlint-cli2",
@@ -172,16 +170,5 @@ return {
         },
       })
 
-      lspconfig.bashls.setup({
-        capabilities = capabilities,
-        flags = lsp_flags,
-        filetypes = { "sh", "bash" },
-      })
-
-      lspconfig.vimls.setup({
-        capabilities = capabilities,
-        flags = lsp_flags,
-      })
     end,
-  },
-}
+  }
