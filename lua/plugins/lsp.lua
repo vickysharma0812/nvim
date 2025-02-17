@@ -101,11 +101,11 @@ return
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend("force", capabilities, require("blink.cmp").get_lsp_capabilities())
 
-      -- lspconfig.marksman.setup({
-      --   capabilities = capabilities,
-      --   filetypes = { "markdown", "quarto" },
-      --   root_dir = util.root_pattern(".git", ".marksman.toml", "_quarto.yml"),
-      -- })
+      lspconfig.marksman.setup({
+        capabilities = capabilities,
+        filetypes = { "markdown", "quarto" },
+        root_dir = util.root_pattern(".git", ".marksman.toml", "_quarto.yml"),
+      })
 
       require("lspconfig").markdown_oxide.setup({
         -- Ensure that dynamicRegistration is enabled! This allows the LS to take into account actions like the
