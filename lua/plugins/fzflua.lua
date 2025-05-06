@@ -8,7 +8,7 @@ return {
     },
     config = function()
       require("fzf-lua").setup({
-        fzf_colors = false,
+        fzf_colors = true,
         winopts = {
           preview = {
             hidden = "hidden",
