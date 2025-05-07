@@ -108,10 +108,10 @@ end
 -- lazygit
 if vim.fn.executable("lazygit") == 1 then
   map("n", "<leader>gg", function()
-    Snacks.lazygit({ cwd = vim.uv.cwd() })
+    Snacks.lazygit()
   end, { desc = "Lazygit (Root Dir)" })
   map("n", "<leader>gG", function()
-    Snacks.lazygit()
+    Snacks.lazygit({ cwd = vim.uv.cwd() })
   end, { desc = "Lazygit (cwd)" })
   map("n", "<leader>gf", function()
     Snacks.lazygit.log_file()

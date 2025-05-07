@@ -158,6 +158,8 @@ return {
     },
     { "<leader>e", "<cmd>Neotree toggle float<cr>", desc = "Explorer", nowait = true, remap = false },
     { "<leader>fF", "<cmd>FzfLua oldfiles resume=true<CR>", desc = "Find files", nowait = true, remap = false },
+    { "<leader>f/", "<cmd>Neotree filesystem reveal right<CR>", desc = "Show file in right", nowait = true, remap = false },
+    { "<leader>f\\", "<cmd>Neotree filesystem reveal left<CR>", desc = "Show file in left", nowait = true, remap = false },
     { "<leader>fS", '<cmd>lua require("spectre").toggle()<CR>', desc = "Toggle spectre", nowait = true, remap = false },
     {
       "<leader>fcT",
