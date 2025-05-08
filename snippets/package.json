@@ -19,6 +19,10 @@
         "path": "./easifem-markdown.json"
       },
       {
+        "language": ["markdown"],
+        "path": "./easifem-markdown-docusaurus.json"
+      },
+      {
         "language": ["fortran", "markdown"],
         "path": "./easifem-fortran.json"
       },
