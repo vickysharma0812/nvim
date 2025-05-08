@@ -128,7 +128,7 @@ return {
         "<leader>fo",
         function()
           vim.opt.scrolloff = 0
-          Snacks.explorer.reveal({ auto_close = true, focus = "list" })
+          Snacks.explorer.reveal()
         end,
         desc = "File Explorer reveal",
       },

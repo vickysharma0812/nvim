@@ -75,16 +75,8 @@ return {
     { "<leader>Bh", "<cmd>tabprevious<CR>", desc = "Previous Tab", nowait = true, remap = false },
     { "<leader>Bl", "<cmd>tabnext<CR>", desc = "Next Tab", nowait = true, remap = false },
     { "<leader>Bn", "<cmd>tabnew<CR>", desc = "New Tab", nowait = true, remap = false },
-    {
-      "<leader>bd",
-      function(n)
-        require("mini.bufremove").delete(n, false)
-      end,
-      desc = "Close buffer",
-      nowait = true,
-      remap = false,
-    },
     { "<leader>bf", "<cmd>lua vim.lsp.buf.format()<CR>", desc = "Format buffer", nowait = true, remap = false },
+    { "<leader>bb", "<cmd>bprevious<CR>", desc = "Previous buffer", nowait = true, remap = false },
     { "<leader>bh", "<cmd>bprevious<CR>", desc = "Previous buffer", nowait = true, remap = false },
     { "<leader>bl", "<cmd>bnext<CR>", desc = "Next buffer", nowait = true, remap = false },
     { "<leader>bw", "<cmd>lua vim.cmd.w()<CR>", desc = "Save buffer", nowait = true, remap = false },
@@ -154,7 +146,6 @@ return {
       remap = false,
     },
     { "<leader>fcz", ":e ~/.config/zellij/config.kdl <CR>", desc = "Zellij", nowait = true, remap = false },
-    { "<leader>fd", "<cmd>Bdelete<CR>", desc = "Close file", nowait = true, remap = false },
     { "<leader>gD", "<cmd>lua require 'gitsigns'.diffthis('~')<cr>", desc = "Diff", nowait = true, remap = false },
     { "<leader>gP", "<cmd>Gitsigns preview_hunk<cr>", desc = "Preview Hunk", nowait = true, remap = false },
     { "<leader>gR", "<cmd>Gitsigns reset_buffer<cr>", desc = "Reset Buffer", nowait = true, remap = false },
