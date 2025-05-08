@@ -8,31 +8,31 @@
     "snippets": [
       {
         "language": ["go"],
-        "path": "./go.json"
+        "path": "go.json"
       },
       {
         "language": ["markdown"],
-        "path": "./markdown.json"
+        "path": "markdown.json"
       },
       {
         "language": ["markdown"],
-        "path": "./easifem-markdown.json"
+        "path": "easifem-markdown.json"
       },
       {
         "language": ["markdown"],
-        "path": "./easifem-markdown-docusaurus.json"
+        "path": "easifem-markdown-docusaurus.json"
       },
       {
         "language": ["fortran", "markdown"],
-        "path": "./easifem-fortran.json"
+        "path": "easifem-fortran.json"
       },
       {
         "language": "cmake",
-        "path": "./cmake.json"
+        "path": "cmake.json"
       },
       {
         "language": "tex",
-        "path": "./latex.json"
+        "path": "latex.json"
       }
     ]
   }

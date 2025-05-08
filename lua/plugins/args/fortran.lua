@@ -3,18 +3,17 @@ local M = {}
 M.lsp_cmd = {
   "fortls",
   "--lowercase_intrinsics",
+  "--notify_init",
   "--source_dirs",
   os.getenv("dropbox") .. "/easifem/base/src/**",
   os.getenv("dropbox") .. "/easifem/classes/src/**",
-  os.getenv("dropbox") .. "/easifem/elasticity/src/**",
-  os.getenv("dropbox") .. "/easifem/acoustic/src/**",
+  -- os.getenv("dropbox") .. "/easifem/elasticity/src/**",
+  -- os.getenv("dropbox") .. "/easifem/acoustic/src/**",
   os.getenv("HOME") .. "/.easifem/src/tomlf/src/**",
   "--hover_signature",
-  "--hover_language=fortran",
+  "--hover_language",
+  "fortran",
   "--use_signature_help",
-  "--recursion_limit",
-  "5000",
-  "--incremental_sync",
 }
 
 M.linter = {

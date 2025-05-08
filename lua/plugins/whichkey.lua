@@ -109,21 +109,6 @@ return {
     { "<leader>cq", "<cmd>lua vim.diagnostic.setloclist()<cr>", desc = "Quickfix", nowait = true, remap = false },
     { "<leader>cr", "<cmd>lua vim.lsp.buf.rename()<cr>", desc = "Rename", nowait = true, remap = false },
     {
-      "<leader>fS",
-      '<cmd>lua require("spectre").toggle()<CR>',
-      desc = "Toggle spectre",
-      nowait = true,
-      remap = false,
-    },
-    {
-      "<leader>fcT",
-      ":e ~/.config/alacritty/alacritty.yml <CR>",
-      desc = "Alacritty yml",
-      nowait = true,
-      remap = false,
-    },
-    { "<leader>fca", ":e ~/.config/awesome/rc.lua <CR>", desc = "Awesome", nowait = true, remap = false },
-    {
       "<leader>fcf",
       ":e ~/.config/nvim/snippets/easifem-fortran.json <CR>",
       desc = "Fortran snippets",
@@ -132,12 +117,11 @@ return {
     },
     {
       "<leader>fcm",
-      ":e ~/.config/nvim/snippets/easifem-markdown.json <CR>",
+      ":e ~/.config/nvim/snippets/easifem-markdown-docusaurus.json <CR>",
       desc = "Markdown snippets",
       nowait = true,
       remap = false,
     },
-    { "<leader>fcs", ":e ~/.config/omf/init.fish <CR>", desc = "Shell", nowait = true, remap = false },
     {
       "<leader>fct",
       ":e ~/.config/alacritty/alacritty.toml <CR>",
