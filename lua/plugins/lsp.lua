@@ -50,13 +50,9 @@ return
             vim.keymap.set("v", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
           end
 
-          map("gd", require("fzf-lua").lsp_definitions, "[G]oto [D]efinition")
-          map("gr", require("fzf-lua").lsp_references, "[G]oto [R]eferences")
-          map("gI", require("fzf-lua").lsp_implementations, "[G]oto [I]mplementation")
           map("gh", vim.lsp.buf.signature_help, "[g]o to signature [h]elp")
           map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
           map("K", vim.lsp.buf.hover, "Hover Documentation")
-          map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
           vmap("<leader>Lf", vim.lsp.buf.format, "[l]sp [f]ormat")
 
           local client = vim.lsp.get_client_by_id(event.data.client_id)
@@ -144,19 +140,7 @@ return
       lspconfig.fortls.setup({
         capabilities = capabilities,
         flags = lsp_flags,
-        cmd = {
-          "fortls",
-          "--lowercase_intrinsics",
-          "--source_dirs",
-          os.getenv("easifem") .. "/easifem-base/src/**",
-          os.getenv("easifem") .. "/easifem-classes/src/**",
-          -- os.getenv("dropbox") .. "/easifem/elasticity/src/**",
-          -- os.getenv("dropbox") .. "/easifem/acoustic/src/**",
-          os.getenv("HOME") .. "/.easifem/src/tomlf/src/**",
-          "--hover_signature",
-          "--hover_language=fortran",
-          "--use_signature_help",
-        },
+        cmd = require("plugins.args.fortran").lsp_cmd or {},
       })
 
       lspconfig.texlab.setup({
