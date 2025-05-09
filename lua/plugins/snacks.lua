@@ -116,22 +116,22 @@ return {
         end,
         desc = "Notification History",
       },
-      {
-        "<leader>e",
-        function()
-          vim.opt.scrolloff = 0
-          Snacks.explorer({ auto_close = true, focus = "list" })
-        end,
-        desc = "File Explorer",
-      },
-      {
-        "<leader>fo",
-        function()
-          vim.opt.scrolloff = 0
-          Snacks.explorer.reveal({ auto_close = false, focus = "list" })
-        end,
-        desc = "File Explorer reveal",
-      },
+      -- {
+      --   "<leader>e",
+      --   function()
+      --     vim.opt.scrolloff = 0
+      --     Snacks.explorer({ auto_close = true, focus = "list" })
+      --   end,
+      --   desc = "File Explorer",
+      -- },
+      -- {
+      --   "<leader>fo",
+      --   function()
+      --     vim.opt.scrolloff = 0
+      --     Snacks.explorer.reveal({ auto_close = false, focus = "list" })
+      --   end,
+      --   desc = "File Explorer reveal",
+      -- },
       {
         "<leader>fb",
         function()
