@@ -283,7 +283,6 @@ return {
     opts = {
       transparent = true,
       italic_comments = true,
-      borderless_telescope = true,
       terminal_colors = true,
     },
   },
