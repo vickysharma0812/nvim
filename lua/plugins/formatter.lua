@@ -24,108 +24,50 @@ return {
     },
     opts = function()
       local opts = {
-        -- LazyVim will use these options when formatting with the conform.nvim formatter
         default_format_opts = {
           timeout_ms = 5000,
           async = false, -- not recommended to change
           quiet = false, -- not recommended to change
           lsp_format = "fallback",
         },
-
         formatters_by_ft = {
           lua = { "stylua" },
           fish = { "fish_indent" },
           sh = { "shfmt" },
           toml = { "taplo" },
-          typst = { "typstyle" },
+          typst = { "typstyle", "typstfmt", stop_after_first = true },
           fortran = { "fprettify", "myfmt", stop_after_first = true },
+          go = { "goimports" },
           tex = { "latexindent" },
-          markdown = { "markdownlint-cli2"},
-          -- markdown = { "markdownlint-cli2", "dprint" },
+          markdown = { "dprint", "markdownlint-cli2", "injected" },
           cmake = { "cmake_format" },
-          json = { "jq" },
+          json = { "jq", "dprint", stop_after_first = true },
           julia = { lsp_format = "fallback" },
-          quarto = { "injected" },
-        },
-        format_on_save = {
-          -- I recommend these options. See :help conform.format for details.
-          lsp_format = "fallback",
-          timeout_ms = 500,
+          quarto = { "markdownlint-cli2", "injected" },
         },
         ---@type table<string, conform.FormatterConfigOverride|fun(bufnr: integer): nil|conform.FormatterConfigOverride>
         formatters = {
           injected = {
             options = {
               ignore_errors = false,
-              -- Map of treesitter language to file extension
-              -- A temporary file name with this extension will be generated during formatting
               lang_to_ext = {
                 bash = "sh",
                 julia = "jl",
                 latex = "tex",
                 markdown = "md",
-                fortran = "F90",
                 python = "py",
                 rust = "rs",
                 lua = "lua",
               },
-              lang_to_formatters = {
-                julia = { lsp_format = "fallback" },
-              },
+              lang_to_formatters = {},
             },
           },
           fprettify = {
-            args = {
-              "--case",
-              "2",
-              "2",
-              "2",
-              "2",
-              "--line-length",
-              "78",
-              "--indent",
-              "2",
-              "--strict-indent",
-              "--disable-indent-mod",
-              "--whitespace",
-              "2",
-              "--whitespace-comma",
-              "--whitespace-assignment",
-              "--enable-decl",
-              "--whitespace-decl",
-              "--whitespace-relational",
-              "--whitespace-logical",
-              "--whitespace-multdiv",
-              "--whitespace-print",
-              "--whitespace-intrinsics",
-              "--strip-comments",
-            },
-            condition = function()
-              return not vim.g.use_myfmt
-            end,
+            args = require("plugins.args.fortran").formatter or {},
           },
           myfmt = {
             command = "fprettify",
-            args = {
-              "--line-length",
-              "78",
-              "--indent",
-              "2",
-              "--strict-indent",
-              "--disable-indent-mod",
-              "--whitespace",
-              "2",
-              "--whitespace-comma",
-              "--whitespace-assignment",
-              "--enable-decl",
-              "--whitespace-decl",
-              "--whitespace-relational",
-              "--whitespace-logical",
-              "--whitespace-multdiv",
-              "--whitespace-print",
-              "--whitespace-intrinsics",
-              "--strip-comments",
-            },
+            args = require("plugins.args.fortran").formatter_sub or {},
             condition = function()
               return vim.g.use_myfmt
             end,
@@ -146,6 +88,10 @@ return {
           latexindent = {
             command = "latexindent",
             stdin = true,
+            args = { "-" },
+          },
+          mdformat = {
+            command = "mdformat",
             args = { "-" },
           },
           cmake_format = {
