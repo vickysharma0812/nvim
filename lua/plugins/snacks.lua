@@ -65,6 +65,11 @@ return {
             },
           },
         },
+      sources = {
+          explorer = {
+            auto_close = true,
+          },
+        },
       },
       explorer = {
         enabled = true,

@@ -75,11 +75,6 @@ return {
     { "<leader>Bh", "<cmd>tabprevious<CR>", desc = "Previous Tab", nowait = true, remap = false },
     { "<leader>Bl", "<cmd>tabnext<CR>", desc = "Next Tab", nowait = true, remap = false },
     { "<leader>Bn", "<cmd>tabnew<CR>", desc = "New Tab", nowait = true, remap = false },
-    { "<leader>bf", "<cmd>lua vim.lsp.buf.format()<CR>", desc = "Format buffer", nowait = true, remap = false },
-    { "<leader>bb", "<cmd>bprevious<CR>", desc = "Previous buffer", nowait = true, remap = false },
-    { "<leader>bh", "<cmd>bprevious<CR>", desc = "Previous buffer", nowait = true, remap = false },
-    { "<leader>bl", "<cmd>bnext<CR>", desc = "Next buffer", nowait = true, remap = false },
-    { "<leader>bw", "<cmd>lua vim.cmd.w()<CR>", desc = "Save buffer", nowait = true, remap = false },
     { "<leader>cI", "<cmd>LspInstallInfo<cr>", desc = "Installer Info", nowait = true, remap = false },
     { "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "Code Action", nowait = true, remap = false },
     {

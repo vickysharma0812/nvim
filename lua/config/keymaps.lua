@@ -87,11 +87,11 @@ Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leade
 Snacks.toggle.diagnostics():map("<leader>ud")
 Snacks.toggle.line_number():map("<leader>ul")
 Snacks.toggle
-  .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2, name = "Conceal Level" })
-  :map("<leader>uc")
+    .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2, name = "Conceal Level" })
+    :map("<leader>uc")
 Snacks.toggle
-  .option("showtabline", { off = 0, on = vim.o.showtabline > 0 and vim.o.showtabline or 2, name = "Tabline" })
-  :map("<leader>uA")
+    .option("showtabline", { off = 0, on = vim.o.showtabline > 0 and vim.o.showtabline or 2, name = "Tabline" })
+    :map("<leader>uA")
 Snacks.toggle.treesitter():map("<leader>uT")
 Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>ub")
 Snacks.toggle.dim():map("<leader>uD")
@@ -161,9 +161,16 @@ map("n", "<leader>Cp", function()
   SwitchCS(ind)
 end, { desc = "Previous Colorscheme" })
 
-map("n", "<leader>bd", function()
-  Snacks.bufdelete()
-end, { desc = "Delete Buffer" })
+-- Buffer related
+
+map("n", "<leader>bf", function()
+  vim.lsp.buf.format()
+end, { desc = "Format buffer" })
+
+map("n", "<leader>bb", function()
+  vim.cmd([[b#]])
+end, { desc = "Switch to previous buffer" })
+
 map("n", "<leader>bD", function()
   vim.cmd([[%bd|e#|bd#|'"]])
 end, { desc = "Delete other buffers" })
@@ -279,23 +286,23 @@ end
 
 wk.add({
   {
-    { "<leader>i", group = "[I]nsert code chunk" },
-    { "<leader>ip", insert_py_chunk, desc = "python code chunk" },
-    { "<leader>ij", insert_julia_chunk, desc = "julia code chunk" },
-    { "<leader>if", insert_fortran_chunk, desc = "fortran code chunk" },
-    { "<leader>ib", insert_bash_chunk, desc = "bash code chunk" },
-    { "<leader>il", insert_lua_chunk, desc = "lua code chunk" },
-    { "<leader>ic", "O# %%<cr>", desc = "Comment code chunk # %%" },
+    { "<leader>i",  group = "[I]nsert code chunk" },
+    { "<leader>ip", insert_py_chunk,              desc = "python code chunk" },
+    { "<leader>ij", insert_julia_chunk,           desc = "julia code chunk" },
+    { "<leader>if", insert_fortran_chunk,         desc = "fortran code chunk" },
+    { "<leader>ib", insert_bash_chunk,            desc = "bash code chunk" },
+    { "<leader>il", insert_lua_chunk,             desc = "lua code chunk" },
+    { "<leader>ic", "O# %%<cr>",                  desc = "Comment code chunk # %%" },
   },
 }, { mode = "n", silent = true })
 
 wk.add({
   {
     mode = { "i" },
-    { "<C-x><C-x>", "<C-x><C-o>", desc = "omnifunc completion" },
-    { "<M-i>", insert_py_chunk, desc = "python code chunk" },
-    { "<M-j>", insert_julia_chunk, desc = "julia code chunk" },
-    { "<M-m>", " |>", desc = "pipe" },
+    { "<C-x><C-x>", "<C-x><C-o>",       desc = "omnifunc completion" },
+    { "<M-i>",      insert_py_chunk,    desc = "python code chunk" },
+    { "<M-j>",      insert_julia_chunk, desc = "julia code chunk" },
+    { "<M-m>",      " |>",              desc = "pipe" },
   },
 }, { mode = "i" })
 
@@ -341,22 +348,22 @@ end
 
 wk.add({
   {
-    { "<leader><cr>", send_cell, desc = "run code cell" },
-    { "<leader>c", group = "[c]ode / [c]ell / [c]hunk" },
-    { "<leader>ci", new_terminal_ipython, desc = "new [i]python terminal" },
-    { "<leader>cj", new_terminal_julia, desc = "new [j]ulia terminal" },
-    { "<leader>cn", new_terminal_shell, desc = "[n]ew terminal with shell" },
-    { "<leader>cp", new_terminal_python, desc = "new [p]ython terminal" },
+    { "<leader><cr>", send_cell,                          desc = "run code cell" },
+    { "<leader>c",    group = "[c]ode / [c]ell / [c]hunk" },
+    { "<leader>ci",   new_terminal_ipython,               desc = "new [i]python terminal" },
+    { "<leader>cj",   new_terminal_julia,                 desc = "new [j]ulia terminal" },
+    { "<leader>cn",   new_terminal_shell,                 desc = "[n]ew terminal with shell" },
+    { "<leader>cp",   new_terminal_python,                desc = "new [p]ython terminal" },
     -- { "<leader>h", group = "[h]elp / [h]ide / debug" },
     -- { "<leader>hc", group = "[c]onceal" },
     -- { "<leader>hch", ":set conceallevel=1<cr>", desc = "[h]ide/conceal" },
     -- { "<leader>hcs", ":set conceallevel=0<cr>", desc = "[s]how/unconceal" },
     -- { "<leader>ht", group = "[t]reesitter" },
     -- { "<leader>htt", vim.treesitter.inspect_tree, desc = "show [t]ree" },
-    { "<leader>o", group = "[o]tter & [O]verseer" },
-    { "<leader>oa", require("otter").activate, desc = "otter [a]ctivate" },
-    { "<leader>od", require("otter").activate, desc = "otter [d]eactivate" },
-    { "<leader>Q", group = "[q]uarto" },
+    { "<leader>o",    group = "[o]tter & [O]verseer" },
+    { "<leader>oa",   require("otter").activate,          desc = "otter [a]ctivate" },
+    { "<leader>od",   require("otter").activate,          desc = "otter [d]eactivate" },
+    { "<leader>Q",    group = "[q]uarto" },
     {
       "<leader>QE",
       function()
@@ -364,15 +371,15 @@ wk.add({
       end,
       desc = "[E]xport with overwrite",
     },
-    { "<leader>Qa", ":QuartoActivate<cr>", desc = "[a]ctivate" },
-    { "<leader>Qe", require("otter").export, desc = "[e]xport" },
-    { "<leader>Qh", ":QuartoHelp ", desc = "[h]elp" },
-    { "<leader>Qp", ":lua require'quarto'.quartoPreview()<cr>", desc = "[p]review" },
-    { "<leader>Qq", ":lua require'quarto'.quartoClosePreview()<cr>", desc = "[q]uiet preview" },
-    { "<leader>Qr", group = "[r]un" },
-    { "<leader>Qra", ":QuartoSendAll<cr>", desc = "run [a]ll" },
-    { "<leader>Qrb", ":QuartoSendBelow<cr>", desc = "run [b]elow" },
-    { "<leader>Qrr", ":QuartoSendAbove<cr>", desc = "to cu[r]sor" },
+    { "<leader>Qa",  ":QuartoActivate<cr>",                           desc = "[a]ctivate" },
+    { "<leader>Qe",  require("otter").export,                         desc = "[e]xport" },
+    { "<leader>Qh",  ":QuartoHelp ",                                  desc = "[h]elp" },
+    { "<leader>Qp",  ":lua require'quarto'.quartoPreview()<cr>",      desc = "[p]review" },
+    { "<leader>Qq",  ":lua require'quarto'.quartoClosePreview()<cr>", desc = "[q]uiet preview" },
+    { "<leader>Qr",  group = "[r]un" },
+    { "<leader>Qra", ":QuartoSendAll<cr>",                            desc = "run [a]ll" },
+    { "<leader>Qrb", ":QuartoSendBelow<cr>",                          desc = "run [b]elow" },
+    { "<leader>Qrr", ":QuartoSendAbove<cr>",                          desc = "to cu[r]sor" },
   },
 }, { mode = "n" })
 
@@ -408,4 +415,3 @@ map("n", "<leader>fp", function()
     },
   })
 end, { silent = true, desc = "Switch project" })
-

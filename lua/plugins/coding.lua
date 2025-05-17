@@ -13,12 +13,23 @@ return {
   },
   {
     "folke/todo-comments.nvim",
-    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "nvim-lua/plenary.nvim",
+      "folke/trouble.nvim",
     },
     opts = {
-      signs = false,
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+      keywords = {
+        PUBLIC = { icon = " ", color = "info" },
+        INTERNAL = { icon = " ", color = "error" },
+        SET = { icon = " ", color = "warning" },
+        GET = { icon = " ", color = "test" },
+        CONSTRUCTOR = { icon = "󰮮 ", color = "hint" },
+        IO = { icon = "󰠿 ", color = "info" },
+        SUBCLASS = { icon = "󰑣 ", color = "error" },
+      },
     },
   },
   {
@@ -106,7 +117,7 @@ return {
         comment_signs = {},
         add_close_pattern = true, -- true, 'last_line' or false
         matchup_patterns = {
-          { "{", "}" },
+          { "{",  "}" },
           { "%(", ")" },
           { "%[", "]" },
         },
@@ -114,12 +125,12 @@ return {
       })
       require("pretty-fold").ft_setup("lua", {
         matchup_patterns = {
-          { "^%s*if", "end" },
-          { "^%s*for", "end" },
+          { "^%s*if",        "end" },
+          { "^%s*for",       "end" },
           { "function%s*%(", "end" },
-          { "{", "}" },
-          { "%(", ")" },
-          { "%[", "]" },
+          { "{",             "}" },
+          { "%(",            ")" },
+          { "%[",            "]" },
         },
       })
     end,
@@ -237,20 +248,6 @@ return {
         highlight_for_count = true,
       })
     end,
-  },
-  {
-    "ahmedkhalf/project.nvim",
-    lazy = false,
-    opts = {
-      active = true,
-      on_config_done = nil,
-      manual_mode = false,
-      detection_methods = { "pattern", "lsp" },
-      patterns = { ".git" },
-      show_hidden = false,
-      silent_chdir = true,
-      ignore_lsp = {},
-    },
   },
   {
     "jaimecgomezz/here.term",
