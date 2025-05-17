@@ -183,17 +183,6 @@ vim.api.nvim_create_autocmd({ "TermOpen" }, {
   end,
 })
 
-vim.api.nvim_create_autocmd("CursorHold", {
-  group = augroup("pengvim_mathhovar"),
-  pattern = { "*" },
-  callback = function()
-    local ft = vim.bo.filetype
-    if ft == "markdown" or ft == "quarto" then
-      require("nabla").popup()
-    end
-  end,
-})
-
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("pengvim-lsp-attach", { clear = true }),
   callback = function(event)
