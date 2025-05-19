@@ -163,10 +163,6 @@ end, { desc = "Previous Colorscheme" })
 
 -- Buffer related
 
-map("n", "<leader>bf", function()
-  vim.lsp.buf.format()
-end, { desc = "Format buffer" })
-
 map("n", "<leader>bb", function()
   vim.cmd([[b#]])
 end, { desc = "Switch to previous buffer" })
@@ -383,35 +379,3 @@ wk.add({
   },
 }, { mode = "n" })
 
--- integrate fzf-lua with projects
--- from https://github.com/ahmedkhalf/project.nvim/issues/99
-map("n", "<leader>fp", function()
-  local contents = require("project_nvim").get_recent_projects()
-  local reverse = {}
-  for i = #contents, 1, -1 do
-    reverse[#reverse + 1] = contents[i]
-  end
-  local fzf = require("fzf-lua")
-  fzf.fzf_exec(reverse, {
-    actions = {
-      ["default"] = function(e)
-        -- vim.cmd.cd(e[1])
-        fzf.files({ cwd = e[1] })
-      end,
-      ["ctrl-d"] = function(x)
-        local choice = vim.fn.confirm("Delete '" .. #x .. "' projects? ", "&Yes\n&No", 2)
-        if choice == 1 then
-          local history = require("project_nvim.utils.history")
-          for _, v in ipairs(x) do
-            history.delete_project(v)
-          end
-        end
-      end,
-    },
-    prompt = "Projects> ",
-    winopts = {
-      height = 0.33,
-      width = 0.66,
-    },
-  })
-end, { silent = true, desc = "Switch project" })
