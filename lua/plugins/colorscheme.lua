@@ -99,59 +99,6 @@ return {
       },
     },
   },
-
-  {
-    "EdenEast/nightfox.nvim",
-    lazy = false,
-    priority = 1000,
-    opts = {
-      transparent_background = true,
-      transparent = true,
-      dim_inactive = true,
-      palettes = {
-        -- Custom duskfox with black background
-        carbonfox = {
-          bg1 = "#000000", -- Black background
-          bg0 = "#1d1d2b", -- Alt backgrounds (floats, statusline, ...)
-          -- bg3 = "#121820", -- 55% darkened from stock
-          -- sel0 = "#131b24", -- 55% darkened from stock
-        },
-      },
-      styles = {
-        comments = "italic",
-        keywords = "bold",
-        types = "italic,bold",
-        strings = "italic",
-        conditionals = "NONE",
-        constants = "NONE",
-        functions = "NONE",
-        numbers = "NONE",
-        operators = "NONE",
-        variables = "NONE",
-      },
-      modules = {
-        alpha = true,
-        barbar = true,
-        cmp = true,
-        gitgutter = true,
-        gitsigns = true,
-        hop = true,
-        indent_blanklines = true,
-        leap = true,
-        lsp_saga = true,
-        lsp_trouble = true,
-        mini = true,
-        navic = true,
-        neotree = true,
-        notify = true,
-        symbol_outline = true,
-        telescope = true,
-        treesitter = true,
-        whichkey = true,
-      },
-    },
-  },
-
   {
     "folke/tokyonight.nvim",
     opts = {
@@ -168,133 +115,18 @@ return {
       },
     },
   },
-
-  {
-    "bluz71/vim-moonfly-colors",
-    name = "moonfly",
-    lazy = false,
-    priority = 1000,
-    config = function()
-      vim.g.moonflyVirtualTextColor = true
-    end,
-  },
   {
     "rose-pine/neovim",
     name = "rose-pine",
     opts = {
       --- 'auto'|'main'|'moon'|'dawn'
-      variant = "auto",
-      --- 'main'|'moon'|'dawn'
-      dark_variant = "main",
-      bold_vert_split = false,
-      dim_nc_background = false,
-      disable_background = false,
-      disable_float_background = false,
-      disable_italics = false,
-
-      --- string hex value or named color from rosepinetheme.com/palette
-      groups = {
-        background = "base",
-        background_nc = "_experimental_nc",
-        panel = "surface",
-        panel_nc = "base",
-        border = "highlight_med",
-        comment = "muted",
-        link = "iris",
-        punctuation = "subtle",
-
-        error = "love",
-        hint = "iris",
-        info = "foam",
-        warn = "gold",
-
-        headings = {
-          h1 = "iris",
-          h2 = "foam",
-          h3 = "rose",
-          h4 = "gold",
-          h5 = "pine",
-          h6 = "foam",
-        },
-        -- or set all headings at once
-        -- headings = 'subtle'
-      },
-
-      -- Change specific vim highlight groups
-      -- https://github.com/rose-pine/neovim/wiki/Recipes
-      highlight_groups = {
-        ColorColumn = { bg = "rose" },
-
-        -- Blend colours against the "base" background
-        CursorLine = { bg = "foam", blend = 10 },
-        StatusLine = { fg = "love", bg = "love", blend = 10 },
-
-        -- By default each group adds to the existing config.
-        -- If you only want to set what is written in this config exactly,
-        -- you can set the inherit option:
-        Search = { bg = "gold", inherit = false },
-      },
+      variant = "dawn",
     },
-  },
-  {
-    "kepano/flexoki-neovim",
-    name = "flexoki",
-  },
-  {
-    "rebelot/kanagawa.nvim",
-    opts = {
-      compile = false, -- enable compiling the colorscheme
-      undercurl = true, -- enable undercurls
-      commentStyle = { italic = true },
-      functionStyle = { italic = true },
-      keywordStyle = { italic = true },
-      statementStyle = { bold = true },
-      typeStyle = {},
-      transparent = true, -- do not set background color
-      dimInactive = false, -- dim inactive window `:h hl-NormalNC`
-      terminalColors = true, -- define vim.g.terminal_color_{0,17}
-      colors = { -- add/modify theme and palette colors
-        palette = {},
-        theme = {
-          wave = {},
-          lotus = {},
-          dragon = {},
-          all = {
-            ui = {
-              bg_gutter = "none",
-            },
-          },
-        },
-      },
-      overrides = function(colors) -- add/modify highlights
-        return {}
-      end,
-      theme = "dragon", -- Load "wave" theme when 'background' option is not set
-      background = { -- map the value of 'background' option to a theme
-        dark = "dragon", -- try "dragon" !
-        light = "lotus",
-      },
-    },
-  },
-  {
-    "scottmckendry/cyberdream.nvim",
-    lazy = false,
-    priority = 1000,
-    opts = {
-      transparent = true,
-      italic_comments = true,
-      terminal_colors = true,
-    },
-  },
-  {
-    "tjdevries/colorbuddy.nvim",
-    lazy = false,
-    priority = 1000,
   },
   {
     "LazyVim/LazyVim",
     opts = function(_, opts)
-      opts.colorscheme = "catppuccin"
+      opts.colorscheme = "rose-pine"
     end,
   },
 }
