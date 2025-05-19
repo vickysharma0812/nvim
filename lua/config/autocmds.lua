@@ -35,7 +35,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   desc = "Hightlight selection on yank",
   pattern = "*",
   callback = function()
-    vim.highlight.on_yank({ higroup = "IncSearch", timeout = 150 })
+    vim.hl.on_yank({ higroup = "IncSearch", timeout = 150 })
   end,
 })
 
@@ -196,7 +196,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map("gh", vim.lsp.buf.signature_help, "[g]o to signature [h]elp")
     map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
     map("K", vim.lsp.buf.hover, "Hover Documentation")
-    vmap("<leader>Lf", vim.lsp.buf.format, "[l]sp [f]ormat")
+    vmap("<leader>bf", vim.lsp.buf.format, "[l]sp [f]ormat")
 
     local client = vim.lsp.get_client_by_id(event.data.client_id)
     assert(client, "LSP client not found")
