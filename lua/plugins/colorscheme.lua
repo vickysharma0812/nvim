@@ -120,7 +120,7 @@ return {
     name = "rose-pine",
     opts = {
       --- 'auto'|'main'|'moon'|'dawn'
-      variant = "dawn",
+      variant = "main",
       groups = {
         -- IncSearch = { bg = "gold", fg = "foam" },
       },
