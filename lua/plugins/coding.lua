@@ -1,5 +1,25 @@
 return {
   {
+    "ecthelionvi/NeoColumn.nvim",
+    lazy = false,
+    ft = { "fortran", "lua" },
+    opts = {
+      fg_color = "#ea9d34",
+      bg_color = "#ea9d34",
+      NeoColumn = "78",
+      always_on = true,
+      excluded_ft = { "text", "markdown" },
+    },
+    keys = {
+
+      {
+        "<leader>tc",
+        "<cmd>ToggleNeoColumn<CR>",
+        desc = "toggle column higlight",
+      },
+    },
+  },
+  {
     "numToStr/Comment.nvim",
     lazy = false,
     opts = {},
@@ -117,7 +137,7 @@ return {
         comment_signs = {},
         add_close_pattern = true, -- true, 'last_line' or false
         matchup_patterns = {
-          { "{",  "}" },
+          { "{", "}" },
           { "%(", ")" },
           { "%[", "]" },
         },
@@ -125,12 +145,12 @@ return {
       })
       require("pretty-fold").ft_setup("lua", {
         matchup_patterns = {
-          { "^%s*if",        "end" },
-          { "^%s*for",       "end" },
+          { "^%s*if", "end" },
+          { "^%s*for", "end" },
           { "function%s*%(", "end" },
-          { "{",             "}" },
-          { "%(",            ")" },
-          { "%[",            "]" },
+          { "{", "}" },
+          { "%(", ")" },
+          { "%[", "]" },
         },
       })
     end,

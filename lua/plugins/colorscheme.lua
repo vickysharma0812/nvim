@@ -121,6 +121,9 @@ return {
     opts = {
       --- 'auto'|'main'|'moon'|'dawn'
       variant = "dawn",
+      groups = {
+        -- IncSearch = { bg = "gold", fg = "foam" },
+      },
     },
   },
   {
