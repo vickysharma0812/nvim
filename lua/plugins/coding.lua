@@ -1,5 +1,25 @@
 return {
   {
+    "ecthelionvi/NeoColumn.nvim",
+    lazy = false,
+    ft = { "fortran", "lua" },
+    opts = {
+      fg_color = "#ea9d34",
+      bg_color = "#ea9d34",
+      NeoColumn = "78",
+      always_on = true,
+      excluded_ft = { "text", "markdown" },
+    },
+    keys = {
+
+      {
+        "<leader>tc",
+        "<cmd>ToggleNeoColumn<CR>",
+        desc = "toggle column higlight",
+      },
+    },
+  },
+  {
     "numToStr/Comment.nvim",
     lazy = false,
     opts = {},
@@ -29,24 +49,6 @@ return {
         CONSTRUCTOR = { icon = "󰮮 ", color = "hint" },
         IO = { icon = "󰠿 ", color = "info" },
         SUBCLASS = { icon = "󰑣 ", color = "error" },
-      },
-    },
-  },
-  {
-    "smoka7/multicursors.nvim",
-    lazy = true,
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "smoka7/hydra.nvim",
-    },
-    opts = {},
-    cmd = { "MCstart", "MCvisual", "MCclear", "MCpattern", "MCvisualPattern", "MCunderCursor" },
-    keys = {
-      {
-        "<C-d>",
-        "<cmd>MCstart<cr>",
-        desc = "Multi cursor starts",
-        mode = { "n", "v" },
       },
     },
   },
@@ -85,55 +87,6 @@ return {
       { "]]", desc = "Next Reference" },
       { "[[", desc = "Prev Reference" },
     },
-  },
-  {
-    "bbjornstad/pretty-fold.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    config = function()
-      require("pretty-fold").setup({
-        sections = {
-          left = {
-            "content",
-          },
-          right = {
-            " ",
-            "number_of_folded_lines",
-            ": ",
-            "percentage",
-            " ",
-            function(config)
-              return config.fill_char:rep(3)
-            end,
-          },
-        },
-        fill_char = "•",
-        remove_fold_markers = true,
-        keep_indentation = true,
-        -- Possible values:
-        -- "delete" : Delete all comment signs from the fold string.
-        -- "spaces" : Replace all comment signs with equal number of spaces.
-        -- false    : Do nothing with comment signs.
-        process_comment_signs = "spaces",
-        comment_signs = {},
-        add_close_pattern = true, -- true, 'last_line' or false
-        matchup_patterns = {
-          { "{",  "}" },
-          { "%(", ")" },
-          { "%[", "]" },
-        },
-        ft_ignore = { "neorg", "TelescopeResults", "ToggleTerm", "Noice", "sagaoutline", "dashboard" },
-      })
-      require("pretty-fold").ft_setup("lua", {
-        matchup_patterns = {
-          { "^%s*if",        "end" },
-          { "^%s*for",       "end" },
-          { "function%s*%(", "end" },
-          { "{",             "}" },
-          { "%(",            ")" },
-          { "%[",            "]" },
-        },
-      })
-    end,
   },
   {
     "folke/flash.nvim",
@@ -331,6 +284,69 @@ return {
         "<leader>xQ",
         "<cmd>Trouble qflist toggle<cr>",
         desc = "Quickfix List (Trouble)",
+      },
+    },
+  },
+  {
+    "kevinhwang91/nvim-ufo",
+    dependencies = { "kevinhwang91/promise-async" },
+    -- event = "VeryLazy",
+    -- You can make it lazy-loaded via VeryLazy,
+    -- but comment out if thing doesn't work
+    init = function()
+      -- taken from here https://github.com/kevinhwang91/nvim-ufo#minimal-configuration
+      vim.o.foldcolumn = "1" -- '0' is not bad
+      vim.o.foldlevel = 99
+      -- Using ufo provider need a large value, feel free to decrease the value
+      vim.o.foldlevelstart = 99
+      vim.o.foldenable = true
+    end,
+    config = function()
+      require("ufo").setup({
+        -- your config goes here
+        -- open_fold_hl_timeout = ...,
+        -- provider_selector = function(bufnr, filetype)
+        --  ...
+        -- end,
+      })
+    end,
+  },
+  {
+    "karb94/neoscroll.nvim",
+    opts = {
+      mappings = { -- Keys to be mapped to their corresponding default scrolling animation
+        "<C-u>",
+        "<C-d>",
+        "<C-b>",
+        "<C-f>",
+        "<C-y>",
+        "<C-e>",
+        "zt",
+        "zz",
+        "zb",
+      },
+      hide_cursor = true,
+      -- Hide cursor while scrolling
+      stop_eof = true,
+      -- Stop at <EOF> when scrolling downwards
+      respect_scrolloff = false,
+      -- Stop scrolling when the cursor reaches the scrolloff margin of the file
+      cursor_scrolls_alone = true,
+      -- The cursor will keep on scrolling even if the window cannot scroll further
+      duration_multiplier = 1.0,
+      -- Global duration multiplier
+      easing = "linear",
+      -- Default easing function
+      pre_hook = nil,
+      -- Function to run before the scrolling animation starts
+      post_hook = nil,
+      -- Function to run after the scrolling animation ends
+      performance_mode = false,
+      -- Disable "Performance Mode" on all buffers.
+      ignored_events = {
+        -- Events ignored while scrolling
+        "WinScrolled",
+        "CursorMoved",
       },
     },
   },
