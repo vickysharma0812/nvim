@@ -36,7 +36,7 @@ return {
           sh = { "shfmt" },
           toml = { "taplo" },
           typst = { "typstyle", "typstfmt", stop_after_first = true },
-          fortran = { "fprettify", "myfmt", stop_after_first = true },
+          fortran = { "fprettify", stop_after_first = true },
           go = { "goimports" },
           tex = { "latexindent" },
           markdown = { "dprint", "markdownlint-cli2", "injected" },
@@ -64,13 +64,6 @@ return {
           },
           fprettify = {
             args = require("plugins.args.fortran").formatter or {},
-          },
-          myfmt = {
-            command = "fprettify",
-            args = require("plugins.args.fortran").formatter_sub or {},
-            condition = function()
-              return vim.g.use_myfmt
-            end,
           },
           taplo = {
             args = {
