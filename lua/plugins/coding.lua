@@ -8,7 +8,7 @@ return {
       bg_color = "#ea9d34",
       NeoColumn = "78",
       always_on = true,
-      excluded_ft = { "text", "markdown" },
+      excluded_ft = { "text", "markdown", "quarto" },
     },
     keys = {
 

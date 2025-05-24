@@ -11,6 +11,14 @@
         "path": "go.json"
       },
       {
+        "language": ["quarto"],
+        "path": "markdown-quarto.json"
+      },
+      {
+        "language": ["markdown"],
+        "path": "markdown-quarto.json"
+      },
+      {
         "language": ["markdown"],
         "path": "markdown.json"
       },

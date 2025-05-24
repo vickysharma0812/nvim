@@ -57,4 +57,3 @@ require("config.options")
 require("config.autocmds")
 require("config.redir")
 
-vim.api.nvim_set_hl(0, "VertSplit", { fg = "#b020ea", bg = "NONE" })

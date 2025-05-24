@@ -1,0 +1,28 @@
+{
+	"callout-note": {
+		"prefix": "callout note",
+		"description": "callout note",
+		"body": [
+			"::: {.callout-note}",
+			"",
+			":::"
+		]
+	},
+	"two-columns": {
+		"prefix": "two columns",
+		"description": "Create two columns",
+		"body": [
+			"::::{.columns}",
+			"",
+			"::: {.column width=50%}",
+			"",
+			":::",
+			"",
+			"::: {.column width=50%}",
+			"",
+			":::",
+			"",
+			"::::"
+		]
+	}
+}
