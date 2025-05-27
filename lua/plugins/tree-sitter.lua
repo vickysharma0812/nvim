@@ -26,7 +26,8 @@ return {
         "fish",
         "csv",
         "diff",
-        "latex"
+        "latex",
+        "bibtex",
       },
       auto_install = true,
       indent = {

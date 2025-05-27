@@ -124,6 +124,13 @@ return {
       nowait = true,
       remap = false,
     },
+    {
+      "<leader>fcs",
+      ":e ~/.config/fish/config.fish<CR>",
+      desc = "Fish config",
+      nowait = true,
+      remap = false,
+    },
     { "<leader>fcz", ":e ~/.config/zellij/config.kdl <CR>", desc = "Zellij", nowait = true, remap = false },
     { "<leader>gD", "<cmd>lua require 'gitsigns'.diffthis('~')<cr>", desc = "Diff", nowait = true, remap = false },
     { "<leader>gP", "<cmd>Gitsigns preview_hunk<cr>", desc = "Preview Hunk", nowait = true, remap = false },

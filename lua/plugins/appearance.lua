@@ -56,6 +56,7 @@ return {
           use_treesitter = true,
           exclude_filetypes = {
             toml = true,
+            latex = true,
           },
         },
       })

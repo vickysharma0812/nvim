@@ -2,18 +2,6 @@ local function augroup(name)
   return vim.api.nvim_create_augroup("PengVim_" .. name, { clear = true })
 end
 
--- vim.api.nvim_create_autocmd("BufReadPost", {
---   group = augroup("restore_cursor"),
---   callback = function(args)
---     local valid_line = vim.fn.line([['"]]) >= 1 and vim.fn.line([['"]]) < vim.fn.line("$")
---     local not_commit = vim.b[args.buf].filetype ~= "commit"
---
---     if valid_line and not_commit then
---       vim.cmd([[normal! g`"]])
---     end
---   end,
--- })
-
 vim.api.nvim_create_autocmd("FileType", {
   group = augroup("expr_folding"),
   pattern = { "fortran", "lua" },
@@ -37,22 +25,14 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- vim.api.nvim_create_autocmd("BufEnter", {
---   group = augroup("disable_virtual_text"),
---   pattern = { "*" },
---   callback = function()
---     vim.diagnostic.config({ virtual_text = false })
---   end,
--- })
-
--- vim.api.nvim_create_autocmd({ "BufWritePost" }, {
---   callback = function()
---     -- try_lint without arguments runs the linters defined in linters_by_ft
---     -- for the current filetype
---     require("lint").try_lint()
---     -- require("lint").try_lint("gfortran")
---   end,
--- })
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+  callback = function()
+    -- try_lint without arguments runs the linters defined in linters_by_ft
+    -- for the current filetype
+    require("lint").try_lint()
+    -- require("lint").try_lint("gfortran")
+  end,
+})
 
 vim.api.nvim_create_autocmd("BufWinEnter", {
   group = augroup("hide_decorations"),
@@ -88,11 +68,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
         callback = vim.lsp.buf.document_highlight,
       })
 
-      vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-        buffer = event.buf,
-        group = highlight_augroup,
-        callback = vim.lsp.buf.clear_references,
-      })
+      -- vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+      --   buffer = event.buf,
+      --   group = highlight_augroup,
+      --   callback = vim.lsp.buf.clear_references,
+      -- })
 
       vim.api.nvim_create_autocmd("LspDetach", {
         group = vim.api.nvim_create_augroup("pengvim-lsp-detach", { clear = true }),

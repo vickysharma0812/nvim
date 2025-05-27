@@ -71,8 +71,8 @@ return {
           enabled = true,
           auto_refresh = false,
           keymap = {
-            jump_prev = "((",
-            jump_next = "))",
+            jump_prev = "[[",
+            jump_next = "]]",
             accept = "<Tab>",
             refresh = "gr",
             open = "<M-CR>",
@@ -88,11 +88,11 @@ return {
           debounce = 75,
           keymap = {
             accept = "<Tab>",
-            accept_word = false,
-            accept_line = false,
-            next = "<M-)>",
-            prev = "<M-(>",
-            dismiss = "<C-)>",
+            accept_word = "<M-w>",
+            accept_line = "<M-l>",
+            next = "<M-]>",
+            prev = "<M-[>",
+            dismiss = "<M-CR>",
           },
         },
         filetypes = {

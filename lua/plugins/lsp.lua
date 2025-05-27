@@ -51,7 +51,7 @@ return {
       root_dir = util.root_pattern(".git", ".marksman.toml", "_quarto.yml"),
     })
 
-    require("lspconfig").markdown_oxide.setup({
+    lspconfig.markdown_oxide.setup({
       -- Ensure that dynamicRegistration is enabled! This allows the LS to take into account actions like the
       -- Create Unresolved File code action, resolving completions for unindexed code blocks, ...
       capabilities = vim.tbl_deep_extend("force", capabilities, {
@@ -111,7 +111,7 @@ return {
             -- args = {"-X", "compile", "%f", "--synctex", "--keep-logs", "--keep-intermediates",
             -- "--outdir", "build"},
             forwardSearchAfter = true,
-            onSave = true,
+            onSave = false,
             auxDirectory = "build",
             logDirectory = "build",
             pdfDirectory = "build",
@@ -144,5 +144,6 @@ return {
         },
       },
     })
+
   end,
 }

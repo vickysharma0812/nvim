@@ -1,6 +1,7 @@
 return {
   {
     "ecthelionvi/NeoColumn.nvim",
+    enabled = false,
     lazy = false,
     ft = { "fortran", "lua" },
     opts = {
@@ -8,7 +9,7 @@ return {
       bg_color = "#ea9d34",
       NeoColumn = "78",
       always_on = true,
-      excluded_ft = { "text", "markdown", "quarto" },
+      excluded_ft = { "text", "markdown", "quarto", "latex" },
     },
     keys = {
 
@@ -153,88 +154,6 @@ return {
     end,
   },
   {
-    "Aasim-A/scrollEOF.nvim",
-    event = { "CursorMoved", "WinScrolled" },
-    opts = {
-      pattern = "*",
-      insert_mode = true,
-      floating = false,
-      disabled_filetypes = {},
-      disabled_modes = {},
-    },
-    config = function(opts)
-      require("scrollEOF").setup(opts)
-    end,
-  },
-  {
-    "chrisbra/NrrwRgn",
-    lazy = true,
-    keys = {
-      {
-        "<leader>nr",
-        "<plug>NrrwrgnDo<cr>",
-        desc = "NrrwRgn",
-        mode = { "n", "v" },
-      },
-    },
-  },
-  {
-    "tzachar/highlight-undo.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    config = function()
-      require("highlight-undo").setup({
-        duration = 300,
-        undo = {
-          hlgroup = "HighlightUndo",
-          mode = "n",
-          lhs = "u",
-          map = "undo",
-          opts = {},
-        },
-        redo = {
-          hlgroup = "HighlightRedo",
-          mode = "n",
-          lhs = "<C-r>",
-          map = "redo",
-          opts = {},
-        },
-        highlight_for_count = true,
-      })
-    end,
-  },
-  {
-    "jaimecgomezz/here.term",
-    keys = {
-      {
-        "<M-t>",
-        function()
-          require("here-term").toggle_terminal()
-        end,
-        mode = { "n", "i", "t" },
-        desc = "Toggle Terminal Here",
-      },
-      {
-        "<M-S-t>",
-        function()
-          require("here-term").kill_terminal()
-        end,
-        mode = { "n", "i", "t" },
-        desc = "Kill Terminal Here",
-      },
-    },
-  },
-
-  {
-    "andymass/vim-matchup",
-    enabled = false,
-    lazy = false,
-    config = function()
-      vim.g.matchup_matchparen_offscreen = {
-        method = "popup",
-      }
-    end,
-  },
-  {
     "folke/trouble.nvim",
     opts = {
       modes = {
@@ -310,44 +229,5 @@ return {
         -- end,
       })
     end,
-  },
-  {
-    "karb94/neoscroll.nvim",
-    opts = {
-      mappings = { -- Keys to be mapped to their corresponding default scrolling animation
-        "<C-u>",
-        "<C-d>",
-        "<C-b>",
-        "<C-f>",
-        "<C-y>",
-        "<C-e>",
-        "zt",
-        "zz",
-        "zb",
-      },
-      hide_cursor = true,
-      -- Hide cursor while scrolling
-      stop_eof = true,
-      -- Stop at <EOF> when scrolling downwards
-      respect_scrolloff = false,
-      -- Stop scrolling when the cursor reaches the scrolloff margin of the file
-      cursor_scrolls_alone = true,
-      -- The cursor will keep on scrolling even if the window cannot scroll further
-      duration_multiplier = 1.0,
-      -- Global duration multiplier
-      easing = "linear",
-      -- Default easing function
-      pre_hook = nil,
-      -- Function to run before the scrolling animation starts
-      post_hook = nil,
-      -- Function to run after the scrolling animation ends
-      performance_mode = false,
-      -- Disable "Performance Mode" on all buffers.
-      ignored_events = {
-        -- Events ignored while scrolling
-        "WinScrolled",
-        "CursorMoved",
-      },
-    },
   },
 }
