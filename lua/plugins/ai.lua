@@ -16,8 +16,8 @@ return {
       }
     end,
     keys = {
-      { "<c-s>",     "<CR>", ft = "copilot-chat", desc = "Submit Prompt", remap = true },
-      { "<leader>a", "",     desc = "+ai",        mode = { "n", "v" } },
+      { "<c-s>", "<CR>", ft = "copilot-chat", desc = "Submit Prompt", remap = true },
+      { "<leader>a", "", desc = "+ai", mode = { "n", "v" } },
       {
         "<leader>aa",
         function()
@@ -60,6 +60,11 @@ return {
       chat.setup(opts)
     end,
   },
+
+  ---
+  -- Copilot
+  --
+  --
   {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
@@ -73,7 +78,7 @@ return {
           keymap = {
             jump_prev = "[[",
             jump_next = "]]",
-            accept = "<Tab>",
+            accept = "<M-a>",
             refresh = "gr",
             open = "<M-CR>",
           },
@@ -87,7 +92,7 @@ return {
           auto_trigger = true,
           debounce = 75,
           keymap = {
-            accept = "<Tab>",
+            accept = "<M-a>",
             accept_word = "<M-w>",
             accept_line = "<M-l>",
             next = "<M-]>",
@@ -112,7 +117,20 @@ return {
         server_opts_overrides = {},
       })
     end,
+    keys = {
+    {
+      "<leader>ue",
+      "lua require('copilot.suggestion').toggle_auto_trigger()",
+      desc = "Toggle copilot auto suggestion",
+      nowait = true,
+      remap = false,
+    },
+    },
   },
+
+  --- Code Companion
+  --- A Neovim plugin that provides AI-powered code assistance, including chat,
+  --- inline suggestions, and command-line interactions.
   {
     "olimorris/codecompanion.nvim",
     lazy = false,
@@ -120,13 +138,25 @@ return {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
       "ravitemer/codecompanion-history.nvim",
+      {
+        "ravitemer/mcphub.nvim", -- Manage MCP servers
+        cmd = "MCPHub",
+        build = "npm install -g mcp-hub@latest",
+        config = true,
+      },
+      {
+        "Davidyz/VectorCode", -- Index and search code in your repositories
+        version = "*",
+        build = "pipx upgrade vectorcode",
+        dependencies = { "nvim-lua/plenary.nvim" },
+      },
     },
     opts = {
       strategies = {
         chat = {
           keymaps = {
             send = {
-              modes = { n = "<C-CR>", i = "<C-CR>" },
+              modes = { n = "<C-s>", i = "<C-s>" },
             },
             close = {
               modes = { n = "<C-x>", i = "<C-x>" },
@@ -169,24 +199,29 @@ return {
           enabled = true,
           opts = {
             keymap = "gh",
-            save_chat_keymap = "<C-s>",
+            save_chat_keymap = "sc",
             auto_save = false,
-            expiration_days = 0,
-            picker = "snacks",
-            auto_generate_title = false,
-            title_generation_opts = {
-              adapter = nil,
-              model = nil,
-            },
+            auto_generate_title = true,
             continue_last_chat = false,
-            ---When chat is cleared with gx delete the chat from history
             delete_on_clearing_chat = false,
-            ---Directory path to save the chats
-            dir_to_save = "/Users/easifem/codecompanion-history",
-            ---Enable detailed logging for history extension
+            picker = "snacks",
             enable_logging = false,
+            dir_to_save = vim.fn.stdpath("data") .. "/codecompanion-history",
           },
         },
+        mcphub = {
+          callback = "mcphub.extensions.codecompanion",
+          opts = {
+            make_vars = true,
+            make_slash_commands = true,
+            show_result_in_chat = true,
+          },
+        },
+        -- vectorcode = {
+        --   opts = {
+        --     add_tool = true,
+        --   },
+        -- },
       },
     },
     keys = {

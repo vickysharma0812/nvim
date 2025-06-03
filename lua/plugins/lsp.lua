@@ -33,7 +33,6 @@ return {
         "markdownlint-cli2",
         "markdownlint",
         "dprint",
-        "markdown-oxide",
       },
     })
 
@@ -49,18 +48,6 @@ return {
       capabilities = capabilities,
       filetypes = { "markdown", "quarto" },
       root_dir = util.root_pattern(".git", ".marksman.toml", "_quarto.yml"),
-    })
-
-    lspconfig.markdown_oxide.setup({
-      -- Ensure that dynamicRegistration is enabled! This allows the LS to take into account actions like the
-      -- Create Unresolved File code action, resolving completions for unindexed code blocks, ...
-      capabilities = vim.tbl_deep_extend("force", capabilities, {
-        workspace = {
-          didChangeWatchedFiles = {
-            dynamicRegistration = true,
-          },
-        },
-      }),
     })
 
     lspconfig.lua_ls.setup({
@@ -88,7 +75,22 @@ return {
     lspconfig.fortls.setup({
       capabilities = capabilities,
       flags = lsp_flags,
-      cmd = require("plugins.args.fortran").lsp_cmd or {},
+      -- cmd = require("plugins.args.fortran").lsp_cmd or {},
+      cmd = {
+        "fortls",
+        "--lowercase_intrinsics",
+        "--notify_init",
+        "--source_dirs",
+        os.getenv("dropbox") .. "/easifem/base/src/**",
+        os.getenv("dropbox") .. "/easifem/classes/src/**",
+        os.getenv("dropbox") .. "/easifem/elasticity/src/**",
+        os.getenv("dropbox") .. "/easifem/acoustic/src/**",
+        os.getenv("HOME") .. "/.easifem/src/tomlf/src/**",
+        "--hover_signature",
+        "--hover_language",
+        "fortran",
+        "--use_signature_help",
+      },
     })
 
     lspconfig.texlab.setup({
@@ -98,7 +100,7 @@ return {
         texlab = {
           bibtexFormatter = "latexindent",
           build = {
-            args = { 
+            args = {
               "-outdir=build",
               "-auxdir=build",
               "-pdf",
@@ -144,6 +146,5 @@ return {
         },
       },
     })
-
   end,
 }

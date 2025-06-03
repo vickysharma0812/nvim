@@ -1,6 +1,7 @@
 return {
   {
     "stevearc/oil.nvim",
+    enabled = false,
     opts = {},
     dependencies = {
       "echasnovski/mini.icons",
@@ -18,13 +19,13 @@ return {
     "mikavilpas/yazi.nvim",
     keys = {
       {
-        "<leader>fo",
+        "<leader>yo",
         mode = { "n", "v" },
         "<cmd>Yazi<cr>",
         desc = "Open yazi at the current file",
       },
       {
-        "<leader>e",
+        "<leader>ye",
         "<cmd>Yazi cwd<cr>",
         desc = "Open the file manager in nvim's working directory",
       },

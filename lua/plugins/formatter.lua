@@ -63,14 +63,33 @@ return {
             },
           },
           fprettify = {
-            args = require("plugins.args.fortran").formatter or {},
-          },
-          myfmt = {
-            command = "fprettify",
-            args = require("plugins.args.fortran").formatter_sub or {},
-            condition = function()
-              return vim.g.use_myfmt
-            end,
+            -- args = require("plugins.args.fortran").formatter or {},
+            args = {
+              "--line-length",
+              "78",
+              "--indent",
+              "2",
+              "--strict-indent",
+              "--disable-indent-mod",
+              "--whitespace",
+              "2",
+              "--whitespace-comma",
+              "--whitespace-assignment",
+              "--enable-decl",
+              "--whitespace-decl",
+              "--whitespace-relational",
+              "--whitespace-logical",
+              "--whitespace-multdiv",
+              "--whitespace-print",
+              "--whitespace-intrinsics",
+              "--strip-comments",
+              "--case",
+              "2",
+              "2",
+              "2",
+              "2",
+            },
+
           },
           taplo = {
             args = {

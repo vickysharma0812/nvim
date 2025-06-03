@@ -14,6 +14,15 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
+  group = augroup("no_folding"),
+  pattern = { "Noice", "dashboard" },
+  callback = function()
+    vim.opt_local.foldenable = false
+    vim.opt_local.foldcolumn = "0"
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
   group = augroup("set_fmt"),
   pattern = { "fortran" },
   callback = function()
@@ -68,11 +77,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
         callback = vim.lsp.buf.document_highlight,
       })
 
-      -- vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-      --   buffer = event.buf,
-      --   group = highlight_augroup,
-      --   callback = vim.lsp.buf.clear_references,
-      -- })
+      vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+        buffer = event.buf,
+        group = highlight_augroup,
+        callback = vim.lsp.buf.clear_references,
+      })
 
       vim.api.nvim_create_autocmd("LspDetach", {
         group = vim.api.nvim_create_augroup("pengvim-lsp-detach", { clear = true }),

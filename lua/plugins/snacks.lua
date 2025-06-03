@@ -2,6 +2,7 @@ return {
   { -- bunch of useful ui
     "folke/snacks.nvim",
     lazy = false,
+    priority = 1000,
     opts = {
       dashboard = {
         preset = {
@@ -29,11 +30,14 @@ return {
           },
         },
       },
+      lazygit = {
+        enabled = true,
+      },
       statuscolumn = {
-        enabled = false,
+        enabled = true,
       },
       scroll = {
-        enabled = false,
+        enabled = true,
       },
       notifier = {
         enabled = true,
@@ -41,6 +45,7 @@ return {
         level = vim.log.levels.INFO,
         style = "minimal",
       },
+      zen = { enabled = true },
       picker = {
         enabled = true,
         layout = {
@@ -53,7 +58,13 @@ return {
             border = "none",
             {
               box = "vertical",
-              { win = "input", height = 1, border = "rounded", title = "{title} {live} {flags}", title_pos = "center" },
+              {
+                win = "input",
+                height = 1,
+                border = "rounded",
+                title = "{title} {live} {flags}",
+                title_pos = "center",
+              },
               { win = "list", title = " Results ", title_pos = "center", border = "rounded" },
             },
             {
@@ -65,7 +76,19 @@ return {
             },
           },
         },
-      sources = {
+        sources = {
+          projects = {
+            -- NOTE: default was trying to load session
+            -- I like to use picker file after selecting project
+            confirm = function(picker, item)
+              picker:close()
+              if item then
+                Snacks.picker.files({ cwd = item.text })
+              end
+              local dir = item.file
+              vim.fn.chdir(dir)
+            end,
+          },
           explorer = {
             auto_close = true,
           },
@@ -84,6 +107,13 @@ return {
           },
         },
       },
+      quickfile = {
+        enabled = false,
+        -- cwd = vim.fn.stdpath("config"),
+        -- filetypes = { "lua", "json", "yaml", "toml" },
+      },
+      indent = { enabled = true },
+      scope = { enabled = true },
     },
     keys = {
       {
@@ -121,22 +151,22 @@ return {
         end,
         desc = "Notification History",
       },
-      -- {
-      --   "<leader>e",
-      --   function()
-      --     vim.opt.scrolloff = 0
-      --     Snacks.explorer({ auto_close = true, focus = "list" })
-      --   end,
-      --   desc = "File Explorer",
-      -- },
-      -- {
-      --   "<leader>fo",
-      --   function()
-      --     vim.opt.scrolloff = 0
-      --     Snacks.explorer.reveal({ auto_close = false, focus = "list" })
-      --   end,
-      --   desc = "File Explorer reveal",
-      -- },
+      {
+        "<leader>e",
+        function()
+          vim.opt.scrolloff = 0
+          Snacks.explorer({ auto_close = true, focus = "list" })
+        end,
+        desc = "File Explorer",
+      },
+      {
+        "<leader>fo",
+        function()
+          vim.opt.scrolloff = 0
+          Snacks.explorer.reveal({ auto_close = false, focus = "list" })
+        end,
+        desc = "File Explorer reveal",
+      },
       {
         "<leader>fb",
         function()
@@ -448,6 +478,13 @@ return {
           Snacks.bufdelete.other()
         end,
         desc = "Delete Other Buffers",
+      },
+      {
+        "<leader>z",
+        function()
+          Snacks.zen()
+        end,
+        desc = "Zen mode",
       },
     },
   },

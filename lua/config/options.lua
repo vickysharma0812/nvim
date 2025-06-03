@@ -18,9 +18,9 @@ opt.fillchars = {
   eob = " ",
   vert = "▏",
 }
-opt.foldlevel = 99
-opt.formatexpr = "v:lua.require'lazyvim.util'.format.formatexpr()"
-opt.formatoptions = "jcroqlnt"
+-- opt.foldlevel = 99
+-- opt.formatexpr = "v:lua.require'lazyvim.util'.format.formatexpr()"
+-- opt.formatoptions = "jcroqlnt"
 opt.grepformat = "%f:%l:%c:%m"
 opt.grepprg = "rg --vimgrep"
 opt.ignorecase = true
@@ -61,15 +61,15 @@ opt.wildmode = "longest:full,full"
 opt.winminwidth = 5
 opt.wrap = false
 
-if vim.fn.has("nvim-0.10") == 1 then
-  opt.smoothscroll = true
-  opt.foldexpr = "v:lua.require'lazyvim.util'.ui.foldexpr()"
-  opt.foldmethod = "expr"
-  opt.foldtext = ""
-else
-  opt.foldmethod = "indent"
-  opt.foldtext = "v:lua.require'lazyvim.util'.ui.foldtext()"
-end
+-- if vim.fn.has("nvim-0.10") == 1 then
+--   opt.smoothscroll = true
+--   opt.foldexpr = "v:lua.require'lazyvim.util'.ui.foldexpr()"
+--   opt.foldmethod = "expr"
+--   opt.foldtext = ""
+-- else
+--   opt.foldmethod = "indent"
+--   opt.foldtext = "v:lua.require'lazyvim.util'.ui.foldtext()"
+-- end
 
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0

@@ -23,7 +23,7 @@ return {
       },
     }
   end,
-  desc = "Install easifemClasses",
+  desc = "Install libEasifemClasses",
   params = {},
   priority = 50,
   condition = {

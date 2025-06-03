@@ -87,11 +87,11 @@ Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leade
 Snacks.toggle.diagnostics():map("<leader>ud")
 Snacks.toggle.line_number():map("<leader>ul")
 Snacks.toggle
-    .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2, name = "Conceal Level" })
-    :map("<leader>uc")
+  .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2, name = "Conceal Level" })
+  :map("<leader>uc")
 Snacks.toggle
-    .option("showtabline", { off = 0, on = vim.o.showtabline > 0 and vim.o.showtabline or 2, name = "Tabline" })
-    :map("<leader>uA")
+  .option("showtabline", { off = 0, on = vim.o.showtabline > 0 and vim.o.showtabline or 2, name = "Tabline" })
+  :map("<leader>uA")
 Snacks.toggle.treesitter():map("<leader>uT")
 Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>ub")
 Snacks.toggle.dim():map("<leader>uD")
@@ -282,23 +282,23 @@ end
 
 wk.add({
   {
-    { "<leader>i",  group = "[I]nsert code chunk" },
-    { "<leader>ip", insert_py_chunk,              desc = "python code chunk" },
-    { "<leader>ij", insert_julia_chunk,           desc = "julia code chunk" },
-    { "<leader>if", insert_fortran_chunk,         desc = "fortran code chunk" },
-    { "<leader>ib", insert_bash_chunk,            desc = "bash code chunk" },
-    { "<leader>il", insert_lua_chunk,             desc = "lua code chunk" },
-    { "<leader>ic", "O# %%<cr>",                  desc = "Comment code chunk # %%" },
+    { "<leader>i", group = "[I]nsert code chunk" },
+    { "<leader>ip", insert_py_chunk, desc = "python code chunk" },
+    { "<leader>ij", insert_julia_chunk, desc = "julia code chunk" },
+    { "<leader>if", insert_fortran_chunk, desc = "fortran code chunk" },
+    { "<leader>ib", insert_bash_chunk, desc = "bash code chunk" },
+    { "<leader>il", insert_lua_chunk, desc = "lua code chunk" },
+    { "<leader>ic", "O# %%<cr>", desc = "Comment code chunk # %%" },
   },
 }, { mode = "n", silent = true })
 
 wk.add({
   {
     mode = { "i" },
-    { "<C-x><C-x>", "<C-x><C-o>",       desc = "omnifunc completion" },
-    { "<M-i>",      insert_py_chunk,    desc = "python code chunk" },
-    { "<M-j>",      insert_julia_chunk, desc = "julia code chunk" },
-    { "<M-m>",      " |>",              desc = "pipe" },
+    { "<C-x><C-x>", "<C-x><C-o>", desc = "omnifunc completion" },
+    { "<M-i>", insert_py_chunk, desc = "python code chunk" },
+    { "<M-j>", insert_julia_chunk, desc = "julia code chunk" },
+    { "<M-m>", " |>", desc = "pipe" },
   },
 }, { mode = "i" })
 
@@ -344,22 +344,47 @@ end
 
 wk.add({
   {
-    { "<leader><cr>", send_cell,                          desc = "run code cell" },
-    { "<leader>c",    group = "[c]ode / [c]ell / [c]hunk" },
-    { "<leader>ci",   new_terminal_ipython,               desc = "new [i]python terminal" },
-    { "<leader>cj",   new_terminal_julia,                 desc = "new [j]ulia terminal" },
-    { "<leader>cn",   new_terminal_shell,                 desc = "[n]ew terminal with shell" },
-    { "<leader>cp",   new_terminal_python,                desc = "new [p]ython terminal" },
-    -- { "<leader>h", group = "[h]elp / [h]ide / debug" },
-    -- { "<leader>hc", group = "[c]onceal" },
-    -- { "<leader>hch", ":set conceallevel=1<cr>", desc = "[h]ide/conceal" },
-    -- { "<leader>hcs", ":set conceallevel=0<cr>", desc = "[s]how/unconceal" },
-    -- { "<leader>ht", group = "[t]reesitter" },
-    -- { "<leader>htt", vim.treesitter.inspect_tree, desc = "show [t]ree" },
-    { "<leader>o",    group = "[o]tter & [O]verseer" },
-    { "<leader>oa",   require("otter").activate,          desc = "otter [a]ctivate" },
-    { "<leader>od",   require("otter").activate,          desc = "otter [d]eactivate" },
-    { "<leader>Q",    group = "[q]uarto" },
+    {
+      "<leader>cI",
+      "<cmd>LspInstallInfo<cr>",
+      desc = "Installer Info",
+      nowait = true,
+      remap = false,
+    },
+    {
+      "<leader>ca",
+      "<cmd>lua vim.lsp.buf.code_action()<cr>",
+      desc = "Code Action",
+      nowait = true,
+      remap = false,
+    },
+    {
+      "<leader>ci",
+      "<cmd>LspInfo<cr>",
+      desc = "Info",
+      nowait = true,
+      remap = false,
+    },
+    -- { "<leader>cl", "<cmd>lua vim.lsp.codelens.run()<cr>", desc = "CodeLens Action", nowait = true, remap = false },
+    {
+      "<leader>cq",
+      "<cmd>lua vim.diagnostic.setloclist()<cr>",
+      desc = "Quickfix",
+      nowait = true,
+      remap = false,
+    },
+    {
+      "<leader>cr",
+      "<cmd>lua vim.lsp.buf.rename()<cr>",
+      desc = "Rename",
+      nowait = true,
+      remap = false,
+    },
+
+    { "<leader>o", group = "[o]tter & [O]verseer" },
+    { "<leader>oa", require("otter").activate, desc = "otter [a]ctivate" },
+    { "<leader>od", require("otter").activate, desc = "otter [d]eactivate" },
+    { "<leader>Q", group = "[q]uarto" },
     {
       "<leader>QE",
       function()
@@ -367,15 +392,32 @@ wk.add({
       end,
       desc = "[E]xport with overwrite",
     },
-    { "<leader>Qa",  ":QuartoActivate<cr>",                           desc = "[a]ctivate" },
-    { "<leader>Qe",  require("otter").export,                         desc = "[e]xport" },
-    { "<leader>Qh",  ":QuartoHelp ",                                  desc = "[h]elp" },
-    { "<leader>Qp",  ":lua require'quarto'.quartoPreview()<cr>",      desc = "[p]review" },
-    { "<leader>Qq",  ":lua require'quarto'.quartoClosePreview()<cr>", desc = "[q]uiet preview" },
-    { "<leader>Qr",  group = "[r]un" },
-    { "<leader>Qra", ":QuartoSendAll<cr>",                            desc = "run [a]ll" },
-    { "<leader>Qrb", ":QuartoSendBelow<cr>",                          desc = "run [b]elow" },
-    { "<leader>Qrr", ":QuartoSendAbove<cr>",                          desc = "to cu[r]sor" },
+    { "<leader>Qa", ":QuartoActivate<cr>", desc = "[a]ctivate" },
+    { "<leader>Qe", require("otter").export, desc = "[e]xport" },
+    { "<leader>Qh", ":QuartoHelp ", desc = "[h]elp" },
+    { "<leader>Qp", ":lua require'quarto'.quartoPreview()<cr>", desc = "[p]review" },
+    { "<leader>Qq", ":lua require'quarto'.quartoClosePreview()<cr>", desc = "[q]uiet preview" },
+    { "<leader>Qr", group = "[r]un" },
+    { "<leader>Qra", ":QuartoSendAll<cr>", desc = "run [a]ll" },
+    { "<leader>Qrb", ":QuartoSendBelow<cr>", desc = "run [b]elow" },
+    { "<leader>Qrr", ":QuartoSendAbove<cr>", desc = "to cu[r]sor" },
+
+    { "<leader>wN", "<cmd>vnew<CR>", desc = "Vertical new window", nowait = true, remap = false },
+    { "<leader>wd", "<cmd>close<CR>", desc = "Close window", nowait = true, remap = false },
+    { "<leader>wh", "<C-w>h", desc = "Go to left window", nowait = true, remap = false },
+    { "<leader>wj", "<C-w>j", desc = "Go to down window", nowait = true, remap = false },
+    { "<leader>wk", "<C-w>k", desc = "Go to up window", nowait = true, remap = false },
+    { "<leader>wl", "<C-w>l", desc = "Go to right window", nowait = true, remap = false },
+    { "<leader>wn", "<cmd>new<CR>", desc = "New window", nowait = true, remap = false },
+    { "<leader>ws", group = "Window split", nowait = true, remap = false },
+    { "<leader>wsh", "<cmd>vsplit<CR>", desc = "Split window to left", nowait = true, remap = false },
+    { "<leader>wsj", "<cmd>split<CR>", desc = "Split window to down", nowait = true, remap = false },
+    { "<leader>wsk", "<cmd>split<CR>", desc = "Split window to up", nowait = true, remap = false },
+    { "<leader>wsl", "<cmd>vsplit<CR>", desc = "Split window to right", nowait = true, remap = false },
+
+    { "<leader>td", "<cmd>tabclose<CR>", desc = "Close Tab", nowait = true, remap = false },
+    { "<leader>th", "<cmd>tabprevious<CR>", desc = "Previous Tab", nowait = true, remap = false },
+    { "<leader>tl", "<cmd>tabnext<CR>", desc = "Next Tab", nowait = true, remap = false },
+    { "<leader>tn", "<cmd>tabnew<CR>", desc = "New Tab", nowait = true, remap = false },
   },
 }, { mode = "n" })
-
