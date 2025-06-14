@@ -6,8 +6,6 @@ return {
       templates = {
         "easifem.baseDev",
         "easifem.classesDev",
-        "easifem.baseInstall",
-        "easifem.classesInstall",
         "easifem.easifemLint",
         "easifem.run_script",
         -- "builtin",

@@ -71,7 +71,7 @@ return {
           -- os.getenv("HOME") .. "/.easifem/install/sparsekit/include/",
           -- os.getenv("HOME") .. "/.easifem/install/superlu/include/",
           "-J",
-          os.getenv("HOME") .. "/.easifem/lint/include/",
+          os.getenv("HOME") .. "/.easifem/easifem/lint/include/",
           "-DDEBUG_VER",
         }, -- args to pass to the linter
       }
@@ -98,17 +98,13 @@ return {
     "rachartier/tiny-inline-diagnostic.nvim",
     enabled = true,
     event = "VeryLazy",
+    priority = 1000,
     config = function()
       require("tiny-inline-diagnostic").setup({
-        signs = {
-          left = "",
-          right = "",
-          diag = "●",
-          arrow = "    ",
-          up_arrow = "    ",
-          vertical = " │",
-          vertical_end = " └",
-        },
+        preset = "modern",
+        transparent_bg = false, -- Set the background of the diagnostic to transparent
+        transparent_cursorline = false, -- Set the background of the cursorline to transparent (only one the first diagnostic)
+
         hi = {
           error = "DiagnosticError",
           warn = "DiagnosticWarn",
@@ -118,13 +114,26 @@ return {
           background = "CursorLine",
           mixing_color = "None",
         },
-        blend = {
-          factor = 0.27,
-        },
+
         options = {
-          softwrap = 15,
+
+          show_source = {
+            enabled = false,
+            if_many = true,
+          },
+
+          use_icons_from_diagnostic = true,
+
+          softwrap = 30,
+
+          multilines = {
+            enabled = true,
+            always_show = false,
+          },
+
           overflow = {
             mode = "wrap",
+            padding = 0, 
           },
           break_line = {
             enabled = false,
@@ -132,6 +141,7 @@ return {
           },
         },
       })
+      vim.diagnostic.config({ virtual_text = false })
     end,
   },
 }

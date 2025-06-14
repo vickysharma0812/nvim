@@ -41,8 +41,8 @@ return {
           keywords = { "bold" },
           strings = { "italic" },
           variables = { "italic" },
-          numbers = {"italic"},
-          booleans = {"bold"},
+          numbers = { "italic" },
+          booleans = { "bold" },
           properties = { "bold", "italic" },
           types = {},
           operators = {},
@@ -60,6 +60,10 @@ return {
           gitgutter = true,
           harpoon = true,
           headlines = true,
+          illuminate = {
+            enabled = true,
+            lsp = true,
+          },
           indent_blankline = {
             enabled = true,
             colored_indent_levels = false,
