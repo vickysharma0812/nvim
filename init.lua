@@ -69,6 +69,7 @@ require("lazy").setup({
 
 require("config.keymaps")
 require("config.options")
+require("config.quickfix")
 require("config.autocmds")
 require("config.redir")
 
