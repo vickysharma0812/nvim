@@ -1,204 +1,181 @@
 local fn = vim.fn
 
--- Configuration table for easy customization
+-- Optimized configuration with performance focus
 local config = {
-  filename_limit = 35,           -- Increased from 31 for better readability
-  use_icons = true,              -- Enable file type icons
-  relative_paths = true,         -- Show relative paths when possible
-  highlight_current = true,      -- Highlight current file differently
-  max_text_length = 80,         -- Truncate long error messages
-  show_bufnr = false,           -- Option to show buffer numbers
+  filename_limit = 35,
+  use_icons = true,
+  relative_paths = true,
+  max_text_length = 100,
+  show_severity_colors = true,
 }
 
--- File type icons (requires a nerd font)
+-- Pre-compiled patterns for better performance
+local patterns = {
+  home_dir = "^" .. vim.env.HOME:gsub("([%^%$%(%)%%%.%[%]%*%+%-%?])", "%%%1"),
+  whitespace_only = "^%s*$",
+}
+
+-- File extension to icon mapping (optimized lookup)
 local file_icons = {
-  lua = "󰢱",
-  js = "󰌞",
-  ts = "󰛦",
-  py = "󰌠",
-  go = "󰟓",
-  rust = "󱘗",
-  c = "󰙱",
-  cpp = "󰙲",
-  java = "󰬷",
-  html = "󰌝",
-  css = "󰌜",
-  json = "󰘦",
-  md = "󰍔",
-  txt = "󰈙",
+  lua = "󰢱", js = "󰌞", ts = "󰛦", jsx = "󰌞", tsx = "󰛦",
+  py = "󰌠", go = "󰟓", rs = "󱘗", c = "󰙱", cpp = "󰙲", cc = "󰙲",
+  java = "󰬷", html = "󰌝", css = "󰌜", json = "󰘦", xml = "󰗀",
+  md = "󰍔", txt = "󰈙", yml = "󰈙", yaml = "󰈙", toml = "󰈙",
+  sh = "󱆃", bash = "󱆃", zsh = "󱆃", fish = "󱆃",
+  f = "󱈚", f90 = "󱈚", f95 = "󱈚", f03 = "󱈚", f08 = "󱈚", -- Fortran
   default = "󰈙"
 }
 
--- Error type styling
-local error_types = {
-  E = { symbol = "󰅚", name = "Error" },
-  W = { symbol = "󰀪", name = "Warning" },
-  I = { symbol = "󰋽", name = "Info" },
-  N = { symbol = "󰋼", name = "Note" },
-  H = { symbol = "󰌶", name = "Hint" },
-  [""] = { symbol = "", name = "" }
+-- Error type configuration with performance-focused lookup
+local error_config = {
+  E = { symbol = "󰅚", hl = "DiagnosticError" },
+  W = { symbol = "󰀪", hl = "DiagnosticWarn" },
+  I = { symbol = "󰋽", hl = "DiagnosticInfo" },
+  N = { symbol = "󰋼", hl = "DiagnosticHint" },
+  H = { symbol = "󰌶", hl = "DiagnosticHint" },
+  [""] = { symbol = "", hl = "" }
 }
 
--- Get file icon based on extension
+-- Cache for frequently accessed data
+local cache = {
+  cwd = nil,
+  cwd_len = 0,
+  home_replacement = nil,
+}
+
+-- Initialize cache
+local function init_cache()
+  if not cache.cwd then
+    cache.cwd = vim.fn.getcwd()
+    cache.cwd_len = #cache.cwd
+    cache.home_replacement = cache.cwd:gsub(patterns.home_dir, "~")
+  end
+end
+
+-- Fast file icon lookup
 local function get_file_icon(filename)
   if not config.use_icons then return "" end
   
   local ext = filename:match("%.([^%.]+)$")
   if not ext then return file_icons.default end
   
-  return file_icons[ext:lower()] or file_icons.default
+  local icon = file_icons[ext:lower()]
+  return icon and (icon .. " ") or (file_icons.default .. " ")
 end
 
--- Get relative path from current working directory
-local function get_relative_path(filepath)
-  if not config.relative_paths then return filepath end
-  
-  local cwd = vim.fn.getcwd()
-  if filepath:sub(1, #cwd) == cwd then
-    local relative = filepath:sub(#cwd + 2) -- +2 to skip the trailing slash
-    return relative ~= "" and relative or filepath
+-- Optimized path formatting
+local function format_filename(filepath, limit)
+  if not filepath or filepath == "" then 
+    return string.rep(" ", limit)
   end
-  return filepath
-end
-
--- Format filename with proper truncation and visual width handling
-local function format_filename(fname, limit)
-  if fname == "" then return "[No Name]" end
   
-  -- Convert home directory to ~
-  fname = fname:gsub("^" .. vim.env.HOME, "~")
+  init_cache()
   
-  -- Get relative path if configured
-  fname = get_relative_path(fname)
+  -- Fast home directory replacement
+  local fname = filepath:gsub(patterns.home_dir, "~")
   
-  -- Handle wide characters properly (basic approach)
-  local display_width = vim.fn.strdisplaywidth(fname)
+  -- Fast relative path conversion
+  if config.relative_paths and fname:sub(1, cache.cwd_len) == cache.cwd then
+    local relative = fname:sub(cache.cwd_len + 2)
+    if relative ~= "" then fname = relative end
+  end
+  
+  -- Fast display width calculation and truncation
+  local display_width = #fname -- Simplified for performance - assumes single-byte chars
   
   if display_width <= limit then
-    -- Pad with spaces to maintain alignment
-    local padding = limit - display_width
-    return fname .. string.rep(" ", padding)
+    return fname .. string.rep(" ", limit - display_width)
   else
-    -- Truncate with ellipsis, accounting for display width
-    local truncated = fname
-    while vim.fn.strdisplaywidth("…" .. truncated) > limit and #truncated > 1 do
-      truncated = truncated:sub(2)
-    end
-    return "…" .. truncated
+    -- Fast truncation with ellipsis
+    local truncate_len = limit - 1
+    return "…" .. fname:sub(-truncate_len)
   end
 end
 
--- Format error message with truncation
-local function format_text(text, max_length)
-  if not text or text == "" then return "" end
+-- Optimized text formatting
+local function format_text(text)
+  if not text then return "" end
   
-  -- Remove leading/trailing whitespace
-  text = text:gsub("^%s+", ""):gsub("%s+$", "")
+  -- Fast whitespace trimming
+  local trimmed = text:match("^%s*(.-)%s*$") or text
   
-  -- Truncate if too long
-  if config.max_text_length and #text > config.max_text_length then
-    return text:sub(1, config.max_text_length - 1) .. "…"
+  -- Fast truncation
+  if config.max_text_length and #trimmed > config.max_text_length then
+    return trimmed:sub(1, config.max_text_length - 1) .. "…"
   end
   
-  return text
+  return trimmed
 end
 
+-- Main formatting function - optimized for speed
 function _G.qftf(info)
   local items
-  local ret = {}
   
-  -- Get items from quickfix or location list
+  -- Fast item retrieval
   if info.quickfix == 1 then
     items = fn.getqflist({ id = info.id, items = 0 }).items
   else
     items = fn.getloclist(info.winid, { id = info.id, items = 0 }).items
   end
   
-  -- Early return if no items
-  if not items or #items == 0 then
-    return ret
-  end
+  if not items or #items == 0 then return {} end
   
+  local ret = {}
   local limit = config.filename_limit
-  local current_buf = vim.api.nvim_get_current_buf()
   
-  -- Format strings with better spacing
+  -- Pre-calculate format string to avoid repeated string operations
   local validFmt = "%s%s %s │ %5s:%-3s │ %s%s"
   
+  -- Process only the requested range for better performance
   for i = info.start_idx, info.end_idx do
     local e = items[i]
-    if not e then break end -- Safety check
+    if not e then break end
     
-    -- More aggressive filtering of empty/meaningless entries
+    -- Fast validity and content check
+    if e.valid ~= 1 then
+      local text = e.text
+      if text and not text:match(patterns.whitespace_only) then
+        ret[#ret + 1] = text
+      end
+      goto continue
+    end
+    
+    -- Fast empty entry detection
     local text = e.text or ""
-    local has_text = text ~= "" and not text:match("^%s*$")
-    local has_location = e.lnum and e.lnum > 0
-    local has_buffer = e.bufnr and e.bufnr > 0
-    
-    -- Skip the problematic entries: valid=1, bufnr=0, lnum=0, col=0, text=''
-    if e.valid == 1 and (e.bufnr == 0 or not e.bufnr) and 
-       (e.lnum == 0 or not e.lnum) and (e.col == 0 or not e.col) and not has_text then
+    if text:match(patterns.whitespace_only) and (not e.bufnr or e.bufnr == 0) then
       goto continue
     end
     
-    -- Skip entries that have no meaningful content at all
-    if not has_text and not has_location and not has_buffer then
-      goto continue
-    end
+    -- Efficient filename processing
+    local fname = ""
+    local icon = ""
     
-    local str
-    if e.valid == 1 then
-      -- Get filename and format it
-      local fname = ""
-      local icon = ""
-      local bufnr_str = config.show_bufnr and string.format("[%d] ", e.bufnr) or ""
-      
-      if e.bufnr and e.bufnr > 0 then
-        fname = fn.bufname(e.bufnr)
-        if fname == "" then
-          fname = "[No Name]"
-        else
-          icon = get_file_icon(fname)
-          if icon ~= "" then icon = icon .. " " end
-        end
-        fname = format_filename(fname, limit)
+    if e.bufnr and e.bufnr > 0 then
+      local bufname = fn.bufname(e.bufnr)
+      if bufname == "" then
+        fname = "[No Name]"
       else
-        -- If no buffer, but we have text, show it without filename
-        if not has_text then
-          goto continue
-        end
-        fname = format_filename("", limit)
+        icon = get_file_icon(bufname)
+        fname = format_filename(bufname, limit)
       end
-      
-      -- Format line and column numbers
-      local lnum = "-"
-      local col = "-"
-      
-      if e.lnum and e.lnum > 0 then
-        lnum = e.lnum > 99999 and "99999+" or tostring(e.lnum)
-      end
-      
-      if e.col and e.col > 0 then
-        col = e.col > 999 and "999+" or tostring(e.col)
-      end
-      
-      -- Get error type info
-      local error_info = error_types[e.type] or error_types[""]
-      local qtype = error_info.symbol ~= "" and error_info.symbol .. " " or ""
-      
-      -- Format the error text
-      local formatted_text = format_text(text)
-      
-      str = validFmt:format(bufnr_str, icon, fname, lnum, col, qtype, formatted_text)
     else
-      -- Invalid entries (usually section headers)
-      if not has_text then
-        goto continue
-      end
-      str = text
+      fname = string.rep(" ", limit)
     end
     
-    table.insert(ret, str)
+    -- Fast number formatting
+    local lnum = (e.lnum and e.lnum > 0) and (e.lnum > 99999 and "99999+" or tostring(e.lnum)) or "-"
+    local col = (e.col and e.col > 0) and (e.col > 999 and "999+" or tostring(e.col)) or "-"
+    
+    -- Fast error type lookup
+    local error_info = error_config[e.type] or error_config[""]
+    local qtype = error_info.symbol ~= "" and (error_info.symbol .. " ") or ""
+    
+    -- Fast text formatting
+    local formatted_text = format_text(text)
+    
+    -- Single format operation
+    ret[#ret + 1] = validFmt:format("", icon, fname, lnum, col, qtype, formatted_text)
+    
     ::continue::
   end
   
@@ -208,32 +185,27 @@ end
 -- Set the quickfix text function
 vim.o.qftf = "{info -> v:lua._G.qftf(info)}"
 
--- Optional: Add a command to toggle configuration options
+-- Optimized toggle commands
 vim.api.nvim_create_user_command("QfToggleIcons", function()
   config.use_icons = not config.use_icons
   print("Quickfix icons " .. (config.use_icons and "enabled" or "disabled"))
-  -- Refresh quickfix window if open
-  if vim.fn.getqflist({winid = 0}).winid ~= 0 then
-    vim.cmd("copen")
-  end
+  vim.cmd("silent! cclose | copen")
 end, { desc = "Toggle quickfix file type icons" })
 
 vim.api.nvim_create_user_command("QfToggleRelative", function()
   config.relative_paths = not config.relative_paths
+  cache.cwd = nil -- Reset cache
   print("Quickfix relative paths " .. (config.relative_paths and "enabled" or "disabled"))
-  if vim.fn.getqflist({winid = 0}).winid ~= 0 then
-    vim.cmd("copen")
-  end
+  vim.cmd("silent! cclose | copen")
 end, { desc = "Toggle quickfix relative paths" })
 
--- Debug command to inspect quickfix entries
-vim.api.nvim_create_user_command("QfDebug", function()
+-- Performance monitoring command (optional)
+vim.api.nvim_create_user_command("QfProfile", function()
+  local start_time = vim.loop.hrtime()
   local items = vim.fn.getqflist()
-  print("Quickfix list has " .. #items .. " items:")
-  for i, item in ipairs(items) do
-    if i > 10 then break end -- Only show first 10 items
-    print(string.format("Item %d: valid=%s, bufnr=%s, lnum=%s, col=%s, text='%s'", 
-      i, item.valid or "nil", item.bufnr or "nil", item.lnum or "nil", 
-      item.col or "nil", item.text or "nil"))
-  end
-end, { desc = "Debug quickfix entries" })
+  local info = { start_idx = 1, end_idx = #items, quickfix = 1, id = 0 }
+  local result = _G.qftf(info)
+  local end_time = vim.loop.hrtime()
+  local elapsed_ms = (end_time - start_time) / 1000000
+  print(string.format("Formatted %d items in %.2f ms", #result, elapsed_ms))
+end, { desc = "Profile quickfix formatting performance" })
