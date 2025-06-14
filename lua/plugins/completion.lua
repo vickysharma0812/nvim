@@ -56,13 +56,14 @@ return {
       "kdheepak/cmp-latex-symbols",
       "f3fora/cmp-spell",
       "hrsh7th/cmp-omni",
-      -- "rafamadriz/friendly-snippets",
+      "rafamadriz/friendly-snippets",
       "jmbuhr/otter.nvim",
     },
     version = "*",
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
+      fuzzy = { implementation = "prefer_rust_with_warning" },
       keymap = {
         preset = "default",
       },
@@ -101,6 +102,7 @@ return {
         },
       },
       signature = {
+        enabled = true,
         window = {
           border = "rounded",
         },
@@ -127,10 +129,10 @@ return {
         },
         providers = {
           lsp = {
-            score_offset = 15,
+            score_offset = 10,
           },
           snippets = {
-            score_offset = 10,
+            score_offset = 15,
           },
           emoji = {
             name = "Emoji",

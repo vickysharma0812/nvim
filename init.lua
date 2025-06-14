@@ -1,7 +1,6 @@
 if vim.g.vscode then
   return
 elseif vim.g.neovide then
-  vim.o.guifont = "JetBrainsMono Nerd Font:h18:Thin"
   vim.g.neovide_remember_window_size = true
   vim.g.neovide_scale_factor = 1.0
   -- vim.opt.linespace = 0

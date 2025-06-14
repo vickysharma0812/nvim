@@ -84,9 +84,9 @@ return {
     "sindrets/diffview.nvim",
     event = { "BufReadPre", "BufNewFile" },
     keys = {
-      { "<leader>gdc", "<cmd>DiffviewClose<CR>", desc = "Diff view close" },
-      { "<leader>gdf", "<cmd>DiffviewToggleFiles<CR>", desc = "File panel toggle" },
-      { "<leader>gdo", "<cmd>DiffviewOpen<cr>", desc = "Diff view open" },
+      { "<leader>gd", "<cmd>DiffviewOpen<cr>", desc = "Diff view open" },
+      { "<leader>do", "<cmd>DiffviewOpen<cr>", desc = "Diff view open" },
+      { "<leader>dc", "<cmd>DiffviewClose<CR>", desc = "Diff view close" },
     },
   },
 }

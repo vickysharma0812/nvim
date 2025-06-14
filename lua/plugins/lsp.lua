@@ -9,30 +9,28 @@ return {
   cmd = { "LspInfo", "LspInstall", "LspRestart", "LspStart", "LspStop", "LspUninstall" },
   event = { "BufReadPre", "BufNewFile" },
   config = function()
-    local lspconfig = require("lspconfig")
-    local util = require("lspconfig.util")
-
     require("mason").setup()
     require("mason-lspconfig").setup({
       automatic_installation = true,
     })
     require("mason-tool-installer").setup({
       ensure_installed = {
-        "stylua",
-        "shfmt",
         "cmakelang",
-        "julials",
+        "dprint",
         "fortls",
         "fprettify",
+        "julials",
         "jupytext",
-        "taplo",
         "lua_ls",
-        "texlab",
-        "mdformat",
-        "marksman",
-        "markdownlint-cli2",
         "markdownlint",
-        "dprint",
+        "markdownlint-cli2",
+        "marksman",
+        "mdformat",
+        "shfmt",
+        "stylua",
+        "taplo",
+        "texlab",
+        "tinymist",
       },
     })
 
@@ -44,13 +42,14 @@ return {
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = vim.tbl_deep_extend("force", capabilities, require("blink.cmp").get_lsp_capabilities())
 
-    lspconfig.marksman.setup({
+    vim.lsp.config("marksman", {
       capabilities = capabilities,
       filetypes = { "markdown", "quarto" },
-      root_dir = util.root_pattern(".git", ".marksman.toml", "_quarto.yml"),
+      root_dir = require("lspconfig.util").root_pattern(".git", ".marksman.toml", "_quarto.yml"),
     })
+    vim.lsp.enable("marksman")
 
-    lspconfig.lua_ls.setup({
+    vim.lsp.config("lua_ls", {
       capabilities = capabilities,
       flags = lsp_flags,
       settings = {
@@ -71,8 +70,9 @@ return {
         },
       },
     })
+    vim.lsp.enable("lua_ls")
 
-    lspconfig.fortls.setup({
+    vim.lsp.config("fortls", {
       capabilities = capabilities,
       flags = lsp_flags,
       -- cmd = require("plugins.args.fortran").lsp_cmd or {},
@@ -92,8 +92,27 @@ return {
         "--use_signature_help",
       },
     })
+    vim.lsp.enable("fortls")
 
-    lspconfig.texlab.setup({
+    vim.lsp.config("tinymst", {
+      capabilities = capabilities,
+      flags = lsp_flags,
+      cmd = { "tinymist" },
+      filetypes = { "typst" },
+
+      -- following settings are taken from here
+      -- https://github.com/Myriad-Dreamin/tinymist/blob/main/editors/neovim/Configuration.md
+      settings = {
+        formatterMode = "typstyle", -- or "typstfmt"
+        projectResolution = "singleFile", -- "lockDatabase"
+        -- outputPath = 
+        exportTarget = "paged", -- "html"
+        exortPdf = "onSave",
+      },
+    })
+    vim.lsp.enable("tinymst")
+
+    vim.lsp.config("texlab", {
       capabilities = capabilities,
       flags = lsp_flags,
       settings = {
@@ -146,5 +165,6 @@ return {
         },
       },
     })
+    vim.lsp.enable("texlab")
   end,
 }

@@ -99,3 +99,22 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
   end,
 })
+
+-- typst related
+-- 
+-- The code below is taken from here https://myriad-dreamin.github.io/tinymist/frontend/neovim.htmlhttps://myriad-dreamin.github.io/tinymist/frontend/neovim.html
+-- This preview method is slower because of compilation delays, and additional delays in the pdf reader refreshing.
+-- It is often useful to have a command that opens the current file in the reader.
+vim.api.nvim_create_user_command("OpenPdf", function()
+
+  local filepath = vim.api.nvim_buf_get_name(0)
+
+  if filepath:match("%.typ$") then
+
+    local pdf_path = filepath:gsub("%.typ$", ".pdf")
+
+    vim.system({ "open", pdf_path })
+
+  end
+
+end, {})

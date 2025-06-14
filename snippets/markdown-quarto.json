@@ -1,28 +1,71 @@
 {
-	"callout-note": {
-		"prefix": "callout note",
-		"description": "callout note",
-		"body": [
-			"::: {.callout-note}",
-			"",
-			":::"
-		]
-	},
-	"two-columns": {
-		"prefix": "two columns",
-		"description": "Create two columns",
-		"body": [
-			"::::{.columns}",
-			"",
-			"::: {.column width=50%}",
-			"",
-			":::",
-			"",
-			"::: {.column width=50%}",
-			"",
-			":::",
-			"",
-			"::::"
-		]
-	}
+  "qmd-note": {
+    "prefix": "qmd note",
+    "description": "callout note",
+    "body": [
+      "::: {.callout-note title=\"${1}\" }",
+      "${2}",
+      ":::"
+    ]
+  },
+  "qmd-note-simple": {
+    "prefix": "qmd note simple",
+    "description": "callout note simple",
+    "body": [
+      "::: {.callout-note appearance=\"simple\" }",
+      "${2}",
+      ":::"
+    ]
+  },
+  "qmd-50-columns": {
+    "prefix": "qmd 50 columns",
+    "description": "Create two columns",
+    "body": [
+      "::::{.columns}",
+      "",
+      "::: {.column width=50%}",
+      "",
+      ":::",
+      "",
+      "::: {.column width=50%}",
+      "",
+      ":::",
+      "",
+      "::::"
+    ]
+  },
+  "qmd-70-columns": {
+    "prefix": "qmd 70 columns",
+    "description": "Create two columns",
+    "body": [
+      "::::{.columns}",
+      "",
+      "::: {.column width=70%}",
+      "",
+      ":::",
+      "",
+      "::: {.column width=30%}",
+      "",
+      ":::",
+      "",
+      "::::"
+    ]
+  },
+  "qmd-two-columns": {
+    "prefix": "qmd two columns",
+    "description": "Create two columns",
+    "body": [
+      "::::{.columns}",
+      "",
+      "::: {.column width=${1}%}",
+      "",
+      ":::",
+      "",
+      "::: {.column width=${3}%}",
+      "",
+      ":::",
+      "",
+      "::::"
+    ]
+  }
 }

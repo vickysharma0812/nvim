@@ -1,9 +1,9 @@
 return {
   {
     "ecthelionvi/NeoColumn.nvim",
-    enabled = true,
+    enabled = false,
     lazy = true,
-    ft = { "fortran", "lua" },
+    ft = { "fortran" },
     opts = {
       -- fg_color = "#ea9d34",
       -- bg_color = "#ea9d34",
@@ -13,7 +13,7 @@ return {
     },
     keys = {
       {
-        "<leader>tc",
+        "<leader>un",
         "<cmd>ToggleNeoColumn<CR>",
         desc = "toggle column higlight",
       },
@@ -33,6 +33,7 @@ return {
   },
   {
     "folke/todo-comments.nvim",
+    lazy = false,
     dependencies = {
       "nvim-lua/plenary.nvim",
       "folke/trouble.nvim",
@@ -172,6 +173,11 @@ return {
     "folke/trouble.nvim",
     opts = {
       modes = {
+        diagnostics = {
+          focus = true,
+          auto_close = true,
+          auto_open = false,
+        },
         preview_float = {
           mode = "diagnostics",
           preview = {

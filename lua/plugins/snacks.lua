@@ -19,14 +19,28 @@ return {
             { action = ":ene | startinsert", desc = " New File", icon = " ", key = "n" },
             { action = ":lua Snacks.picker.recent()", desc = " Recent Files", icon = " ", key = "r" },
             { action = ":lua Snacks.picker.grep()", desc = " Find Text", icon = " ", key = "g" },
-            {
-              action = ':lua require("persistence").load()',
-              desc = " Restore Session",
-              icon = " ",
-              key = "s",
-            },
+            { desc = " Restore Session", icon = " ", key = "s", section = "session" },
+            { action = ":lua Snacks.picker.projects()", desc = " Projects", icon = " ", key = "p" },
             { action = ":Lazy", desc = " Lazy", icon = "󰒲 ", key = "l" },
             { action = ":qa", desc = " Quit", icon = " ", key = "q" },
+          },
+        },
+      },
+      styles = {
+        zen = {
+          enter = true,
+          fixbuf = false,
+          minimal = false,
+          width = 0.5,
+          height = 0,
+          backdrop = { transparent = true, blend = 40 },
+          keys = { q = false },
+          zindex = 40,
+          wo = {
+            winhighlight = "NormalFloat:Normal",
+          },
+          w = {
+            snacks_main = true,
           },
         },
       },
@@ -45,9 +59,26 @@ return {
         level = vim.log.levels.INFO,
         style = "minimal",
       },
-      zen = { enabled = true },
+      zen = {
+        enabled = true,
+        toggles = {
+          dim = false,
+          git_signs = false,
+          mini_diff_signs = false,
+          diagnostics = false,
+          inlay_hints = false,
+        },
+        show = {
+          statusline = false, -- can only be shown when using the global statusline
+          tabline = false,
+        },
+        win = { style = "zen" },
+      },
       picker = {
         enabled = true,
+        main = {
+          file = false,
+        },
         layout = {
           reverse = false,
           layout = {
@@ -58,13 +89,7 @@ return {
             border = "none",
             {
               box = "vertical",
-              {
-                win = "input",
-                height = 1,
-                border = "rounded",
-                title = "{title} {live} {flags}",
-                title_pos = "center",
-              },
+              { win = "input", height = 1, border = "rounded", title = "{title} {live} {flags}", title_pos = "center" },
               { win = "list", title = " Results ", title_pos = "center", border = "rounded" },
             },
             {
@@ -80,6 +105,7 @@ return {
           projects = {
             -- NOTE: default was trying to load session
             -- I like to use picker file after selecting project
+            dev = { "~/Dropbox/easifem" },
             confirm = function(picker, item)
               picker:close()
               if item then
@@ -154,15 +180,15 @@ return {
       {
         "<leader>e",
         function()
-          vim.opt.scrolloff = 0
+          -- vim.opt.scrolloff = 0
           Snacks.explorer({ auto_close = true, focus = "list" })
         end,
         desc = "File Explorer",
       },
       {
-        "<leader>fo",
+        "<leader>yo",
         function()
-          vim.opt.scrolloff = 0
+          -- vim.opt.scrolloff = 0
           Snacks.explorer.reveal({ auto_close = false, focus = "list" })
         end,
         desc = "File Explorer reveal",

@@ -5,12 +5,10 @@ return {
     ft = { "fortran" },
     opts = {
       events = { "BufWritePost", "BufReadPost", "InsertLeave" },
-      linters_by_ft = {
-        fish = { "fish" },
-      },
-      ---@type table<string,table>
+      linters_by_ft = {},
       linters = {},
     },
+
     config = function(_, opts)
       local M = {}
 
@@ -133,7 +131,7 @@ return {
   },
   {
     "rachartier/tiny-inline-diagnostic.nvim",
-    enabled = false,
+    enabled = true,
     event = "VeryLazy",
     config = function()
       require("tiny-inline-diagnostic").setup({

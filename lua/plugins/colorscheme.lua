@@ -23,23 +23,32 @@ return {
         no_italic = false, -- Force no italic
         no_bold = false, -- Force no bold
         no_underline = false, -- Force no underline
+        custom_highlights = function(colors)
+          return {
+            Comment = { fg = colors.subtext0 },
+            -- TabLineSel = { bg = colors.pink },
+            CmpBorder = { fg = colors.rosewater },
+            -- Pmenu = { bg = colors.none },
+            TermCursor = { fg = colors.base, bg = colors.rosewater },
+            TermCursorNC = { fg = colors.base, bg = colors.subtext0 },
+          }
+        end,
         styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
           comments = { "italic" }, -- Change the style of comments
           conditionals = { "bold" },
           loops = { "italic" },
           functions = { "italic" },
-          keywords = {},
+          keywords = { "bold" },
           strings = { "italic" },
-          variables = {},
-          numbers = {},
-          booleans = {},
-          properties = {},
+          variables = { "italic" },
+          numbers = {"italic"},
+          booleans = {"bold"},
+          properties = { "underline" },
           types = {},
           operators = {},
         },
         color_overrides = {},
-        custom_highlights = {},
-        integration_default = nil, -- set to true/false to enable/disable integrations by default
+        integration_default = true, -- set to true/false to enable/disable integrations by default
         integrations = {
           aerial = true,
           bufferline = true,
