@@ -43,7 +43,7 @@ return {
           variables = { "italic" },
           numbers = {"italic"},
           booleans = {"bold"},
-          properties = { "underline" },
+          properties = { "bold", "italic" },
           types = {},
           operators = {},
         },

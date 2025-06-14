@@ -27,8 +27,21 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = { "fortran" },
   callback = function()
     vim.cmd(
-      [[ set efm=%-Ggfortran%.%#,%A%f:%l:%c:,%A%f:%l:,%C,%C%p%*[0123456789^],%Z%trror:\ %m,,%Z%tarning:\ %m,%C%.%#,%-G%.%# ]]
-    -- [[ set efm=%A%f:%l:%c:,%C,%C,%C,%Z%trror:\ %m,,%Z%tarning:\ %m,%C%.%#,%-G%.%# ]]
+      -- [[ set efm=%-Ggfortran%.%#,%A%f:%l:%c:,%A%f:%l:,%C,%C%p%*[0123456789^],%Z%trror:\ %m,,%Z%tarning:\ %m,%C%.%#,%-G%.%# ]]
+      [[ 
+       set errorformat=
+    \%f:%l:%c:\ %tError:\ %m,
+    \%f:%l:%c:\ %tWarning:\ %m,
+    \%f:%l:%c:\ %tNote:\ %m,
+    \%f:%l:%c:\ %tFatal\ Error:\ %m,
+    \%f:%l:\ %tError:\ %m,
+    \%f:%l:\ %tWarning:\ %m,
+    \%f:%l:\ %tNote:\ %m,
+    \%A%f:%l:%c:,
+    \%Z%m,
+    \%C\ %#%m,
+    \%-G%.%#]]
+      -- [[ set efm=%A%f:%l:%c:,%C,%C,%C,%Z%trror:\ %m,,%Z%tarning:\ %m,%C%.%#,%-G%.%# ]]
     )
   end,
 })
@@ -97,20 +110,16 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 -- typst related
--- 
+--
 -- The code below is taken from here https://myriad-dreamin.github.io/tinymist/frontend/neovim.htmlhttps://myriad-dreamin.github.io/tinymist/frontend/neovim.html
 -- This preview method is slower because of compilation delays, and additional delays in the pdf reader refreshing.
 -- It is often useful to have a command that opens the current file in the reader.
 vim.api.nvim_create_user_command("OpenPdf", function()
-
   local filepath = vim.api.nvim_buf_get_name(0)
 
   if filepath:match("%.typ$") then
-
     local pdf_path = filepath:gsub("%.typ$", ".pdf")
 
     vim.system({ "open", pdf_path })
-
   end
-
 end, {})

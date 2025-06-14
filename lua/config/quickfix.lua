@@ -129,6 +129,23 @@ function _G.qftf(info)
     local e = items[i]
     if not e then break end -- Safety check
     
+    -- More aggressive filtering of empty/meaningless entries
+    local text = e.text or ""
+    local has_text = text ~= "" and not text:match("^%s*$")
+    local has_location = e.lnum and e.lnum > 0
+    local has_buffer = e.bufnr and e.bufnr > 0
+    
+    -- Skip the problematic entries: valid=1, bufnr=0, lnum=0, col=0, text=''
+    if e.valid == 1 and (e.bufnr == 0 or not e.bufnr) and 
+       (e.lnum == 0 or not e.lnum) and (e.col == 0 or not e.col) and not has_text then
+      goto continue
+    end
+    
+    -- Skip entries that have no meaningful content at all
+    if not has_text and not has_location and not has_buffer then
+      goto continue
+    end
+    
     local str
     if e.valid == 1 then
       -- Get filename and format it
@@ -136,7 +153,7 @@ function _G.qftf(info)
       local icon = ""
       local bufnr_str = config.show_bufnr and string.format("[%d] ", e.bufnr) or ""
       
-      if e.bufnr > 0 then
+      if e.bufnr and e.bufnr > 0 then
         fname = fn.bufname(e.bufnr)
         if fname == "" then
           fname = "[No Name]"
@@ -145,26 +162,44 @@ function _G.qftf(info)
           if icon ~= "" then icon = icon .. " " end
         end
         fname = format_filename(fname, limit)
+      else
+        -- If no buffer, but we have text, show it without filename
+        if not has_text then
+          goto continue
+        end
+        fname = format_filename("", limit)
       end
       
       -- Format line and column numbers
-      local lnum = e.lnum > 99999 and "99999+" or tostring(e.lnum)
-      local col = e.col > 999 and "999+" or tostring(e.col)
+      local lnum = "-"
+      local col = "-"
+      
+      if e.lnum and e.lnum > 0 then
+        lnum = e.lnum > 99999 and "99999+" or tostring(e.lnum)
+      end
+      
+      if e.col and e.col > 0 then
+        col = e.col > 999 and "999+" or tostring(e.col)
+      end
       
       -- Get error type info
       local error_info = error_types[e.type] or error_types[""]
       local qtype = error_info.symbol ~= "" and error_info.symbol .. " " or ""
       
       -- Format the error text
-      local text = format_text(e.text)
+      local formatted_text = format_text(text)
       
-      str = validFmt:format(bufnr_str, icon, fname, lnum, col, qtype, text)
+      str = validFmt:format(bufnr_str, icon, fname, lnum, col, qtype, formatted_text)
     else
       -- Invalid entries (usually section headers)
-      str = e.text or ""
+      if not has_text then
+        goto continue
+      end
+      str = text
     end
     
     table.insert(ret, str)
+    ::continue::
   end
   
   return ret
@@ -190,3 +225,15 @@ vim.api.nvim_create_user_command("QfToggleRelative", function()
     vim.cmd("copen")
   end
 end, { desc = "Toggle quickfix relative paths" })
+
+-- Debug command to inspect quickfix entries
+vim.api.nvim_create_user_command("QfDebug", function()
+  local items = vim.fn.getqflist()
+  print("Quickfix list has " .. #items .. " items:")
+  for i, item in ipairs(items) do
+    if i > 10 then break end -- Only show first 10 items
+    print(string.format("Item %d: valid=%s, bufnr=%s, lnum=%s, col=%s, text='%s'", 
+      i, item.valid or "nil", item.bufnr or "nil", item.lnum or "nil", 
+      item.col or "nil", item.text or "nil"))
+  end
+end, { desc = "Debug quickfix entries" })

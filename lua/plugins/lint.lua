@@ -10,11 +10,7 @@ return {
     config = function()
       require("bqf").setup({
         auto_enable = true,
-        filter = {
-          fzf = {
-            extra_opts = { "--bind", "ctrl-o:toggle-all", "--delimiter", "│" },
-          },
-        },
+        auto_resize_height = true,
       })
     end,
   },
@@ -22,15 +18,28 @@ return {
   --
   -- fortran linting
   --
-  
+
   {
     "mfussenegger/nvim-lint",
     events = { "BufWritePost", "BufReadPost", "InsertLeave" },
     config = function()
       local lint = require("lint")
 
+      -- local errorformat =
+      -- "%-Ggfortran%.%#,%A%f:%l:%c:,%A%f:%l:,%C,%C%p%*[0123456789^],%Z%trror:\\ %m,,%Z%tarning:\\ %m,%C%.%#,%-G%.%#"
       local errorformat =
-        "%-Ggfortran%.%#,%A%f:%l:%c:,%A%f:%l:,%C,%C%p%*[0123456789^],%Z%trror:\\ %m,,%Z%tarning:\\ %m,%C%.%#,%-G%.%#"
+        "%f:%l:%c: %tError: %m,%f:%l:%c: %tWarning: %m,%f:%l:%c: %tNote: %m,%A%f:%l:%c:,%Z%m,%C %#%m,%-G%.%#"
+      -- pattern explanation:
+      -- %A = Start of multi-line message
+      -- %C = Continuation line
+      -- %Z = End of multi-line message
+      -- %-G = Ignore this line completely
+      -- %f = Filename
+      -- %l = Line number
+      -- %c = Column number
+      -- %t = Error type (E/W/N)
+      -- %m = Error message
+      -- %p = Pointer line (shows where error occurs with ^)
 
       lint.linters.gfortran = {
         name = "gfortran",
