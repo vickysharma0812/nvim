@@ -74,6 +74,12 @@ return {
         },
         -- { "run_after" }
         { "unique", replace = false, restart_interrupts = true },
+        {
+          "run_after",
+          task_names = { "classesInstall" },
+          detach = false,
+          statuses = { "SUCCESS" },
+        },
       },
       condition = {
         filetype = { "fortran" },

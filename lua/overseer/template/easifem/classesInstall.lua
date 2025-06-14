@@ -5,7 +5,7 @@ return {
     return {
       cmd = { "easifem" },
       args = { "install", "classes", "-q", "--no-download" },
-      name = "installClasses",
+      name = "classesInstall",
       cwd = vim.fn.expand("%:h"), -- "/tmp",
       env = {},
       components = {
