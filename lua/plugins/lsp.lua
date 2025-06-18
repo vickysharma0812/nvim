@@ -85,7 +85,7 @@ return {
         os.getenv("dropbox") .. "/easifem/classes/src/**",
         os.getenv("dropbox") .. "/easifem/elasticity/src/**",
         os.getenv("dropbox") .. "/easifem/acoustic/src/**",
-        os.getenv("HOME") .. "/.easifem/src/tomlf/src/**",
+        os.getenv("HOME") .. "/.easifem/easifem/src/tomlf/src/**",
         "--hover_signature",
         "--hover_language",
         "fortran",
@@ -105,7 +105,7 @@ return {
       settings = {
         formatterMode = "typstyle", -- or "typstfmt"
         projectResolution = "singleFile", -- "lockDatabase"
-        -- outputPath = 
+        -- outputPath =
         exportTarget = "paged", -- "html"
         exortPdf = "onSave",
       },

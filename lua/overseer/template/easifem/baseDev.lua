@@ -15,7 +15,7 @@ return {
             {
               cmd = "easifem",
               args = { "install", "base", "-q", "--no-download" },
-              name = "classesInstall",
+              name = "baseInstall",
             },
           },
           detach = false,

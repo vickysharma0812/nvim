@@ -1,23 +1,11 @@
 return {
   {
-    "ecthelionvi/NeoColumn.nvim",
-    enabled = false,
-    lazy = true,
-    ft = { "fortran" },
-    opts = {
-      -- fg_color = "#ea9d34",
-      -- bg_color = "#ea9d34",
-      NeoColumn = "78",
-      always_on = false,
-      excluded_ft = { "text", "markdown", "quarto", "latex", "dashboard" },
-    },
-    keys = {
-      {
-        "<leader>un",
-        "<cmd>ToggleNeoColumn<CR>",
-        desc = "toggle column higlight",
-      },
-    },
+    "sustech-data/wildfire.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    config = function()
+      require("wildfire").setup()
+    end,
   },
   {
     "numToStr/Comment.nvim",
@@ -33,7 +21,7 @@ return {
   },
   {
     "folke/todo-comments.nvim",
-    lazy = false,
+    event = "VeryLazy",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "folke/trouble.nvim",
@@ -160,11 +148,11 @@ return {
     "folke/trouble.nvim",
     opts = {
       modes = {
-        diagnostics = {
-          focus = true,
-          auto_close = true,
-          auto_open = false,
-        },
+        -- diagnostics = {
+        --   focus = true,
+        --   auto_close = true,
+        --   auto_open = false,
+        -- },
         preview_float = {
           mode = "diagnostics",
           preview = {
@@ -282,7 +270,7 @@ return {
       require("ufo").setup({
         fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
           local newVirtText = {}
-          local suffix = (" 󰻀 %d Lines 󰻀"):format(endLnum - lnum)
+          local suffix = (" 🚀 %d Lines 🔥"):format(endLnum - lnum)
           local sufWidth = vim.fn.strdisplaywidth(suffix)
           local targetWidth = width - sufWidth
           local curWidth = 0

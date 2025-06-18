@@ -14,9 +14,9 @@ return {
         },
         transparent_background = false, -- disables setting the background color.
         show_end_of_buffer = false, -- shows the '~' characters after the end of buffers
-        term_colors = true, -- sets terminal colors (e.g. `g:terminal_color_0`)
+        term_colors = false, -- sets terminal colors (e.g. `g:terminal_color_0`)
         dim_inactive = {
-          enabled = false, -- dims the background color of inactive window
+          enabled = true, -- dims the background color of inactive window
           shade = "dark",
           percentage = 0.15, -- percentage of the shade to apply to the inactive window
         },
@@ -26,33 +26,32 @@ return {
         custom_highlights = function(colors)
           return {
             Comment = { fg = colors.subtext0 },
-            -- TabLineSel = { bg = colors.pink },
-            CmpBorder = { fg = colors.rosewater },
-            -- Pmenu = { bg = colors.none },
-            TermCursor = { fg = colors.base, bg = colors.rosewater },
-            TermCursorNC = { fg = colors.base, bg = colors.subtext0 },
+            CmpBorder = { fg = colors.green },
           }
         end,
         styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
           comments = { "italic" }, -- Change the style of comments
-          conditionals = { "bold" },
-          loops = { "italic" },
-          functions = { "italic" },
+          conditionals = {},
+          loops = {"bold"},
+          functions = { "bold"},
           keywords = { "bold" },
           strings = { "italic" },
           variables = { "italic" },
           numbers = { "italic" },
-          booleans = { "bold" },
-          properties = { "bold", "italic" },
+          booleans = {},
+          properties = { "bold" },
           types = {},
           operators = {},
         },
         color_overrides = {},
-        integration_default = true, -- set to true/false to enable/disable integrations by default
+        integration_default = false, -- set to true/false to enable/disable integrations by default
         integrations = {
           aerial = true,
           bufferline = true,
-          blink_cmp = true,
+          blink_cmp = {
+            enabled = true,
+            style = "bordered", -- nvchad, catppuccin, or default
+          },
           cmp = true,
           diffview = true,
           flash = true,
@@ -77,24 +76,6 @@ return {
           notifier = true,
           neogit = true,
           ufo = true,
-          native_lsp = {
-            enabled = true,
-            virtual_text = {
-              errors = { "italic" },
-              hints = { "italic" },
-              warnings = { "italic" },
-              information = { "italic" },
-            },
-            underlines = {
-              errors = { "underline" },
-              hints = { "underline" },
-              warnings = { "underline" },
-              information = { "underline" },
-            },
-            inlay_hints = {
-              background = true,
-            },
-          },
           mini = { enabled = true, indentscope_color = "" },
           markdown = true,
           markview = true,
@@ -119,32 +100,5 @@ return {
       })
       vim.cmd.colorscheme("catppuccin")
     end,
-  },
-  {
-    "folke/tokyonight.nvim",
-    opts = {
-      style = "night", -- The theme comes in three styles, `storm`, a darker variant `night` and `day`
-      light_style = "day", -- The theme is used when the background is set to light
-      transparent = false,
-      styles = {
-        sidebars = "dark",
-        floats = "dark",
-        -- comments = { italic = true },
-        -- keywords = { italic = false },
-        -- functions = { bold = false, italic = true },
-        -- variables = { bold = },
-      },
-    },
-  },
-  {
-    "rose-pine/neovim",
-    name = "rose-pine",
-    opts = {
-      --- 'auto'|'main'|'moon'|'dawn'
-      variant = "main",
-      groups = {
-        -- IncSearch = { bg = "gold", fg = "foam" },
-      },
-    },
   },
 }

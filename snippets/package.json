@@ -11,28 +11,12 @@
         "path": "go.json"
       },
       {
-        "language": ["quarto"],
-        "path": "markdown-quarto.json"
-      },
-      {
-        "language": ["markdown"],
-        "path": "markdown-quarto.json"
-      },
-      {
-        "language": ["markdown"],
+        "language": ["quarto", "markdown"],
         "path": "markdown.json"
       },
       {
-        "language": ["markdown"],
-        "path": "easifem-markdown.json"
-      },
-      {
-        "language": ["markdown"],
-        "path": "easifem-markdown-docusaurus.json"
-      },
-      {
         "language": ["fortran", "markdown"],
-        "path": "easifem-fortran.json"
+        "path": "fortran.json"
       },
       {
         "language": "cmake",

@@ -25,21 +25,21 @@ return {
     config = function()
       local lint = require("lint")
 
+      -- this errorformat works well
       -- local errorformat =
-      -- "%-Ggfortran%.%#,%A%f:%l:%c:,%A%f:%l:,%C,%C%p%*[0123456789^],%Z%trror:\\ %m,,%Z%tarning:\\ %m,%C%.%#,%-G%.%#"
-      local errorformat =
-        "%f:%l:%c: %tError: %m,%f:%l:%c: %tWarning: %m,%f:%l:%c: %tNote: %m,%A%f:%l:%c:,%Z%m,%C %#%m,%-G%.%#"
-      -- pattern explanation:
-      -- %A = Start of multi-line message
-      -- %C = Continuation line
-      -- %Z = End of multi-line message
-      -- %-G = Ignore this line completely
-      -- %f = Filename
-      -- %l = Line number
-      -- %c = Column number
-      -- %t = Error type (E/W/N)
-      -- %m = Error message
-      -- %p = Pointer line (shows where error occurs with ^)
+      --   "%-Ggfortran%.%#,%A%f:%l:%c:,%A%f:%l:,%C,%C%p%*[0123456789^],%Z%trror:\\ %m,,%Z%tarning:\\ %m,%C%.%#,%-G%.%#"
+     
+      -- this error format also works well, it is corrected by AI from the previous one
+      local errorformat = "%-Ggfortran%.%#," -- Ignore lines starting with gfortran
+        .. "%A%f:%l:%c:," -- Start of multi-line message with column
+        .. "%A%f:%l:," -- Start of multi-line message without column
+        .. "%C," -- Empty continuation line
+        .. "%C%p%*[0123456789^]," -- Continuation line with pointer (^)
+        .. "%Z%trror:\\ %m," -- End of error message
+        .. "%Z%tarning:\\ %m," -- End of warning message
+        .. "%Z%tote:\\ %m," -- Add support for notes
+        .. "%C%.%#," -- Any other continuation line
+        .. "%-G%.%#" -- Ignore everything else
 
       lint.linters.gfortran = {
         name = "gfortran",
@@ -52,6 +52,8 @@ return {
           "-fsyntax-only",
           "-cpp",
           -- "-fdiagnostics-plain-output",
+          "-fdiagnostics-show-caret",
+          "-fdiagnostics-color=never",
           "-Wunused-variable",
           "-Wunused-dummy-argument",
           "-Wno-c-binding-type",
@@ -100,18 +102,26 @@ return {
     event = "VeryLazy",
     priority = 1000,
     config = function()
+      vim.diagnostic.config({ virtual_text = false })
+
       require("tiny-inline-diagnostic").setup({
         preset = "modern",
         transparent_bg = false, -- Set the background of the diagnostic to transparent
         transparent_cursorline = false, -- Set the background of the cursorline to transparent (only one the first diagnostic)
 
         hi = {
-          error = "DiagnosticError",
-          warn = "DiagnosticWarn",
-          info = "DiagnosticInfo",
-          hint = "DiagnosticHint",
-          arrow = "NonText",
+          error = "DiagnosticError", -- Highlight group for error messages
+          warn = "DiagnosticWarn", -- Highlight group for warning messages
+          info = "DiagnosticInfo", -- Highlight group for informational messages
+          hint = "DiagnosticHint", -- Highlight group for hint or suggestion messages
+          arrow = "NonText", -- Highlight group for diagnostic arrows
+
+          -- Background color for diagnostics
+          -- Can be a highlight group or a hexadecimal color (#RRGGBB)
           background = "CursorLine",
+
+          -- Color blending option for the diagnostic background
+          -- Use "None" or a hexadecimal color (#RRGGBB) to blend with another color
           mixing_color = "None",
         },
 
@@ -119,29 +129,33 @@ return {
 
           show_source = {
             enabled = false,
-            if_many = true,
+            if_many = false,
           },
 
-          use_icons_from_diagnostic = true,
+          use_icons_from_diagnostic = false,
 
           softwrap = 30,
 
           multilines = {
             enabled = true,
-            always_show = false,
+            always_show = true,
           },
 
           overflow = {
             mode = "wrap",
-            padding = 0, 
+            padding = 0,
           },
+
           break_line = {
             enabled = false,
             after = 30,
           },
+          virt_texts = {
+            -- Priority for virtual text display
+            priority = 4056,
+          },
         },
       })
-      vim.diagnostic.config({ virtual_text = false })
     end,
   },
 }

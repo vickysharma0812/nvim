@@ -44,8 +44,9 @@ return {
           json = { "jq", "dprint", stop_after_first = true },
           julia = { lsp_format = "fallback" },
           quarto = { "markdownlint-cli2", "injected" },
+          kdl = { "kdlfmt" }, 
         },
-        ---@type table<string, conform.FormatterConfigOverride|fun(bufnr: integer): nil|conform.FormatterConfigOverride>
+
         formatters = {
           injected = {
             options = {
