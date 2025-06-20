@@ -15,6 +15,8 @@ return {
           update_n_lines = "gsn",
         },
       })
+      require("mini.bracketed").setup()
+      require("mini.pairs").setup()
       require("mini.icons").setup()
       require("mini.comment").setup({
         options = {

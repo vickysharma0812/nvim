@@ -1,10 +1,5 @@
 return {
   {
-    "windwp/nvim-autopairs",
-    event = "InsertEnter",
-    opts = {},
-  },
-  {
     "L3MON4D3/LuaSnip",
     version = "2.*",
     event = "InsertEnter",
