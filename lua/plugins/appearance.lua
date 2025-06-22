@@ -1,4 +1,23 @@
 return {
+  {
+    "tomiis4/BufferTabs.nvim",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons", -- optional
+    },
+    lazy =true,
+    config = function()
+      require("buffertabs").setup({
+        -- config
+      })
+    end,
+    keys = {
+      {
+        "<leader>ui",
+        "<cmd>BufferTabsToggle<cr>",
+        desc = "Toggle Buffer Tabs",
+      },
+    },
+  },
   -- Provides Nerd Font 1 icons (glyphs)
   -- for use by Neovim plugins:Provides Nerd Font 1 icons
   -- (glyphs) for use by Neovim plugins:

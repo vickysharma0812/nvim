@@ -27,7 +27,7 @@ return {
       "folke/trouble.nvim",
     },
     opts = {
-      signs = true,
+      signs = false,
       sign_priority = 8,
 
       keywords = {

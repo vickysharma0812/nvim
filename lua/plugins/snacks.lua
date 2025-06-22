@@ -33,7 +33,7 @@ return {
           minimal = false,
           width = 0.5,
           height = 0,
-          backdrop = { transparent = true, blend = 40 },
+          backdrop = { transparent = false, blend = 40 },
           keys = { q = false },
           zindex = 40,
           wo = {
@@ -57,22 +57,30 @@ return {
         enabled = true,
         top_down = false,
         level = vim.log.levels.INFO,
-        style = "minimal",
+        style = "compact",
       },
       zen = {
         enabled = true,
         toggles = {
           dim = false,
-          git_signs = false,
-          mini_diff_signs = false,
-          diagnostics = false,
-          inlay_hints = false,
+          git_signs = true,
+          mini_diff_signs = true,
+          diagnostics = true,
+          inlay_hints = true,
         },
         show = {
           statusline = false, -- can only be shown when using the global statusline
           tabline = false,
         },
         win = { style = "zen" },
+        zoom = {
+          toggles = {},
+          show = { statusline = false, tabline = false},
+          win = {
+            backdrop = false,
+            width = 0, -- full width
+          },
+        },
       },
       picker = {
         enabled = true,
@@ -513,5 +521,24 @@ return {
         desc = "Zen mode",
       },
     },
+  },
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    lazy = true,
+    opts = function()
+      local tsc = require("treesitter-context")
+      Snacks.toggle({
+        name = "Treesitter Context",
+        get = tsc.enabled,
+        set = function(state)
+          if state then
+            tsc.enable()
+          else
+            tsc.disable()
+          end
+        end,
+      }):map("<leader>uj")
+      return { mode = "cursor", max_lines = 3 }
+    end,
   },
 }
