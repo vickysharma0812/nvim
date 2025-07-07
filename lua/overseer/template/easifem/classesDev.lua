@@ -10,6 +10,11 @@ return {
       components = {
         "default",
         {
+          "restart_on_save",
+          delay = 500,
+          -- paths = { os.getenv("classes") },
+        },
+        {
           "run_after",
           task_names = {
             {

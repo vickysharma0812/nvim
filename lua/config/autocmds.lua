@@ -22,6 +22,28 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+-- I want to set colorcolumn for fotran files
+-- Fortran-specific toggle
+local function toggle_fortran_colorcolumn()
+  if vim.bo.filetype == "fortran" then
+    if vim.wo.colorcolumn == "" then
+      vim.wo.colorcolumn = "78"
+    else
+      vim.wo.colorcolumn = ""
+    end
+  end
+end
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "fortran",
+  callback = function()
+    vim.opt_local.colorcolumn = "78"
+    vim.keymap.set("n", "<leader>uI", toggle_fortran_colorcolumn, {
+      buffer = true,
+      desc = "Toggle Fortran color column",
+    })
+  end,
+})
+
 vim.api.nvim_create_autocmd("FileType", {
   group = augroup("set_fmt"),
   pattern = { "fortran" },
@@ -60,6 +82,7 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
   end,
 })
 
+-- Auto command for Lsp attach
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("pengvim-lsp-attach", { clear = true }),
   callback = function(event)
@@ -123,3 +146,43 @@ vim.api.nvim_create_user_command("OpenPdf", function()
     vim.system({ "open", pdf_path })
   end
 end, {})
+
+-- Close some files using esc, I took this from following link
+-- close some filetypes with esc
+-- https://github.com/linkarzu/dotfiles-latest/blob/main/neovim/neobean/lua/config/autocmds.lua
+vim.api.nvim_create_autocmd("FileType", {
+  group = augroup("close_with_esc"),
+  pattern = {
+    "PlenaryTestPopup",
+    "grug-far",
+    "help",
+    "lspinfo",
+    "notify",
+    "qf",
+    "spectre_panel",
+    "startuptime",
+    "tsplayground",
+    "neotest-output",
+    "checkhealth",
+    "neotest-summary",
+    "neotest-output-panel",
+    "dbout",
+    "gitsigns-blame",
+    "Lazy",
+  },
+  callback = function(event)
+    vim.bo[event.buf].buflisted = false
+    vim.schedule(function()
+      vim.keymap.set("n", "<esc>", function()
+        vim.cmd("close")
+        pcall(vim.api.nvim_buf_delete, event.buf, { force = true })
+      end, {
+        buffer = event.buf,
+        silent = true,
+        desc = "Quit buffer",
+      })
+    end)
+  end,
+})
+
+-- mini.files related

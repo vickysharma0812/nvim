@@ -60,15 +60,13 @@ return {
     opts = {
       fuzzy = { implementation = "prefer_rust_with_warning" },
       keymap = {
-        preset = "default",
+        preset = "enter",
+        ["<C-y>"] = { "select_and_accept" },
       },
       completion = {
         menu = {
           scrollbar = false,
           border = "rounded",
-          -- auto_show = function(ctx)
-          --   return ctx.mode ~= "cmdline"
-          -- end,
           auto_show = true,
           draw = {
             columns = {
@@ -79,11 +77,11 @@ return {
           },
         },
         documentation = {
-          auto_show = true,
+          auto_show = false,
           auto_show_delay_ms = 100,
           window = {
             border = "rounded",
-            scrollbar = false,
+            scrollbar = true,
           },
         },
         list = {
@@ -97,9 +95,10 @@ return {
         },
       },
       signature = {
-        enabled = true,
+        enabled = false,
         window = {
           border = "rounded",
+          show_documentation = true,
         },
       },
       appearance = {
@@ -120,6 +119,8 @@ return {
           fortran = { "snippets", "lsp", "path", "buffer" },
           julia = { "snippets", "lsp", "path", "buffer" },
           tex = { "snippets", "lsp", "path", "buffer", "latex_symbols", "emoji" },
+          lua = { "snippets", "lsp", "path", "buffer" },
+          codecompanion = { "lsp", "path", "cmdline" },
           -- quarto = { "lsp", "path", "snippets", "buffer" },
         },
         providers = {

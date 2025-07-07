@@ -128,9 +128,7 @@ return {
           },
         },
       },
-      explorer = {
-        enabled = true,
-      },
+      explorer = {enabled =false,},
       image = {
         enabled = false,
         math = {
@@ -158,13 +156,6 @@ return {
         desc = "Smart Find Files",
       },
       {
-        "<leader>,",
-        function()
-          Snacks.picker.buffers({ current = false })
-        end,
-        desc = "Buffers",
-      },
-      {
         "<leader>/",
         function()
           Snacks.picker.grep()
@@ -186,36 +177,11 @@ return {
         desc = "Notification History",
       },
       {
-        "<leader>e",
-        function()
-          -- vim.opt.scrolloff = 0
-          Snacks.explorer({ auto_close = true, focus = "list" })
-        end,
-        desc = "File Explorer",
-      },
-      {
-        "<leader>yo",
-        function()
-          -- vim.opt.scrolloff = 0
-          Snacks.explorer.reveal({ auto_close = false, focus = "list" })
-        end,
-        desc = "File Explorer reveal",
-      },
-      {
         "<leader>fb",
         function()
           Snacks.picker.buffers({ current = false })
         end,
         desc = "Buffers",
-      },
-      {
-        "<leader>fc",
-        function()
-          Snacks.picker.files({
-            cwd = vim.fn.stdpath("config"),
-          })
-        end,
-        desc = "Find Config File",
       },
       {
         "<leader>ff",

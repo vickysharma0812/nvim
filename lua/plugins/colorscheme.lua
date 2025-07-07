@@ -26,6 +26,7 @@ return {
         custom_highlights = function(colors)
           return {
             CmpBorder = { fg = colors.flamingo },
+            ColorColumn = { bg = colors.mantle},
           }
         end,
 

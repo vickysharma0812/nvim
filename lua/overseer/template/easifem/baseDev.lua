@@ -10,6 +10,10 @@ return {
       components = {
         "default",
         {
+          "restart_on_save",
+          delay = 500,
+        },
+        {
           "run_after",
           task_names = {
             {

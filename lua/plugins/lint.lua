@@ -96,6 +96,22 @@ return {
       },
     },
   },
+
+  --
+  -- latex linting
+  --
+  {
+    "mfussenegger/nvim-lint",
+    optional = true,
+    opts = {
+      linters_by_ft = {
+        tex = { "chktex" },
+        latex = { "chktex" },
+        bib = { "chktex" },
+      },
+    },
+  },
+
   {
     "rachartier/tiny-inline-diagnostic.nvim",
     enabled = true,

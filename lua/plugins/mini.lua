@@ -18,6 +18,7 @@ return {
       require("mini.bracketed").setup()
       require("mini.pairs").setup()
       require("mini.icons").setup()
+      require("mini.tabline").setup()
       require("mini.comment").setup({
         options = {
           custom_commentstring = function()
@@ -25,6 +26,18 @@ return {
           end,
         },
       })
+      require("mini.files").setup({})
     end,
+    keys = {
+      {
+        "<leader>e",
+        function(...)
+          if not MiniFiles.close() then
+            MiniFiles.open(...)
+          end
+        end,
+        desc = "File explorer using mini",
+      },
+    },
   },
 }

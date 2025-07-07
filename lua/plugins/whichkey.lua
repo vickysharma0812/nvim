@@ -71,10 +71,5 @@ return {
       { "<auto>", mode = "nxsot" },
     },
   },
-  keys = {
-    { "<leader>Bd", "<cmd>tabclose<CR>", desc = "Close Tab", nowait = true, remap = false },
-    { "<leader>Bh", "<cmd>tabprevious<CR>", desc = "Previous Tab", nowait = true, remap = false },
-    { "<leader>Bl", "<cmd>tabnext<CR>", desc = "Next Tab", nowait = true, remap = false },
-    { "<leader>Bn", "<cmd>tabnew<CR>", desc = "New Tab", nowait = true, remap = false },
-  },
+  keys = {},
 }

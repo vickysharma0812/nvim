@@ -6,8 +6,8 @@ return {
       templates = {
         "easifem.baseDev",
         "easifem.classesDev",
-        "easifem.easifemLint",
-        "easifem.run_script",
+        "easifem.easifemRunTest",
+        "easifem.easifemRunLint",
         -- "builtin",
       },
       component_aliases = {
@@ -68,10 +68,6 @@ return {
             close = true,
           },
           { "on_exit_set_status", success_codes = { 0 } },
-          {
-            "restart_on_save",
-            delay = 500,
-          },
           { "unique", replace = false, restart_interrupts = true },
         },
       },

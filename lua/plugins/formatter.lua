@@ -25,7 +25,7 @@ return {
     opts = function()
       local opts = {
         default_format_opts = {
-          timeout_ms = 5000,
+          timeout_ms = 3000,
           async = false, -- not recommended to change
           quiet = false, -- not recommended to change
           lsp_format = "fallback",
@@ -44,7 +44,7 @@ return {
           json = { "jq", "dprint", stop_after_first = true },
           julia = { lsp_format = "fallback" },
           quarto = { "markdownlint-cli2", "injected" },
-          kdl = { "kdlfmt" }, 
+          kdl = { "kdlfmt" },
         },
 
         formatters = {
