@@ -1,25 +1,22 @@
 return {
-  name = "base continuous",
-  builder = function()
+  name = "classes onetime",
+  builder = function(params)
     return {
       cmd = { "easifem" },
-      args = { "dev", "base", "-q" },
-      name = "baseDev",
+      args = { "dev", "classes", "-q" },
+      name = "classesCheck",
       cwd = vim.fn.expand("%:h"), -- "/tmp",
       env = {},
       components = {
         "default",
-        {
-          "restart_on_save",
-          -- delay = 500,
-        },
+        -- { },
         {
           "run_after",
           task_names = {
             {
               cmd = "easifem",
-              args = { "install", "base", "-q", "--no-download" },
-              name = "baseInstall",
+              args = { "install", "classes", "-q", "--no-download" },
+              name = "classesInstall",
             },
           },
           detach = false,
@@ -31,14 +28,10 @@ return {
       },
     }
   end,
-  desc = "[Dev tool for libeasifemBase] build/install easifem's base lib in debug mode",
+  desc = "[Dev tool for libeasifemClasses] build/install easifem's classes lib in debug mode",
   params = {},
   priority = 50,
   condition = {
     filetype = { "fortran" },
-    callback = function(search)
-      -- print(vim.inspect(search))
-      return true
-    end,
   },
 }

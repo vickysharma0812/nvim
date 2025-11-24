@@ -1,5 +1,5 @@
 return {
-  name = "classes",
+  name = "classes continuous",
   builder = function(params)
     return {
       cmd = { "easifem" },

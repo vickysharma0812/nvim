@@ -1,5 +1,5 @@
 return {
-  name = "base continuous",
+  name = "base onetime",
   builder = function()
     return {
       cmd = { "easifem" },
@@ -9,10 +9,6 @@ return {
       env = {},
       components = {
         "default",
-        {
-          "restart_on_save",
-          -- delay = 500,
-        },
         {
           "run_after",
           task_names = {
