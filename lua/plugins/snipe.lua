@@ -16,6 +16,7 @@ return {
       },
       navigate = {
         close_buffer = "d",
+        cancel_snipe = "q", --"<esc>",
       },
     },
     keys = {

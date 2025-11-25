@@ -8,6 +8,7 @@ return {
     cmd = "Copilot",
     build = ":Copilot auth",
     event = "InsertEnter",
+    enabled = true,
     config = function()
       require("copilot").setup({
         panel = {
@@ -16,7 +17,7 @@ return {
           keymap = {
             jump_prev = "[[",
             jump_next = "]]",
-            accept = "<M-CR>", --"<C-CR>"
+            accept = "<C-CR>", --"<C-CR>"
             refresh = "gr",
             open = "<M-o>",
           },
@@ -70,6 +71,7 @@ return {
   -- Copilot Chat
   {
     "CopilotC-Nvim/CopilotChat.nvim",
+    enabled = false,
     branch = "main",
     cmd = "CopilotChat",
     opts = function()

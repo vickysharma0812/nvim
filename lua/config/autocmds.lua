@@ -147,11 +147,11 @@ vim.api.nvim_create_user_command("OpenPdf", function()
   end
 end, {})
 
--- Close some files using esc, I took this from following link
+-- Close some files using q, I took this from following link
 -- close some filetypes with esc
 -- https://github.com/linkarzu/dotfiles-latest/blob/main/neovim/neobean/lua/config/autocmds.lua
 vim.api.nvim_create_autocmd("FileType", {
-  group = augroup("close_with_esc"),
+  group = augroup("close_with_q"),
   pattern = {
     "PlenaryTestPopup",
     "grug-far",
@@ -173,7 +173,8 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function(event)
     vim.bo[event.buf].buflisted = false
     vim.schedule(function()
-      vim.keymap.set("n", "<esc>", function()
+      vim.keymap.set("n", "q", function()
+      -- vim.keymap.set("n", "<esc>", function()
         vim.cmd("close")
         pcall(vim.api.nvim_buf_delete, event.buf, { force = true })
       end, {

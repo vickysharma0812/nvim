@@ -23,7 +23,7 @@ return {
             on_result = "never",
             on_start = "never",
           },
-          { "on_output_summarize", max_lines = 4 },
+          -- { "on_output_summarize", max_lines = 4 },
           {
             "on_output_quickfix",
             close = true,

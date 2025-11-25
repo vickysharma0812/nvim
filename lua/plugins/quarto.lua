@@ -37,7 +37,7 @@ return {
           },
         },
         codeRunner = {
-          enabled = true,
+          enabled = false,
           default_method = "slime",
           ft_runners = {},
           never_run = { "yaml" },

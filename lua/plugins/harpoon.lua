@@ -16,15 +16,15 @@ return {
         mode = { "n" },
         desc = "Mark current buffer",
       },
-      {
-        "<leader>a",
-        function()
-          local harpoon = require("harpoon")
-          harpoon.ui:toggle_quick_menu(harpoon:list())
-        end,
-        mode = { "n" },
-        desc = "Toggle quick menu for harpoon",
-      },
+      -- {
+      --   "<leader>a",
+      --   function()
+      --     local harpoon = require("harpoon")
+      --     harpoon.ui:toggle_quick_menu(harpoon:list())
+      --   end,
+      --   mode = { "n" },
+      --   desc = "Toggle quick menu for harpoon",
+      -- },
       {
         "<leader>1",
         function()

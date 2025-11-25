@@ -28,7 +28,7 @@ return {
       -- this errorformat works well
       -- local errorformat =
       --   "%-Ggfortran%.%#,%A%f:%l:%c:,%A%f:%l:,%C,%C%p%*[0123456789^],%Z%trror:\\ %m,,%Z%tarning:\\ %m,%C%.%#,%-G%.%#"
-     
+
       -- this error format also works well, it is corrected by AI from the previous one
       local errorformat = "%-Ggfortran%.%#," -- Ignore lines starting with gfortran
         .. "%A%f:%l:%c:," -- Start of multi-line message with column
@@ -58,12 +58,12 @@ return {
           "-Wunused-dummy-argument",
           "-Wno-c-binding-type",
           "-Wall",
+          -- "-I",
+          -- os.getenv("HOME") .. "/.easifem/easifem/lint/include/",
           "-I",
-          os.getenv("HOME") .. "/.easifem/easifem/lint/include/",
+          os.getenv("HOME") .. "/.easifem/easifem/build/base/include/",
           "-I",
-          os.getenv("HOME") .. "/.easifem/easifem/install/base/include/",
-          "-I",
-          os.getenv("HOME") .. "/.easifem/easifem/install/classes/include/",
+          os.getenv("HOME") .. "/.easifem/easifem/build/classes/include/",
           "-I",
           os.getenv("HOME") .. "/.easifem/easifem/install/tomlf/include/toml-f/modules/",
           -- os.getenv("HOME") .. "/.easifem/install/fftw/include/",
@@ -75,12 +75,26 @@ return {
           "-J",
           os.getenv("HOME") .. "/.easifem/easifem/lint/include/",
           "-DDEBUG_VER",
+          "-DUSE_SuperLU",
         }, -- args to pass to the linter
       }
       lint.linters_by_ft = {
         fortran = { "gfortran" },
       }
     end,
+  },
+
+  --
+  -- fortran linting
+  --
+  {
+    "mfussenegger/nvim-lint",
+    optional = true,
+    opts = {
+      linters_by_ft = {
+        fortran = { "fortitude" },
+      },
+    },
   },
 
   --

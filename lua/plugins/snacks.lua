@@ -31,7 +31,7 @@ return {
           enter = true,
           fixbuf = false,
           minimal = false,
-          width = 0.5,
+          width = 0.7,
           height = 0,
           backdrop = { transparent = false, blend = 40 },
           keys = { q = false },
