@@ -89,7 +89,7 @@ return {
   --
   {
     "mfussenegger/nvim-lint",
-    optional = true,
+    -- optional = true,
     opts = {
       linters_by_ft = {
         fortran = { "fortitude" },

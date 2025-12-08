@@ -4,8 +4,11 @@ return {
   opts = function()
     return {
       templates = {
-        "easifem.baseDev",
-        "easifem.classesDev",
+        -- "easifem.baseDev",
+        -- "easifem.classesDev",
+        "easifem.baseCheck",
+        "easifem.classesCheck",
+        "easifem.diffusionCheck",
         "easifem.easifemRunTest",
         "easifem.easifemRunLint",
         -- "builtin",

@@ -1,26 +1,22 @@
 return {
-  name = "classes continuous",
+  name = "diffusion onetime",
   builder = function(params)
     return {
       cmd = { "easifem" },
-      args = { "dev", "classes", "-q" },
-      name = "devClasses",
+      args = { "dev", "diffusion", "-q" },
+      name = "diffusionCheck",
       cwd = vim.fn.expand("%:h"), -- "/tmp",
       env = {},
       components = {
         "default",
-        {
-          "restart_on_save",
-          delay = 500,
-          -- paths = { os.getenv("classes") },
-        },
+        -- { },
         {
           "run_after",
           task_names = {
             {
               cmd = "easifem",
-              args = { "install", "classes", "-q", "--no-download" },
-              name = "classesInstall",
+              args = { "install", "diffusion", "-q", "--no-download" },
+              name = "diffusionInstall",
             },
           },
           detach = false,

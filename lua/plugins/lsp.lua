@@ -25,7 +25,6 @@ return {
         "markdownlint",
         "markdownlint-cli2",
         "marksman",
-        "mdformat",
         "shfmt",
         "stylua",
         "taplo",

@@ -36,7 +36,7 @@ return {
           sh = { "shfmt" },
           toml = { "taplo" },
           typst = { "typstyle", "typstfmt", stop_after_first = true },
-          fortran = { "fprettify", "myfmt", stop_after_first = true },
+          fortran = { "fprettify", stop_after_first = true },
           go = { "goimports" },
           tex = { "latexindent" },
           markdown = { "dprint", "markdownlint-cli2", "injected" },
@@ -65,7 +65,9 @@ return {
           },
           fprettify = {
             -- args = require("plugins.args.fortran").formatter or {},
-            args = {
+            -- inherit = false,
+            -- command = "fprettify",
+            append_args = {
               "--line-length",
               "78",
               "--indent",
@@ -90,7 +92,6 @@ return {
               "2",
               "2",
             },
-
           },
           taplo = {
             args = {
@@ -110,13 +111,14 @@ return {
             stdin = true,
             args = { "-" },
           },
-          mdformat = {
-            command = "mdformat",
-            args = { "-" },
-          },
+          -- mdformat = {
+          --   command = "mdformat",
+          --   args = { "-" },
+          -- },
           cmake_format = {
-            command = "cmake-format",
-            args = { "-" },
+            inherit = true,
+            -- command = "cmake-format",
+            append_args = { "" },
           },
           stylua = {
             command = "stylua",
