@@ -40,13 +40,12 @@ return {
           go = { "goimports" },
           tex = { "latexindent" },
           markdown = { "dprint", "markdownlint-cli2", "injected" },
-          cmake = { "cmake_format" },
+          cmake = { "gersemi", "cmake_format" },
           json = { "jq", "dprint", stop_after_first = true },
           julia = { lsp_format = "fallback" },
           quarto = { "markdownlint-cli2", "injected" },
           kdl = { "kdlfmt" },
         },
-
         formatters = {
           injected = {
             options = {
@@ -64,9 +63,6 @@ return {
             },
           },
           fprettify = {
-            -- args = require("plugins.args.fortran").formatter or {},
-            -- inherit = false,
-            -- command = "fprettify",
             append_args = {
               "--line-length",
               "78",
@@ -110,15 +106,6 @@ return {
             command = "latexindent",
             stdin = true,
             args = { "-" },
-          },
-          -- mdformat = {
-          --   command = "mdformat",
-          --   args = { "-" },
-          -- },
-          cmake_format = {
-            inherit = true,
-            -- command = "cmake-format",
-            append_args = { "" },
           },
           stylua = {
             command = "stylua",

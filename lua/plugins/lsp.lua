@@ -30,6 +30,7 @@ return {
         "taplo",
         "texlab",
         "tinymist",
+        "gersemi",
       },
     })
 

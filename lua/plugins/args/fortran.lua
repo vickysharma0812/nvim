@@ -37,6 +37,8 @@ M.linter = {
   os.getenv("HOME") .. "/.easifem/install/tomlf/include/toml-f/modules/",
   "-J",
   os.getenv("HOME") .. "/.easifem/lint/include/",
+  "/opt/homebrew/Cellar/open-mpi/5.0.9/include/",
+  "-DUSE_MPI",
   "-DDEBUG_VER",
 }
 
