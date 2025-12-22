@@ -53,6 +53,19 @@ return {
       "hrsh7th/cmp-omni",
       "rafamadriz/friendly-snippets",
       "jmbuhr/otter.nvim",
+      { "Kaiser-Yang/blink-cmp-git" },
+      {
+        "saghen/blink.compat",
+        dev = false,
+        opts = { impersonate_nvim_cmp = true, enable_events = true, debug = true },
+      },
+      {
+        "jmbuhr/cmp-pandoc-references",
+        dev = false,
+        ft = { "quarto", "markdown", "rmarkdown" },
+      },
+      { "kdheepak/cmp-latex-symbols" },
+      { "erooke/blink-cmp-latex" },
     },
     version = "1.*",
     ---@module 'blink.cmp'
@@ -114,6 +127,7 @@ return {
           "cmdline",
           "latex_symbols",
           "emoji",
+          "latex",
         },
         per_filetype = {
           fortran = { "snippets", "lsp", "path", "buffer" },
@@ -130,14 +144,47 @@ return {
           snippets = {
             score_offset = 15,
           },
-          emoji = {
-            name = "Emoji",
-            module = "blink-emoji",
-            score_offset = 0,
-          },
           cmdline = {
             name = "cmdline",
             module = "blink.compat.source",
+          },
+          emoji = {
+            module = "blink-emoji",
+            name = "Emoji",
+            score_offset = -1,
+            enabled = function()
+              return vim.tbl_contains({ "markdown", "quarto" }, vim.bo.filetype)
+            end,
+          },
+          git = {
+            module = "blink-cmp-git",
+            name = "Git",
+            opts = {},
+            enabled = function()
+              return vim.tbl_contains({ "octo", "gitcommit", "git" }, vim.bo.filetype)
+            end,
+          },
+          references = {
+            name = "pandoc_references",
+            module = "cmp-pandoc-references.blink",
+            score_offset = 2,
+          },
+          symbols = { name = "symbols", module = "blink.compat.source" },
+          latex = {
+            name = "Latex",
+            module = "blink-cmp-latex",
+            opts = {
+              insert_command = function(ctx)
+                local ft = vim.api.nvim_get_option_value("filetype", {
+                  scope = "local",
+                  buf = ctx.bufnr,
+                })
+                if ft == "tex" or ft == "quarto" or ft == "latex" or ft == "markdown" then
+                  return true
+                end
+                return false
+              end,
+            },
           },
           latex_symbols = {
             name = "latex_symbols",
