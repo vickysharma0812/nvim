@@ -1,10 +1,25 @@
 if vim.g.vscode then
   return
 elseif vim.g.neovide then
-  vim.o.guifont = "MonaspiceKr Nerd Font:h13"
   vim.g.neovide_remember_window_size = true
-  vim.g.neovide_cursor_vfx_mode = "pixiedust"
   vim.g.neovide_scale_factor = 1.0
+  -- vim.opt.linespace = 0
+  vim.g.neovide_position_animation_length = 0.15
+  vim.g.neovide_scroll_animation_length = 0.3
+  vim.g.neovide_fullscreen = true
+  vim.g.neovide_macos_simple_fullscreen = true
+  vim.g.neovide_input_macos_option_key_is_meta = "only_left"
+
+  vim.g.neovide_cursor_animation_length = 0.150
+  vim.g.neovide_cursor_trail_size = 1.0 -- 0 to 1
+
+  vim.g.neovide_cursor_antialiasing = true
+
+  vim.g.neovide_cursor_animate_in_insert_mode = true
+
+  vim.g.neovide_cursor_vfx_mode = "railgun" 
+  -- possible values: railgun, ripple, sonicboom, wireframe, torpedo, 
+  -- dot, beacon, pixiedust
 end
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -54,7 +69,8 @@ require("lazy").setup({
 
 require("config.keymaps")
 require("config.options")
+require("config.quickfix")
 require("config.autocmds")
 require("config.redir")
 
-vim.api.nvim_set_hl(0, "VertSplit", { fg = "#b020ea", bg = "NONE" })
+-- vim.cmd.colorscheme("catppuccin")

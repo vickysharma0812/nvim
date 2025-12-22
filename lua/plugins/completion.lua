@@ -1,10 +1,5 @@
 return {
   {
-    "windwp/nvim-autopairs",
-    event = "InsertEnter",
-    opts = {},
-  },
-  {
     "L3MON4D3/LuaSnip",
     version = "2.*",
     event = "InsertEnter",
@@ -56,23 +51,35 @@ return {
       "kdheepak/cmp-latex-symbols",
       "f3fora/cmp-spell",
       "hrsh7th/cmp-omni",
-      -- "rafamadriz/friendly-snippets",
+      "rafamadriz/friendly-snippets",
       "jmbuhr/otter.nvim",
+      { "Kaiser-Yang/blink-cmp-git" },
+      {
+        "saghen/blink.compat",
+        dev = false,
+        opts = { impersonate_nvim_cmp = true, enable_events = true, debug = true },
+      },
+      {
+        "jmbuhr/cmp-pandoc-references",
+        dev = false,
+        ft = { "quarto", "markdown", "rmarkdown" },
+      },
+      { "kdheepak/cmp-latex-symbols" },
+      { "erooke/blink-cmp-latex" },
     },
-    version = "*",
+    version = "1.*",
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
+      fuzzy = { implementation = "prefer_rust_with_warning" },
       keymap = {
-        preset = "default",
+        preset = "enter",
+        ["<C-y>"] = { "select_and_accept" },
       },
       completion = {
         menu = {
           scrollbar = false,
           border = "rounded",
-          -- auto_show = function(ctx)
-          --   return ctx.mode ~= "cmdline"
-          -- end,
           auto_show = true,
           draw = {
             columns = {
@@ -83,11 +90,11 @@ return {
           },
         },
         documentation = {
-          auto_show = true,
+          auto_show = false,
           auto_show_delay_ms = 100,
           window = {
             border = "rounded",
-            scrollbar = false,
+            scrollbar = true,
           },
         },
         list = {
@@ -101,8 +108,10 @@ return {
         },
       },
       signature = {
+        enabled = false,
         window = {
           border = "rounded",
+          show_documentation = true,
         },
       },
       appearance = {
@@ -118,28 +127,64 @@ return {
           "cmdline",
           "latex_symbols",
           "emoji",
+          "latex",
         },
         per_filetype = {
           fortran = { "snippets", "lsp", "path", "buffer" },
           julia = { "snippets", "lsp", "path", "buffer" },
           tex = { "snippets", "lsp", "path", "buffer", "latex_symbols", "emoji" },
+          lua = { "snippets", "lsp", "path", "buffer" },
+          codecompanion = { "lsp", "path", "cmdline" },
           -- quarto = { "lsp", "path", "snippets", "buffer" },
         },
         providers = {
           lsp = {
-            score_offset = 15,
-          },
-          snippets = {
             score_offset = 10,
           },
-          emoji = {
-            name = "Emoji",
-            module = "blink-emoji",
-            score_offset = 0,
+          snippets = {
+            score_offset = 15,
           },
           cmdline = {
             name = "cmdline",
             module = "blink.compat.source",
+          },
+          emoji = {
+            module = "blink-emoji",
+            name = "Emoji",
+            score_offset = -1,
+            enabled = function()
+              return vim.tbl_contains({ "markdown", "quarto" }, vim.bo.filetype)
+            end,
+          },
+          git = {
+            module = "blink-cmp-git",
+            name = "Git",
+            opts = {},
+            enabled = function()
+              return vim.tbl_contains({ "octo", "gitcommit", "git" }, vim.bo.filetype)
+            end,
+          },
+          references = {
+            name = "pandoc_references",
+            module = "cmp-pandoc-references.blink",
+            score_offset = 2,
+          },
+          symbols = { name = "symbols", module = "blink.compat.source" },
+          latex = {
+            name = "Latex",
+            module = "blink-cmp-latex",
+            opts = {
+              insert_command = function(ctx)
+                local ft = vim.api.nvim_get_option_value("filetype", {
+                  scope = "local",
+                  buf = ctx.bufnr,
+                })
+                if ft == "tex" or ft == "quarto" or ft == "latex" or ft == "markdown" then
+                  return true
+                end
+                return false
+              end,
+            },
           },
           latex_symbols = {
             name = "latex_symbols",

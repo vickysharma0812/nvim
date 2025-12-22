@@ -1,23 +1,11 @@
 return {
   {
-    "ecthelionvi/NeoColumn.nvim",
-    lazy = false,
-    ft = { "fortran", "lua" },
-    opts = {
-      fg_color = "#ea9d34",
-      bg_color = "#ea9d34",
-      NeoColumn = "78",
-      always_on = true,
-      excluded_ft = { "text", "markdown" },
-    },
-    keys = {
-
-      {
-        "<leader>tc",
-        "<cmd>ToggleNeoColumn<CR>",
-        desc = "toggle column higlight",
-      },
-    },
+    "sustech-data/wildfire.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    config = function()
+      require("wildfire").setup()
+    end,
   },
   {
     "numToStr/Comment.nvim",
@@ -33,14 +21,15 @@ return {
   },
   {
     "folke/todo-comments.nvim",
+    event = "VeryLazy",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "folke/trouble.nvim",
     },
     opts = {
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
+      signs = false,
+      sign_priority = 8,
+
       keywords = {
         PUBLIC = { icon = " ", color = "info" },
         INTERNAL = { icon = " ", color = "error" },
@@ -49,6 +38,22 @@ return {
         CONSTRUCTOR = { icon = "󰮮 ", color = "hint" },
         IO = { icon = "󰠿 ", color = "info" },
         SUBCLASS = { icon = "󰑣 ", color = "error" },
+      },
+    },
+    keys = {
+      {
+        "<leader>st",
+        function()
+          Snacks.picker.todo_comments()
+        end,
+        desc = "Todo",
+      },
+      {
+        "<leader>sT",
+        function()
+          Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } })
+        end,
+        desc = "Todo/Fix/Fixme",
       },
     },
   },
@@ -140,104 +145,14 @@ return {
     },
   },
   {
-    "kevinhwang91/nvim-bqf",
-    ft = "qf",
-    config = function()
-      require("bqf").setup({
-        filter = {
-          fzf = {
-            extra_opts = { "--bind", "ctrl-o:toggle-all", "--delimiter", "│" },
-          },
-        },
-      })
-    end,
-  },
-  {
-    "Aasim-A/scrollEOF.nvim",
-    event = { "CursorMoved", "WinScrolled" },
-    opts = {
-      pattern = "*",
-      insert_mode = true,
-      floating = false,
-      disabled_filetypes = {},
-      disabled_modes = {},
-    },
-    config = function(opts)
-      require("scrollEOF").setup(opts)
-    end,
-  },
-  {
-    "chrisbra/NrrwRgn",
-    lazy = true,
-    keys = {
-      {
-        "<leader>nr",
-        "<plug>NrrwrgnDo<cr>",
-        desc = "NrrwRgn",
-        mode = { "n", "v" },
-      },
-    },
-  },
-  {
-    "tzachar/highlight-undo.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    config = function()
-      require("highlight-undo").setup({
-        duration = 300,
-        undo = {
-          hlgroup = "HighlightUndo",
-          mode = "n",
-          lhs = "u",
-          map = "undo",
-          opts = {},
-        },
-        redo = {
-          hlgroup = "HighlightRedo",
-          mode = "n",
-          lhs = "<C-r>",
-          map = "redo",
-          opts = {},
-        },
-        highlight_for_count = true,
-      })
-    end,
-  },
-  {
-    "jaimecgomezz/here.term",
-    keys = {
-      {
-        "<M-t>",
-        function()
-          require("here-term").toggle_terminal()
-        end,
-        mode = { "n", "i", "t" },
-        desc = "Toggle Terminal Here",
-      },
-      {
-        "<M-S-t>",
-        function()
-          require("here-term").kill_terminal()
-        end,
-        mode = { "n", "i", "t" },
-        desc = "Kill Terminal Here",
-      },
-    },
-  },
-
-  {
-    "andymass/vim-matchup",
-    enabled = false,
-    lazy = false,
-    config = function()
-      vim.g.matchup_matchparen_offscreen = {
-        method = "popup",
-      }
-    end,
-  },
-  {
     "folke/trouble.nvim",
     opts = {
       modes = {
+        -- diagnostics = {
+        --   focus = true,
+        --   auto_close = true,
+        --   auto_open = false,
+        -- },
         preview_float = {
           mode = "diagnostics",
           preview = {
@@ -287,66 +202,161 @@ return {
       },
     },
   },
+
   {
-    "kevinhwang91/nvim-ufo",
-    dependencies = { "kevinhwang91/promise-async" },
-    -- event = "VeryLazy",
-    -- You can make it lazy-loaded via VeryLazy,
-    -- but comment out if thing doesn't work
-    init = function()
-      -- taken from here https://github.com/kevinhwang91/nvim-ufo#minimal-configuration
-      vim.o.foldcolumn = "1" -- '0' is not bad
-      vim.o.foldlevel = 99
-      -- Using ufo provider need a large value, feel free to decrease the value
-      vim.o.foldlevelstart = 99
-      vim.o.foldenable = true
-    end,
+    "bbjornstad/pretty-fold.nvim",
+    enabled = false,
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
-      require("ufo").setup({
-        -- your config goes here
-        -- open_fold_hl_timeout = ...,
-        -- provider_selector = function(bufnr, filetype)
-        --  ...
-        -- end,
+      require("pretty-fold").setup({
+        sections = {
+          left = {
+            "content",
+          },
+          right = {
+            " ",
+            "number_of_folded_lines",
+            ": ",
+            "percentage",
+            " ",
+            function(config)
+              return config.fill_char:rep(3)
+            end,
+          },
+        },
+        fill_char = "•",
+        remove_fold_markers = true,
+        keep_indentation = true,
+        -- Possible values:
+        -- "delete" : Delete all comment signs from the fold string.
+        -- "spaces" : Replace all comment signs with equal number of spaces.
+        -- false    : Do nothing with comment signs.
+        process_comment_signs = "spaces",
+        comment_signs = {},
+        add_close_pattern = true, -- true, 'last_line' or false
+        matchup_patterns = {
+          { "{", "}" },
+          { "%(", ")" },
+          { "%[", "]" },
+        },
+        ft_ignore = { "neorg", "TelescopeResults", "ToggleTerm", "Noice", "sagaoutline", "dashboard" },
+      })
+      require("pretty-fold").ft_setup("lua", {
+        matchup_patterns = {
+          { "^%s*if", "end" },
+          { "^%s*for", "end" },
+          { "function%s*%(", "end" },
+          { "{", "}" },
+          { "%(", ")" },
+          { "%[", "]" },
+        },
       })
     end,
   },
+
+  -- folding via treesitter
   {
-    "karb94/neoscroll.nvim",
-    opts = {
-      mappings = { -- Keys to be mapped to their corresponding default scrolling animation
-        "<C-u>",
-        "<C-d>",
-        "<C-b>",
-        "<C-f>",
-        "<C-y>",
-        "<C-e>",
-        "zt",
-        "zz",
-        "zb",
+    "kevinhwang91/nvim-ufo",
+    event = { "BufReadPost", "BufNewFile" },
+    dependencies = {
+      "kevinhwang91/promise-async",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      vim.o.foldcolumn = "1"
+      vim.o.foldlevel = 99
+      vim.o.foldlevelstart = 99
+      vim.o.foldenable = true
+      require("ufo").setup({
+        fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
+          local newVirtText = {}
+          local suffix = (" 🚀 %d Lines 🔥"):format(endLnum - lnum)
+          local sufWidth = vim.fn.strdisplaywidth(suffix)
+          local targetWidth = width - sufWidth
+          local curWidth = 0
+          for _, chunk in ipairs(virtText) do
+            local chunkText = chunk[1]
+            local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+            if targetWidth > curWidth + chunkWidth then
+              table.insert(newVirtText, chunk)
+            else
+              chunkText = truncate(chunkText, targetWidth - curWidth)
+              local hlGroup = chunk[2]
+              table.insert(newVirtText, { chunkText, hlGroup })
+              chunkWidth = vim.fn.strdisplaywidth(chunkText)
+              -- str width returned from truncate() may less than 2nd argument, need padding
+              if curWidth + chunkWidth < targetWidth then
+                suffix = suffix .. (" "):rep(targetWidth - curWidth - chunkWidth)
+              end
+              break
+            end
+            curWidth = curWidth + chunkWidth
+          end
+          table.insert(newVirtText, { suffix, "Comment" })
+          return newVirtText
+        end,
+        open_fold_hl_timeout = 150,
+        provider_selector = function(bufnr, filetype, buftype)
+          return { "treesitter", "indent" }
+        end,
+      })
+    end,
+    keys = {
+      {
+        "zR",
+        function()
+          require("ufo").openAllFolds()
+        end,
+        desc = "Open all folds",
       },
-      hide_cursor = true,
-      -- Hide cursor while scrolling
-      stop_eof = true,
-      -- Stop at <EOF> when scrolling downwards
-      respect_scrolloff = false,
-      -- Stop scrolling when the cursor reaches the scrolloff margin of the file
-      cursor_scrolls_alone = true,
-      -- The cursor will keep on scrolling even if the window cannot scroll further
-      duration_multiplier = 1.0,
-      -- Global duration multiplier
-      easing = "linear",
-      -- Default easing function
-      pre_hook = nil,
-      -- Function to run before the scrolling animation starts
-      post_hook = nil,
-      -- Function to run after the scrolling animation ends
-      performance_mode = false,
-      -- Disable "Performance Mode" on all buffers.
-      ignored_events = {
-        -- Events ignored while scrolling
-        "WinScrolled",
-        "CursorMoved",
+      {
+        "zM",
+        function()
+          require("ufo").closeAllFolds()
+        end,
+        desc = "Close all folds",
+      },
+      {
+        "zr",
+        function()
+          require("ufo").openFoldsExceptKinds()
+        end,
+        desc = "Open folds except kinds",
+      },
+      {
+        "zm",
+        function()
+          require("ufo").closeFoldsWith()
+        end,
+        desc = "Close folds except kinds",
+      },
+      {
+        "zp",
+        function()
+          require("ufo.preview"):peekFoldedLinesUnderCursor()
+        end,
+        desc = "Peek fold",
+      },
+    },
+  },
+  {
+    "jaimecgomezz/here.term",
+    keys = {
+      {
+        "<M-;>",
+        function()
+          require("here-term").toggle_terminal()
+        end,
+        mode = { "n", "i", "t" },
+        desc = "Toggle Terminal Here",
+      },
+      {
+        "<M-+>",
+        function()
+          require("here-term").kill_terminal()
+        end,
+        mode = { "n", "i", "t" },
+        desc = "Kill Terminal Here",
       },
     },
   },

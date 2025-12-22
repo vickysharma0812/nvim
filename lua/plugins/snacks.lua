@@ -2,6 +2,7 @@ return {
   { -- bunch of useful ui
     "folke/snacks.nvim",
     lazy = false,
+    priority = 1000,
     opts = {
       dashboard = {
         preset = {
@@ -18,31 +19,74 @@ return {
             { action = ":ene | startinsert", desc = " New File", icon = " ", key = "n" },
             { action = ":lua Snacks.picker.recent()", desc = " Recent Files", icon = " ", key = "r" },
             { action = ":lua Snacks.picker.grep()", desc = " Find Text", icon = " ", key = "g" },
-            {
-              action = ':lua require("persistence").load()',
-              desc = " Restore Session",
-              icon = " ",
-              key = "s",
-            },
+            { desc = " Restore Session", icon = " ", key = "s", section = "session" },
+            { action = ":lua Snacks.picker.projects()", desc = " Projects", icon = " ", key = "p" },
             { action = ":Lazy", desc = " Lazy", icon = "󰒲 ", key = "l" },
             { action = ":qa", desc = " Quit", icon = " ", key = "q" },
           },
         },
       },
+      styles = {
+        zen = {
+          enter = true,
+          fixbuf = false,
+          minimal = false,
+          width = 0.7,
+          height = 0,
+          backdrop = { transparent = false, blend = 40 },
+          keys = { q = false },
+          zindex = 40,
+          wo = {
+            winhighlight = "NormalFloat:Normal",
+          },
+          w = {
+            snacks_main = true,
+          },
+        },
+      },
+      lazygit = {
+        enabled = true,
+      },
       statuscolumn = {
-        enabled = false,
+        enabled = true,
       },
       scroll = {
-        enabled = false,
+        enabled = true,
       },
       notifier = {
         enabled = true,
         top_down = false,
         level = vim.log.levels.INFO,
-        style = "minimal",
+        style = "compact",
+      },
+      zen = {
+        enabled = true,
+        toggles = {
+          dim = false,
+          git_signs = true,
+          mini_diff_signs = true,
+          diagnostics = true,
+          inlay_hints = true,
+        },
+        show = {
+          statusline = false, -- can only be shown when using the global statusline
+          tabline = false,
+        },
+        win = { style = "zen" },
+        zoom = {
+          toggles = {},
+          show = { statusline = false, tabline = false},
+          win = {
+            backdrop = false,
+            width = 0, -- full width
+          },
+        },
       },
       picker = {
         enabled = true,
+        main = {
+          file = false,
+        },
         layout = {
           reverse = false,
           layout = {
@@ -65,15 +109,26 @@ return {
             },
           },
         },
-      sources = {
+        sources = {
+          projects = {
+            -- NOTE: default was trying to load session
+            -- I like to use picker file after selecting project
+            dev = { "~/Dropbox/easifem" },
+            confirm = function(picker, item)
+              picker:close()
+              if item then
+                Snacks.picker.files({ cwd = item.text })
+              end
+              local dir = item.file
+              vim.fn.chdir(dir)
+            end,
+          },
           explorer = {
             auto_close = true,
           },
         },
       },
-      explorer = {
-        enabled = true,
-      },
+      explorer = {enabled =false,},
       image = {
         enabled = false,
         math = {
@@ -84,6 +139,13 @@ return {
           },
         },
       },
+      quickfile = {
+        enabled = false,
+        -- cwd = vim.fn.stdpath("config"),
+        -- filetypes = { "lua", "json", "yaml", "toml" },
+      },
+      indent = { enabled = true },
+      scope = { enabled = true },
     },
     keys = {
       {
@@ -92,13 +154,6 @@ return {
           Snacks.picker.smart()
         end,
         desc = "Smart Find Files",
-      },
-      {
-        "<leader>,",
-        function()
-          Snacks.picker.buffers({ current = false })
-        end,
-        desc = "Buffers",
       },
       {
         "<leader>/",
@@ -121,37 +176,12 @@ return {
         end,
         desc = "Notification History",
       },
-      -- {
-      --   "<leader>e",
-      --   function()
-      --     vim.opt.scrolloff = 0
-      --     Snacks.explorer({ auto_close = true, focus = "list" })
-      --   end,
-      --   desc = "File Explorer",
-      -- },
-      -- {
-      --   "<leader>fo",
-      --   function()
-      --     vim.opt.scrolloff = 0
-      --     Snacks.explorer.reveal({ auto_close = false, focus = "list" })
-      --   end,
-      --   desc = "File Explorer reveal",
-      -- },
       {
         "<leader>fb",
         function()
           Snacks.picker.buffers({ current = false })
         end,
         desc = "Buffers",
-      },
-      {
-        "<leader>fc",
-        function()
-          Snacks.picker.files({
-            cwd = vim.fn.stdpath("config"),
-          })
-        end,
-        desc = "Find Config File",
       },
       {
         "<leader>ff",
@@ -449,6 +479,32 @@ return {
         end,
         desc = "Delete Other Buffers",
       },
+      {
+        "<leader>z",
+        function()
+          Snacks.zen()
+        end,
+        desc = "Zen mode",
+      },
     },
+  },
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    lazy = true,
+    opts = function()
+      local tsc = require("treesitter-context")
+      Snacks.toggle({
+        name = "Treesitter Context",
+        get = tsc.enabled,
+        set = function(state)
+          if state then
+            tsc.enable()
+          else
+            tsc.disable()
+          end
+        end,
+      }):map("<leader>uj")
+      return { mode = "cursor", max_lines = 3 }
+    end,
   },
 }

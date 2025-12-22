@@ -25,7 +25,7 @@ return {
     opts = function()
       local opts = {
         default_format_opts = {
-          timeout_ms = 5000,
+          timeout_ms = 3000,
           async = false, -- not recommended to change
           quiet = false, -- not recommended to change
           lsp_format = "fallback",
@@ -36,16 +36,16 @@ return {
           sh = { "shfmt" },
           toml = { "taplo" },
           typst = { "typstyle", "typstfmt", stop_after_first = true },
-          fortran = { "fprettify", "myfmt", stop_after_first = true },
+          fortran = { "fprettify", stop_after_first = true },
           go = { "goimports" },
           tex = { "latexindent" },
-          markdown = { "dprint", "markdownlint-cli2", "injected" },
-          cmake = { "cmake_format" },
+          markdown = {"markdownlint-cli2", "injected" },
+          cmake = { "gersemi", "cmake_format" },
           json = { "jq", "dprint", stop_after_first = true },
           julia = { lsp_format = "fallback" },
           quarto = { "markdownlint-cli2", "injected" },
+          kdl = { "kdlfmt" },
         },
-        ---@type table<string, conform.FormatterConfigOverride|fun(bufnr: integer): nil|conform.FormatterConfigOverride>
         formatters = {
           injected = {
             options = {
@@ -63,14 +63,31 @@ return {
             },
           },
           fprettify = {
-            args = require("plugins.args.fortran").formatter or {},
-          },
-          myfmt = {
-            command = "fprettify",
-            args = require("plugins.args.fortran").formatter_sub or {},
-            condition = function()
-              return vim.g.use_myfmt
-            end,
+            append_args = {
+              "--line-length",
+              "78",
+              "--indent",
+              "2",
+              "--strict-indent",
+              "--disable-indent-mod",
+              "--whitespace",
+              "2",
+              "--whitespace-comma",
+              "--whitespace-assignment",
+              "--enable-decl",
+              "--whitespace-decl",
+              "--whitespace-relational",
+              "--whitespace-logical",
+              "--whitespace-multdiv",
+              "--whitespace-print",
+              "--whitespace-intrinsics",
+              "--strip-comments",
+              "--case",
+              "2",
+              "2",
+              "2",
+              "2",
+            },
           },
           taplo = {
             args = {
@@ -88,14 +105,6 @@ return {
           latexindent = {
             command = "latexindent",
             stdin = true,
-            args = { "-" },
-          },
-          mdformat = {
-            command = "mdformat",
-            args = { "-" },
-          },
-          cmake_format = {
-            command = "cmake-format",
             args = { "-" },
           },
           stylua = {

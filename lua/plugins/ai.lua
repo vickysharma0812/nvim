@@ -1,6 +1,77 @@
 return {
+
+  ---
+  -- Copilot
+  --
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    build = ":Copilot auth",
+    event = "InsertEnter",
+    enabled = true,
+    config = function()
+      require("copilot").setup({
+        panel = {
+          enabled = true,
+          auto_refresh = false,
+          keymap = {
+            jump_prev = "[[",
+            jump_next = "]]",
+            accept = "<C-CR>", --"<C-CR>"
+            refresh = "gr",
+            open = "<M-o>",
+          },
+          layout = {
+            position = "bottom", -- | top | left | right
+            ratio = 0.4,
+          },
+        },
+        suggestion = {
+          enabled = true,
+          auto_trigger = true,
+          debounce = 75,
+          keymap = {
+            accept = "<M-CR>", --"<M-CR>"
+            accept_word = "<M-w>",
+            accept_line = "<M-l>",
+            next = "<M-]>",
+            prev = "<M-[>",
+            dismiss = "<M-x>",
+          },
+        },
+        filetypes = {
+          fortran = true,
+          go = true,
+          markdown = true,
+          quarto = true,
+          gitcommit = true,
+          yaml = false,
+          help = false,
+          gitrebase = false,
+          hgcommit = false,
+          svn = false,
+          cvs = false,
+          ["."] = false,
+        },
+        copilot_node_command = "node", -- Node.js version must be > 18.x
+        server_opts_overrides = {},
+      })
+    end,
+    keys = {
+      {
+        "<leader>ue",
+        "lua require('copilot.suggestion').toggle_auto_trigger()",
+        desc = "Toggle copilot auto suggestion",
+        nowait = true,
+        remap = false,
+      },
+    },
+  },
+
+  -- Copilot Chat
   {
     "CopilotC-Nvim/CopilotChat.nvim",
+    enabled = false,
     branch = "main",
     cmd = "CopilotChat",
     opts = function()
@@ -60,73 +131,4 @@ return {
       chat.setup(opts)
     end,
   },
-  {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    build = ":Copilot auth",
-    event = "InsertEnter",
-    config = function()
-      require("copilot").setup({
-        panel = {
-          enabled = true,
-          auto_refresh = false,
-          keymap = {
-            jump_prev = "((",
-            jump_next = "))",
-            accept = "<Tab>",
-            refresh = "gr",
-            open = "<M-CR>",
-          },
-          layout = {
-            position = "bottom", -- | top | left | right
-            ratio = 0.4,
-          },
-        },
-        suggestion = {
-          enabled = true,
-          auto_trigger = true,
-          debounce = 75,
-          keymap = {
-            accept = "<Tab>",
-            accept_word = false,
-            accept_line = false,
-            next = "<M-)>",
-            prev = "<M-(>",
-            dismiss = "<C-)>",
-          },
-        },
-        filetypes = {
-          fortran = true,
-          go = true,
-          markdown = true,
-          gitcommit = true,
-          yaml = false,
-          help = false,
-          gitrebase = false,
-          hgcommit = false,
-          svn = false,
-          cvs = false,
-          ["."] = false,
-        },
-        copilot_node_command = "node", -- Node.js version must be > 18.x
-        server_opts_overrides = {},
-      })
-    end,
-  },
-  -- {
-  --   "monkoose/neocodeium",
-  --   event = "VeryLazy",
-  --   config = function()
-  --     local neocodeium = require("neocodeium")
-  --     neocodeium.setup()
-  --     vim.keymap.set("i", "<A-f>", neocodeium.accept)
-  --     vim.keymap.set("i", "<A-w>", neocodeium.accept_word)
-  --     vim.keymap.set("i", "<A-a>", neocodeium.accept_line)
-  --     vim.keymap.set("i", "<A-e>", neocodeium.cycle_or_complete)
-  --     vim.keymap.set("i", "<A-r>", function()
-  --       neocodeium.cycle_or_complete(-1)
-  --     end)
-  --     vim.keymap.set("i", "<A-c>", neocodeium.clear)
-  --   end,
-  -- },
 }

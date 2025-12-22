@@ -1,7 +1,7 @@
 (identifier) @variable
-(string_literal) @string
 (number_literal) @number
 (boolean_literal) @boolean
+(string_literal) @string
 (comment) @comment
 
 [
@@ -37,49 +37,72 @@
  ] @attribute
 
 [
- "endfunction"
- "endprogram"
- "endsubroutine"
- "function"
- "procedure"
- "subroutine"
- ] @keyword.function
-
-[
-  "module"
-  "endmodule"
-  "submodule"
-  "endsubmodule"
   "bind"
   "call"
   "class"
   "continue"
   "cycle"
+  "endenum"
+  "enum"
   "enumerator"
   "equivalence"
   "exit"
   "format"
   "goto"
   "include"
-  "interface"
-  "endinterface"
   "only"
   "parameter"
-  "procedure"
-  "endprocedure"
   "print"
-  "program"
-  "endprogram"
   "read"
   "return"
   "stop"
   "use"
   "write"
-  "enum"
-  "endenum"
-  (default)
-  (procedure_qualifier)
+  "non_overridable"
 ] @keyword
+
+(default)@keyword.default
+
+[
+(procedure_statement)
+(procedure_qualifier)
+] @keyword.function
+
+[
+  (program_statement)
+  (end_program_statement)
+ ] @keyword.program
+
+[
+  (function_statement)
+  (end_function_statement)
+ ] @keyword.function
+
+[
+  (subroutine_statement)
+  (end_subroutine_statement)
+ ] @keyword.subroutine
+
+[
+  (module_statement)
+  (end_module_statement)
+ ] @keyword.module
+
+[
+  (submodule_statement)
+  (end_submodule_statement)
+ ] @keyword.submodule
+
+[
+  (module_procedure_statement)
+  (end_module_procedure_statement)
+ ] @keyword.module_procedure
+
+
+[
+  (interface_statement)
+  (end_interface_statement)
+ ] @keyword.interface
 
 "return" @keyword.return
 
@@ -92,20 +115,23 @@
  "if"
  "then"
  "where"
+ ] @keyword.ifelse
+
+[
   "selectcase"
   "case"
   "endselect"
   "selecttype"
   "classis"
   "typeis"
- ] @conditional
+ ] @keyword.case
 
 [
  "do"
  "enddo"
  "forall"
  "while"
- ] @repeat
+ ] @keyword.repeat
 
 [
  "*"
@@ -119,7 +145,7 @@
  ">="
  "=="
  "/="
- ] @operator
+ ] @keyword.operator
 
 [
  "\\.and\\."
@@ -142,60 +168,60 @@
  "]"
  "<<<"
  ">>>"
- ] @punctuation.bracket
+ ] @keyword.bracket
 
 ;; Delimiter
 [
  "::"
  ","
  "%"
- ] @punctuation.delimiter
+ ] @keyword.delimiter
 
 (parameters
   (identifier) @parameter)
 
 (program_statement
-  (name) @namespace)
-
-(module_statement
-  (name) @namespace)
-
-(submodule_statement
-  (module_name) (name) @namespace)
+  (name) @namespace.program)
 
 (end_program_statement
-  (name) @namespace)
+  (name) @namespace.program)
+
+(module_statement
+  (name) @namespace.module)
 
 (end_module_statement
-  (name) @namespace)
+  (name) @namespace.module)
+
+(submodule_statement
+  (module_name) (name) @namespace.submodule)
 
 (end_submodule_statement
-  (name) @namespace)
+  (name) @namespace.submodule)
 
 (function_statement
-  (name) @function)
+  (name) @namespace.function)
 
 (end_function_statement
-  (name) @function)
+  (name) @namespace.function)
 
 (subroutine_statement
-  (name) @function)
-
-(module_procedure_statement
-  (name) @function)
+  (name) @namespace.subroutine)
 
 (end_subroutine_statement
-  (name) @function)
+  (name) @namespace.subroutine)
+
+(module_procedure_statement
+  (name) @namespace.module_procedure)
 
 (end_module_procedure_statement
-  (name) @function)
+  (name) @namespace.module_procedure)
 
 (subroutine_call
-  (identifier) @function)
+  (identifier) @namespace.subroutine_call)
 
 (keyword_argument
-  name: (identifier) @keyword)
+  name: (identifier) @namespace.keyword_args)
 
 (derived_type_member_expression
-  (type_member) @property)
+  (type_member) @namespace.property)
 

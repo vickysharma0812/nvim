@@ -1,124 +1,103 @@
 ---@diagnostic disable: missing-fields
 return {
+  --
+  -- better quickfix
+  --
   {
-    "mfussenegger/nvim-lint",
-    ft = { "fortran" },
-    opts = {
-      events = { "BufWritePost", "BufReadPost", "InsertLeave" },
-      linters_by_ft = {
-        fish = { "fish" },
-      },
-      ---@type table<string,table>
-      linters = {},
-    },
-    config = function(_, opts)
-      local M = {}
-
-      local lint = require("lint")
-      for name, linter in pairs(opts.linters) do
-        if type(linter) == "table" and type(lint.linters[name]) == "table" then
-          lint.linters[name] = vim.tbl_deep_extend("force", lint.linters[name], linter)
-          if type(linter.prepend_args) == "table" then
-            lint.linters[name].args = lint.linters[name].args or {}
-            vim.list_extend(lint.linters[name].args, linter.prepend_args)
-          end
-        else
-          lint.linters[name] = linter
-        end
-      end
-      lint.linters_by_ft = opts.linters_by_ft
-
-      function M.debounce(ms, fn)
-        local timer = vim.uv.new_timer()
-        return function(...)
-          local argv = { ... }
-          timer:start(ms, 0, function()
-            timer:stop()
-            vim.schedule_wrap(fn)(unpack(argv))
-          end)
-        end
-      end
-
-      function M.lint()
-        local names = lint._resolve_linter_by_ft(vim.bo.filetype)
-
-        names = vim.list_extend({}, names)
-
-        if #names == 0 then
-          vim.list_extend(names, lint.linters_by_ft["_"] or {})
-        end
-
-        vim.list_extend(names, lint.linters_by_ft["*"] or {})
-
-        local ctx = { filename = vim.api.nvim_buf_get_name(0) }
-        ctx.dirname = vim.fn.fnamemodify(ctx.filename, ":h")
-        names = vim.tbl_filter(function(name)
-          local linter = lint.linters[name]
-          if not linter then
-            vim.notify("Linter is not found")
-          end
-          return linter and not (type(linter) == "table" and linter.condition and not linter.condition(ctx))
-        end, names)
-
-        if #names > 0 then
-          lint.try_lint(names)
-        end
-      end
-
-      vim.api.nvim_create_autocmd(opts.events, {
-        group = vim.api.nvim_create_augroup("nvim-lint", { clear = true }),
-        callback = M.debounce(100, M.lint),
+    "kevinhwang91/nvim-bqf",
+    event = { "BufReadPost", "BufNewFile" },
+    ft = "qf",
+    config = function()
+      require("bqf").setup({
+        auto_enable = true,
+        auto_resize_height = true,
       })
     end,
   },
 
+  --
   -- fortran linting
+  --
+
   {
     "mfussenegger/nvim-lint",
+    events = { "BufWritePost", "BufReadPost", "InsertLeave" },
     config = function()
       local lint = require("lint")
-      local errorformat =
-        "%-Ggfortran%.%#,%A%f:%l:%c:,%A%f:%l:,%C,%C%p%*[0123456789^],%Z%trror:\\ %m,,%Z%tarning:\\ %m,%C%.%#,%-G%.%#"
+
+      -- this errorformat works well
+      -- local errorformat =
+      --   "%-Ggfortran%.%#,%A%f:%l:%c:,%A%f:%l:,%C,%C%p%*[0123456789^],%Z%trror:\\ %m,,%Z%tarning:\\ %m,%C%.%#,%-G%.%#"
+
+      -- this error format also works well, it is corrected by AI from the previous one
+      local errorformat = "%-Ggfortran%.%#," -- Ignore lines starting with gfortran
+        .. "%A%f:%l:%c:," -- Start of multi-line message with column
+        .. "%A%f:%l:," -- Start of multi-line message without column
+        .. "%C," -- Empty continuation line
+        .. "%C%p%*[0123456789^]," -- Continuation line with pointer (^)
+        .. "%Z%trror:\\ %m," -- End of error message
+        .. "%Z%tarning:\\ %m," -- End of warning message
+        .. "%Z%tote:\\ %m," -- Add support for notes
+        .. "%C%.%#," -- Any other continuation line
+        .. "%-G%.%#" -- Ignore everything else
+
       lint.linters.gfortran = {
         name = "gfortran",
         cmd = "gfortran",
+        ignore_exitcode = true, -- set this to true if you don't want to show error messages
+        stream = "both", -- set this to "stdout" if the output is not an error, for example with luac
+        parser = require("lint.parser").from_errorformat(errorformat),
         args = {
           "-c",
           "-fsyntax-only",
           "-cpp",
           -- "-fdiagnostics-plain-output",
+          "-fdiagnostics-show-caret",
+          "-fdiagnostics-color=never",
           "-Wunused-variable",
           "-Wunused-dummy-argument",
+          "-Wno-c-binding-type",
           "-Wall",
+          -- "-I",
+          -- os.getenv("HOME") .. "/.easifem/easifem/lint/include/",
           "-I",
-          os.getenv("HOME") .. "/.easifem/easifem/lint/include/",
+          os.getenv("HOME") .. "/.easifem/easifem/build/base/include/",
           "-I",
-          -- os.getenv("HOME") .. "/.easifem/install/arpack/include/arpack/",
-          os.getenv("HOME") .. "/.easifem/install/base/include/",
+          os.getenv("HOME") .. "/.easifem/easifem/build/classes/include/",
           "-I",
-          os.getenv("HOME") .. "/.easifem/install/classes/include/",
+          os.getenv("HOME") .. "/.easifem/easifem/install/tomlf/include/toml-f/modules/",
           -- os.getenv("HOME") .. "/.easifem/install/fftw/include/",
           -- os.getenv("HOME") .. "/.easifem/install/gmsh/include/",
           -- os.getenv("HOME") .. "/.easifem/install/lapack95/include/",
           -- os.getenv("HOME") .. "/.easifem/install/lis/include/",
           -- os.getenv("HOME") .. "/.easifem/install/sparsekit/include/",
           -- os.getenv("HOME") .. "/.easifem/install/superlu/include/",
-          "-I",
-          os.getenv("HOME") .. "/.easifem/install/kernels/include/",
-          "-I",
-          os.getenv("HOME") .. "/.easifem/install/tomlf/include/toml-f/modules/",
           "-J",
-          os.getenv("HOME") .. "/.easifem/lint/include/",
+          os.getenv("HOME") .. "/.easifem/easifem/lint/include/",
           "-DDEBUG_VER",
+          "-DUSE_SuperLU",
         }, -- args to pass to the linter
-        ignore_exitcode = true, -- set this to true if you don't want to show error messages
-        stream = "both", -- set this to "stdout" if the output is not an error, for example with luac
-        parser = require("lint.parser").from_errorformat(errorformat),
       }
-      lint.linters_by_ft = { fortran = { "gfortran" } }
+      lint.linters_by_ft = {
+        fortran = { "gfortran" },
+      }
     end,
   },
 
+  --
+  -- fortran linting
+  --
+  {
+    "mfussenegger/nvim-lint",
+    -- optional = true,
+    opts = {
+      linters_by_ft = {
+        fortran = { "fortitude" },
+      },
+    },
+  },
+
+  --
   -- markdown linting
   --
   {
@@ -131,40 +110,79 @@ return {
       },
     },
   },
+
+  --
+  -- latex linting
+  --
+  {
+    "mfussenegger/nvim-lint",
+    optional = true,
+    opts = {
+      linters_by_ft = {
+        tex = { "chktex" },
+        latex = { "chktex" },
+        bib = { "chktex" },
+      },
+    },
+  },
+
   {
     "rachartier/tiny-inline-diagnostic.nvim",
+    enabled = true,
     event = "VeryLazy",
+    priority = 1000,
     config = function()
+      vim.diagnostic.config({ virtual_text = false })
+
       require("tiny-inline-diagnostic").setup({
-        signs = {
-          left = "",
-          right = "",
-          diag = "●",
-          arrow = "    ",
-          up_arrow = "    ",
-          vertical = " │",
-          vertical_end = " └",
-        },
+        preset = "modern",
+        transparent_bg = false, -- Set the background of the diagnostic to transparent
+        transparent_cursorline = false, -- Set the background of the cursorline to transparent (only one the first diagnostic)
+
         hi = {
-          error = "DiagnosticError",
-          warn = "DiagnosticWarn",
-          info = "DiagnosticInfo",
-          hint = "DiagnosticHint",
-          arrow = "NonText",
+          error = "DiagnosticError", -- Highlight group for error messages
+          warn = "DiagnosticWarn", -- Highlight group for warning messages
+          info = "DiagnosticInfo", -- Highlight group for informational messages
+          hint = "DiagnosticHint", -- Highlight group for hint or suggestion messages
+          arrow = "NonText", -- Highlight group for diagnostic arrows
+
+          -- Background color for diagnostics
+          -- Can be a highlight group or a hexadecimal color (#RRGGBB)
           background = "CursorLine",
+
+          -- Color blending option for the diagnostic background
+          -- Use "None" or a hexadecimal color (#RRGGBB) to blend with another color
           mixing_color = "None",
         },
-        blend = {
-          factor = 0.27,
-        },
+
         options = {
-          softwrap = 15,
+
+          show_source = {
+            enabled = false,
+            if_many = false,
+          },
+
+          use_icons_from_diagnostic = false,
+
+          softwrap = 30,
+
+          multilines = {
+            enabled = true,
+            always_show = true,
+          },
+
           overflow = {
             mode = "wrap",
+            padding = 0,
           },
+
           break_line = {
             enabled = false,
             after = 30,
+          },
+          virt_texts = {
+            -- Priority for virtual text display
+            priority = 4056,
           },
         },
       })

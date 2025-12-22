@@ -1,4 +1,23 @@
 return {
+  {
+    "tomiis4/BufferTabs.nvim",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons", -- optional
+    },
+    lazy =true,
+    config = function()
+      require("buffertabs").setup({
+        -- config
+      })
+    end,
+    keys = {
+      {
+        "<leader>ui",
+        "<cmd>BufferTabsToggle<cr>",
+        desc = "Toggle Buffer Tabs",
+      },
+    },
+  },
   -- Provides Nerd Font 1 icons (glyphs)
   -- for use by Neovim plugins:Provides Nerd Font 1 icons
   -- (glyphs) for use by Neovim plugins:
@@ -18,49 +37,6 @@ return {
     end,
   },
 
-  -- A small Neovim plugin to improve the deletion of buffers.
-  {
-    "ojroques/nvim-bufdel",
-  },
-
-  -- Similar to indent-blankline, this plugin can highlight the indent line,
-  -- and highlight the code chunk according to the current cursor position.
-  {
-    "shellRaining/hlchunk.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    config = function()
-      require("hlchunk").setup({
-        chunk = {
-          enable = true,
-          chars = {
-            horizontal_line = "─",
-            vertical_line = "│",
-            left_top = "┌",
-            left_bottom = "└",
-            right_arrow = "─",
-          },
-          style = {
-            "#00ffff",
-            "#c21f30",
-          },
-          exclude_filetypes = {
-            toml = true,
-          },
-        },
-        indent = {
-          enable = false,
-        },
-        line_num = {
-          enable = true,
-          style = "#b30eec",
-          use_treesitter = true,
-          exclude_filetypes = {
-            toml = true,
-          },
-        },
-      })
-    end,
-  },
   -- Highly experimental plugin that completely replaces the UI for messages,
   -- cmdline and the popupmenu.
   {
@@ -68,70 +44,56 @@ return {
     event = "VeryLazy",
     dependencies = {
       "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
     },
     opts = {
+      lsp = {
+        -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+        override = {
+          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+          ["vim.lsp.util.stylize_markdown"] = true,
+        },
+      },
       cmdline = {
         enabled = true,
-        view = "cmdline",
+        view = "cmdline_popup",
       },
       presets = {
-        bottom_search = true,
+        bottom_search = false,
         command_palette = true,
         long_message_to_split = true,
         inc_rename = false,
         lsp_doc_border = true,
       },
-    },
-  },
-
-  -- Automatically expand width of the current window;
-  -- Maximizes and restores the current window.
-  {
-    "anuvyklack/windows.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      "anuvyklack/middleclass",
-      "anuvyklack/animation.nvim",
-    },
-    config = function()
-      vim.o.winwidth = 10
-      vim.o.winminwidth = 10
-      vim.o.equalalways = false
-      require("windows").setup({
-        ignore = {
-          buftype = { "quickfix", "terminal" },
-          filetype = { "NvimTree", "neo-tree", "undotree", "gundo" },
+      views = {
+        cmdline_popup = {
+          position = {
+            row = "50%",
+            col = "50%",
+          },
+          size = {
+            width = 60,
+            height = "auto",
+          },
         },
-        animation = {
-          enable = false,
+        popupmenu = {
+          relative = "editor",
+          position = {
+            row = 8,
+            col = "50%",
+          },
+          size = {
+            width = 60,
+            height = 10,
+          },
+          border = {
+            style = "rounded",
+            padding = { 0, 1 },
+          },
+          win_options = {
+            winhighlight = { Normal = "Normal", FloatBorder = "DiagnosticInfo" },
+          },
         },
-      })
-    end,
-    keys = {
-      {
-        "<leader>wt",
-        "<cmd>WindowsToggleAutowidth<CR>",
-        desc = "Toggle Autowidth",
-      },
-      {
-        "<C-w>z",
-        "<cmd>WindowsMaximize<CR>",
-        desc = "WindowsMaximize",
-      },
-      {
-        "<C-w>=",
-        "<cmd>WindowsEqualize<CR>",
-        desc = "WindowsEqualize",
-      },
-      {
-        "<C-w>_",
-        "<cmd>WindowsMaximizeVertically<CR>",
-        desc = "WindowsMaximizeVertically",
-      },
-      {
-        "<C-w>|",
-        "<cmd>WindowsMaximizeHorizontally<CR>",
-        desc = "WindowsMaximizeHorizontally",
       },
     },
   },

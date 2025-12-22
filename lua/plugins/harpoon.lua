@@ -16,15 +16,15 @@ return {
         mode = { "n" },
         desc = "Mark current buffer",
       },
-      {
-        "<leader>a",
-        function()
-          local harpoon = require("harpoon")
-          harpoon.ui:toggle_quick_menu(harpoon:list())
-        end,
-        mode = { "n" },
-        desc = "Toggle quick menu for harpoon",
-      },
+      -- {
+      --   "<leader>a",
+      --   function()
+      --     local harpoon = require("harpoon")
+      --     harpoon.ui:toggle_quick_menu(harpoon:list())
+      --   end,
+      --   mode = { "n" },
+      --   desc = "Toggle quick menu for harpoon",
+      -- },
       {
         "<leader>1",
         function()
@@ -59,6 +59,13 @@ return {
           require("harpoon"):list():select(5)
         end,
         desc = "harpoon to file 5",
+      },
+      {
+        "<leader>6",
+        function()
+          require("harpoon"):list():select(6)
+        end,
+        desc = "harpoon to file 6",
       },
       {
         "<leader>ha",
@@ -103,60 +110,6 @@ return {
           require("harpoon"):list():prev()
         end,
         desc = "harpoon prev file",
-        nowait = true,
-        remap = false,
-      },
-      {
-        "<leader>h1",
-        function()
-          require("harpoon"):list():select(1)
-        end,
-        desc = "harpoon file 1",
-        nowait = true,
-        remap = false,
-      },
-      {
-        "<leader>h2",
-        function()
-          require("harpoon"):list():select(2)
-        end,
-        desc = "harpoon file 2",
-        nowait = true,
-        remap = false,
-      },
-      {
-        "<leader>h3",
-        function()
-          require("harpoon"):list():select(3)
-        end,
-        desc = "harpoon file 3",
-        nowait = true,
-        remap = false,
-      },
-      {
-        "<leader>h4",
-        function()
-          require("harpoon"):list():select(4)
-        end,
-        desc = "harpoon file 4",
-        nowait = true,
-        remap = false,
-      },
-      {
-        "<leader>h5",
-        function()
-          require("harpoon"):list():select(5)
-        end,
-        desc = "harpoon file 5",
-        nowait = true,
-        remap = false,
-      },
-      {
-        "<leader>h6",
-        function()
-          require("harpoon"):list():select(6)
-        end,
-        desc = "harpoon file 6",
         nowait = true,
         remap = false,
       },

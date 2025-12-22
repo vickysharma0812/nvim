@@ -1,6 +1,7 @@
 return {
   { -- project auto management
     "ahmedkhalf/project.nvim",
+    enabled = false,
     event = "VeryLazy",
     opts = {
       active = true,
@@ -58,4 +59,3 @@ return {
     },
   },
 }
-
