@@ -39,7 +39,7 @@ return {
           fortran = { "fprettify", stop_after_first = true },
           go = { "goimports" },
           tex = { "latexindent" },
-          markdown = { "dprint", "markdownlint-cli2", "injected" },
+          markdown = {"markdownlint-cli2", "injected" },
           cmake = { "gersemi", "cmake_format" },
           json = { "jq", "dprint", stop_after_first = true },
           julia = { lsp_format = "fallback" },
