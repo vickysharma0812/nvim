@@ -1,3 +1,5 @@
+---@diagnostic disable: undefined-global
+---
 if vim.g.vscode then
   return
 elseif vim.g.neovide then
@@ -12,13 +14,10 @@ elseif vim.g.neovide then
 
   vim.g.neovide_cursor_animation_length = 0.150
   vim.g.neovide_cursor_trail_size = 1.0 -- 0 to 1
-
   vim.g.neovide_cursor_antialiasing = true
-
   vim.g.neovide_cursor_animate_in_insert_mode = true
-
-  vim.g.neovide_cursor_vfx_mode = "railgun" 
-  -- possible values: railgun, ripple, sonicboom, wireframe, torpedo, 
+  vim.g.neovide_cursor_vfx_mode = "railgun"
+  -- possible values: railgun, ripple, sonicboom, wireframe, torpedo,
   -- dot, beacon, pixiedust
 end
 

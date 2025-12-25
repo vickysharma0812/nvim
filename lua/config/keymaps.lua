@@ -1,11 +1,9 @@
+---@diagnostic disable: undefined-global
+---
 local wk = require("which-key")
 
 local function map(mode, lhs, rhs, opts)
   vim.keymap.set(mode, lhs, rhs, opts)
-end
-
-local function delMap(mode, lhs)
-  vim.keymap.del(mode, lhs)
 end
 
 map("i", "jk", "<esc>")

@@ -5,7 +5,7 @@ return {
   {
     "olimorris/codecompanion.nvim",
     lazy = false,
-    enabled = false,
+    enabled = true,
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
@@ -37,19 +37,19 @@ return {
           adapter = "copilot",
         },
       },
-      adapters = {
-        http = {
-          copilot = function()
-            return require("codecompanion.adapters").extend("copilot", {
-              schema = {
-                model = {
-                  default = "claude-3.7-sonnet",
-                },
-              },
-            })
-          end,
-        },
-      },
+      -- adapters = {
+      --   http = {
+      --     copilot = function()
+      --       return require("codecompanion.adapters").extend("copilot", {
+      --         schema = {
+      --           model = {
+      --             default = "claude-4-sonnet",
+      --           },
+      --         },
+      --       })
+      --     end,
+      --   },
+      -- },
       display = {
         chat = {
           auto_scroll = true,

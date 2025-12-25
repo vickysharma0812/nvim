@@ -78,7 +78,6 @@ return {
       -- cmd = require("plugins.args.fortran").lsp_cmd or {},
       cmd = {
         "fortls",
-        "--lowercase_intrinsics",
         "--notify_init",
         "--source_dirs",
         os.getenv("dropbox") .. "/easifem/base/src/**",
