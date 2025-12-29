@@ -1,3 +1,5 @@
+---@diagnostic disable: undefined-global
+---
 return {
   "neovim/nvim-lspconfig",
   dependencies = {
@@ -15,10 +17,12 @@ return {
     })
     require("mason-tool-installer").setup({
       ensure_installed = {
+        "clangd",
         "cmakelang",
         "dprint",
         "fortls",
         "fprettify",
+        "gersemi",
         "julials",
         "jupytext",
         "lua_ls",
@@ -30,7 +34,6 @@ return {
         "taplo",
         "texlab",
         "tinymist",
-        "gersemi",
       },
     })
 
@@ -41,6 +44,13 @@ return {
 
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = vim.tbl_deep_extend("force", capabilities, require("blink.cmp").get_lsp_capabilities())
+
+    vim.lsp.config("clangd", {
+      capabilities = capabilities,
+      filetypes = { "c", "cpp" },
+      root_dir = require("lspconfig.util").root_pattern(".git", ".marksman.toml", "_quarto.yml"),
+    })
+    vim.lsp.enable("clangd")
 
     vim.lsp.config("marksman", {
       capabilities = capabilities,

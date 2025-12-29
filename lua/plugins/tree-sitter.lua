@@ -32,6 +32,8 @@ return {
         "vim",
         "vimdoc",
         "yaml",
+        "cpp",
+        "c",
       },
       auto_install = true,
       indent = {
