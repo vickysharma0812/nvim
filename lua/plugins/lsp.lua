@@ -18,9 +18,11 @@ return {
     require("mason-tool-installer").setup({
       ensure_installed = {
         "clangd",
+        "clang-format",
         "cmakelang",
         "dprint",
         "fortls",
+        "fortitude",
         "fprettify",
         "gersemi",
         "julials",

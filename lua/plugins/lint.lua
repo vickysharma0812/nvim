@@ -1,4 +1,5 @@
 ---@diagnostic disable: missing-fields
+---@diagnostic disable: undefined-global
 return {
   --
   -- better quickfix
@@ -18,7 +19,6 @@ return {
   --
   -- fortran linting
   --
-
   {
     "mfussenegger/nvim-lint",
     events = { "BufWritePost", "BufReadPost", "InsertLeave" },
@@ -89,12 +89,46 @@ return {
   --
   {
     "mfussenegger/nvim-lint",
-    -- optional = true,
+    optional = true,
     opts = {
       linters_by_ft = {
         fortran = { "fortitude" },
       },
     },
+  },
+
+  --
+  -- clang linting
+  --
+  {
+    "mfussenegger/nvim-lint",
+    events = { "BufWritePost", "BufReadPost", "InsertLeave" },
+
+    config = function()
+      local lint = require("lint")
+      local pattern = [[([^:]*):(%d+):(%d+): (%w+): ([^[]+)]]
+      local groups = { "file", "lnum", "col", "severity", "message" }
+
+      local severity_map = {
+        ["error"] = vim.diagnostic.severity.ERROR,
+        ["warning"] = vim.diagnostic.severity.WARN,
+        ["information"] = vim.diagnostic.severity.INFO,
+        ["hint"] = vim.diagnostic.severity.HINT,
+        ["note"] = vim.diagnostic.severity.HINT,
+      }
+
+      lint.linters.clangtidy = {
+        cmd = "clang-tidy",
+        stdin = false,
+        args = { "--quiet" },
+        ignore_exitcode = true,
+        parser = require("lint.parser").from_pattern(pattern, groups, severity_map, { ["source"] = "clang-tidy" }),
+      }
+
+      lint.linters_by_ft = {
+        c = { "clangtidy" },
+      }
+    end,
   },
 
   --
