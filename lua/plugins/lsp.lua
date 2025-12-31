@@ -47,6 +47,13 @@ return {
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = vim.tbl_deep_extend("force", capabilities, require("blink.cmp").get_lsp_capabilities())
 
+    vim.lsp.config("sourcekit", {
+      capabilities = capabilities,
+      filetypes = { "swift" },
+      -- root_dir = require("lspconfig.util").root_pattern(".git", ".marksman.toml", "_quarto.yml"),
+    })
+    vim.lsp.enable("sourcekit")
+
     vim.lsp.config("clangd", {
       capabilities = capabilities,
       filetypes = { "c", "cpp" },
