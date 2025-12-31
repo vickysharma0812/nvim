@@ -26,18 +26,18 @@ return {
           end,
         },
       })
-      require("mini.files").setup({})
+      -- require("mini.files").setup({})
     end,
-    keys = {
-      {
-        "<leader>e",
-        function(...)
-          if not MiniFiles.close() then
-            MiniFiles.open(...)
-          end
-        end,
-        desc = "File explorer using mini",
-      },
-    },
+    -- keys = {
+    --   -- {
+    --   --   "<leader>e",
+    --   --   function(...)
+    --   --     if not MiniFiles.close() then
+    --   --       MiniFiles.open(...)
+    --   --     end
+    --   --   end,
+    --   --   desc = "File explorer using mini",
+    --   -- },
+    -- },
   },
 }
