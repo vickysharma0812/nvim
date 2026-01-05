@@ -102,6 +102,7 @@ return {
         os.getenv("dropbox") .. "/easifem/base/src/**",
         os.getenv("dropbox") .. "/easifem/classes/src/**",
         os.getenv("dropbox") .. "/easifem/diffusion/src/**",
+        os.getenv("dropbox") .. "/easifem/seepage/src/**",
         os.getenv("dropbox") .. "/easifem/elasticity/src/**",
         os.getenv("dropbox") .. "/easifem/acoustic/src/**",
         os.getenv("HOME") .. "/.easifem/easifem/src/tomlf/src/**",

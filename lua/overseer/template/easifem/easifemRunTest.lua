@@ -10,7 +10,7 @@ return {
       --   hidden = true,
       -- },
       cmd = { "easifem" },
-      args = { "run", file, "--rebuild" },
+      args = { "run", file, "--rebuild", "-q" },
       name = "easifemRunTest",
       cwd = vim.fn.expand("%:h"), -- "/tmp",
       env = {},

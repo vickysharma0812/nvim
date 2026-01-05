@@ -66,12 +66,6 @@ return {
           os.getenv("HOME") .. "/.easifem/easifem/build/classes/include/",
           "-I",
           os.getenv("HOME") .. "/.easifem/easifem/install/tomlf/include/toml-f/modules/",
-          -- os.getenv("HOME") .. "/.easifem/install/fftw/include/",
-          -- os.getenv("HOME") .. "/.easifem/install/gmsh/include/",
-          -- os.getenv("HOME") .. "/.easifem/install/lapack95/include/",
-          -- os.getenv("HOME") .. "/.easifem/install/lis/include/",
-          -- os.getenv("HOME") .. "/.easifem/install/sparsekit/include/",
-          -- os.getenv("HOME") .. "/.easifem/install/superlu/include/",
           "-J",
           os.getenv("HOME") .. "/.easifem/easifem/lint/include/",
           "-DDEBUG_VER",
@@ -85,17 +79,63 @@ return {
   },
 
   --
-  -- fortran linting
+  -- fortran linting using fortitude
   --
-  {
-    "mfussenegger/nvim-lint",
-    optional = true,
-    opts = {
-      linters_by_ft = {
-        fortran = { "fortitude" },
-      },
-    },
-  },
+  -- {
+  --   "mfussenegger/nvim-lint",
+  --   events = { "BufWritePost", "BufReadPost", "InsertLeave" },
+  --
+  --   config = function()
+  --     local severity_map = {
+  --       ["E"] = vim.diagnostic.severity.ERROR,
+  --       ["C"] = vim.diagnostic.severity.WARN,
+  --       ["OB"] = vim.diagnostic.severity.INFO,
+  --       ["MOD"] = vim.diagnostic.severity.INFO,
+  --       ["S"] = vim.diagnostic.severity.INFO,
+  --       ["PORT"] = vim.diagnostic.severity.INFO,
+  --       ["FORT"] = vim.diagnostic.severity.INFO,
+  --     }
+  --
+  --     lint.linters.fortitude = {
+  --       cmd = "fortitude",
+  --       stdin = false,
+  --       append_fname = true,
+  --       args = { "check", "--output-format", "json" },
+  --       stream = nil,
+  --       ignore_exitcode = true,
+  --       env = nil,
+  --       parser = function(output, bufnr)
+  --         if output == nil or output:match("^%s*$") ~= nil then
+  --           return {}
+  --         end
+  --
+  --         local output_decoded = vim.json.decode(output)
+  --
+  --         local diagnostics = {}
+  --
+  --         for _, item in ipairs(output_decoded) do
+  --           table.insert(diagnostics, {
+  --             bufnr = bufnr,
+  --             lnum = item.location.row - 1,
+  --             end_lnum = item.end_location.row - 1,
+  --             col = item.location.column - 1,
+  --             end_col = item.end_location.column - 1,
+  --             severity = severity_map[item.code:match("^(%a+)(%d+)")] or vim.diagnostic.severity.WARN,
+  --             message = item.message,
+  --             source = "fortitude",
+  --             code = item.code,
+  --           })
+  --         end
+  --
+  --         return diagnostics
+  --       end,
+  --     }
+  --
+  --     lint.linters_by_ft = {
+  --       fortran = { "fortitude" },
+  --     }
+  --   end,
+  -- },
 
   --
   -- clang linting

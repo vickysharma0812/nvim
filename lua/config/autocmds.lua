@@ -1,3 +1,5 @@
+---@diagnostic disable: missing-fields
+---@diagnostic disable: undefined-global
 local function augroup(name)
   return vim.api.nvim_create_augroup("PengVim_" .. name, { clear = true })
 end
@@ -174,7 +176,7 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.bo[event.buf].buflisted = false
     vim.schedule(function()
       vim.keymap.set("n", "q", function()
-      -- vim.keymap.set("n", "<esc>", function()
+        -- vim.keymap.set("n", "<esc>", function()
         vim.cmd("close")
         pcall(vim.api.nvim_buf_delete, event.buf, { force = true })
       end, {
@@ -186,4 +188,17 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- mini.files related
+-- Installing Swift Treesitter from the here
+--
+vim.api.nvim_create_autocmd("User", {
+  pattern = "TSUpdate",
+  callback = function()
+    require("nvim-treesitter.parsers").swift = {
+      install_info = {
+        url = "~/Documents/softwares/Swift/tree-sitter-swift/",
+        branch = "main", -- only needed if different from default branch
+        queries = "queries", -- also install queries from given directory
+      },
+    }
+  end,
+})
