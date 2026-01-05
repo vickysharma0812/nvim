@@ -8,15 +8,26 @@ elseif vim.g.neovide then
   -- vim.opt.linespace = 0
   vim.g.neovide_position_animation_length = 0.15
   vim.g.neovide_scroll_animation_length = 0.3
-  vim.g.neovide_fullscreen = true
-  vim.g.neovide_macos_simple_fullscreen = true
+  vim.g.neovide_fullscreen = false
+  vim.g.neovide_macos_simple_fullscreen = false
   vim.g.neovide_input_macos_option_key_is_meta = "only_left"
 
+  vim.g.neovide_padding_top = 0
+  vim.g.neovide_padding_bottom = 0
+  vim.g.neovide_padding_right = 0
+  vim.g.neovide_padding_left = 0
+
+  vim.g.neovide_progress_bar_enabled = true
+  vim.g.neovide_progress_bar_height = 5.0
+  vim.g.neovide_progress_bar_animation_speed = 200.0
+  vim.g.neovide_progress_bar_hide_delay = 0.2
+
   vim.g.neovide_cursor_animation_length = 0.150
+  vim.g.neovide_cursor_short_animation_length = 0.04
   vim.g.neovide_cursor_trail_size = 1.0 -- 0 to 1
   vim.g.neovide_cursor_antialiasing = true
   vim.g.neovide_cursor_animate_in_insert_mode = true
-  vim.g.neovide_cursor_vfx_mode = "railgun"
+  vim.g.neovide_cursor_vfx_mode = "torpedo"
   -- possible values: railgun, ripple, sonicboom, wireframe, torpedo,
   -- dot, beacon, pixiedust
 end
