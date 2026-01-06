@@ -17,36 +17,34 @@ return {
   },
 
   --
-  -- fortran linting
+  -- linting using nvim-lint
   --
   {
     "mfussenegger/nvim-lint",
     events = { "BufWritePost", "BufReadPost", "InsertLeave" },
     config = function()
       local lint = require("lint")
-
-      -- this errorformat works well
-      -- local errorformat =
-      --   "%-Ggfortran%.%#,%A%f:%l:%c:,%A%f:%l:,%C,%C%p%*[0123456789^],%Z%trror:\\ %m,,%Z%tarning:\\ %m,%C%.%#,%-G%.%#"
-
-      -- this error format also works well, it is corrected by AI from the previous one
-      local errorformat = "%-Ggfortran%.%#," -- Ignore lines starting with gfortran
-        .. "%A%f:%l:%c:," -- Start of multi-line message with column
-        .. "%A%f:%l:," -- Start of multi-line message without column
-        .. "%C," -- Empty continuation line
-        .. "%C%p%*[0123456789^]," -- Continuation line with pointer (^)
-        .. "%Z%trror:\\ %m," -- End of error message
-        .. "%Z%tarning:\\ %m," -- End of warning message
-        .. "%Z%tote:\\ %m," -- Add support for notes
-        .. "%C%.%#," -- Any other continuation line
-        .. "%-G%.%#" -- Ignore everything else
+      -- pattern explanation:
+      -- %A = Start of multi-line message
+      -- %C = Continuation line
+      -- %Z = End of multi-line message
+      -- %-G = Ignore this line completely
+      -- %f = Filename
+      -- %l = Line number
+      -- %c = Column number
+      -- %t = Error type (E/W/N)
+      -- %m = Error message
+      -- %p = Pointer line (shows where error occurs with ^)
 
       lint.linters.gfortran = {
         name = "gfortran",
         cmd = "gfortran",
         ignore_exitcode = true, -- set this to true if you don't want to show error messages
         stream = "both", -- set this to "stdout" if the output is not an error, for example with luac
-        parser = require("lint.parser").from_errorformat(errorformat),
+        parser = require("lint.parser").from_errorformat(
+          "%-Ggfortran%.%#,%A%f:%l:%c:,%A%f:%l:,%C,%C%p%*[0123456789^],%Z%trror:\\ %m,%Z%tarning:\\ %m,%Z%tote:\\ %m,%C%.%#,%-G%.%#",
+          {}
+        ),
         args = {
           "-c",
           "-fsyntax-only",
@@ -58,22 +56,29 @@ return {
           "-Wunused-dummy-argument",
           "-Wno-c-binding-type",
           "-Wall",
-          -- "-I",
-          -- os.getenv("HOME") .. "/.easifem/easifem/lint/include/",
           "-I",
           os.getenv("HOME") .. "/.easifem/easifem/build/base/include/",
           "-I",
           os.getenv("HOME") .. "/.easifem/easifem/build/classes/include/",
+          "-I",
+          os.getenv("HOME") .. "/.easifem/easifem/build/diffusion/include/",
+          "-I",
+          os.getenv("HOME") .. "/.easifem/easifem/build/seepage/include/",
           "-I",
           os.getenv("HOME") .. "/.easifem/easifem/install/tomlf/include/toml-f/modules/",
           "-J",
           os.getenv("HOME") .. "/.easifem/easifem/lint/include/",
           "-DDEBUG_VER",
           "-DUSE_SuperLU",
-        }, -- args to pass to the linter
+        },
       }
+      -- lint.linters["markdownlint-cli2"] = {
+      --   args = { "--config", os.getenv("HOME") .. "/.markdownlint-cli2.yaml" },
+      -- }
       lint.linters_by_ft = {
-        fortran = { "gfortran" },
+        fortran = { "gfortran", "fortitude" },
+        markdown = { "markdownlint-cli2" },
+        fish = { "fish" },
       }
     end,
   },
@@ -140,50 +145,36 @@ return {
   --
   -- clang linting
   --
-  {
-    "mfussenegger/nvim-lint",
-    events = { "BufWritePost", "BufReadPost", "InsertLeave" },
-
-    config = function()
-      local lint = require("lint")
-      local pattern = [[([^:]*):(%d+):(%d+): (%w+): ([^[]+)]]
-      local groups = { "file", "lnum", "col", "severity", "message" }
-
-      local severity_map = {
-        ["error"] = vim.diagnostic.severity.ERROR,
-        ["warning"] = vim.diagnostic.severity.WARN,
-        ["information"] = vim.diagnostic.severity.INFO,
-        ["hint"] = vim.diagnostic.severity.HINT,
-        ["note"] = vim.diagnostic.severity.HINT,
-      }
-
-      lint.linters.clangtidy = {
-        cmd = "clang-tidy",
-        stdin = false,
-        args = { "--quiet" },
-        ignore_exitcode = true,
-        parser = require("lint.parser").from_pattern(pattern, groups, severity_map, { ["source"] = "clang-tidy" }),
-      }
-
-      lint.linters_by_ft = {
-        c = { "clangtidy" },
-      }
-    end,
-  },
-
+  -- {
+  --   "mfussenegger/nvim-lint",
+  --   events = { "BufWritePost", "BufReadPost", "InsertLeave" },
   --
-  -- markdown linting
+  --   config = function()
+  --     local lint = require("lint")
+  --     local pattern = [[([^:]*):(%d+):(%d+): (%w+): ([^[]+)]]
+  --     local groups = { "file", "lnum", "col", "severity", "message" }
   --
-  {
-    "mfussenegger/nvim-lint",
-    optional = true,
-    opts = {
-      linters_by_ft = {
-        -- markdown = { "markdownlint" },
-        markdown = { "markdownlint-cli2" },
-      },
-    },
-  },
+  --     local severity_map = {
+  --       ["error"] = vim.diagnostic.severity.ERROR,
+  --       ["warning"] = vim.diagnostic.severity.WARN,
+  --       ["information"] = vim.diagnostic.severity.INFO,
+  --       ["hint"] = vim.diagnostic.severity.HINT,
+  --       ["note"] = vim.diagnostic.severity.HINT,
+  --     }
+  --
+  --     lint.linters.clangtidy = {
+  --       cmd = "clang-tidy",
+  --       stdin = false,
+  --       args = { "--quiet" },
+  --       ignore_exitcode = true,
+  --       parser = require("lint.parser").from_pattern(pattern, groups, severity_map, { ["source"] = "clang-tidy" }),
+  --     }
+  --
+  --     lint.linters_by_ft = {
+  --       c = { "clangtidy" },
+  --     }
+  --   end,
+  -- },
 
   --
   -- latex linting
