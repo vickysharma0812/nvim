@@ -1,3 +1,5 @@
+---@diagnostic disable: missing-fields
+---@diagnostic disable: undefined-global
 return {
   --- Code Companion
   --- A Neovim plugin that provides AI-powered code assistance, including chat,
@@ -5,7 +7,7 @@ return {
   {
     "olimorris/codecompanion.nvim",
     lazy = false,
-    enabled = true,
+    enabled = false,
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
