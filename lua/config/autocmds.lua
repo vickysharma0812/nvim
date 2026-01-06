@@ -202,3 +202,15 @@ vim.api.nvim_create_autocmd("User", {
     }
   end,
 })
+
+-- Function for cleaning the lsp log
+--
+vim.api.nvim_create_user_command("LspLogClean", function()
+  local log_file = vim.lsp.log.get_filename()
+  if vim.fn.filereadable(log_file) ~= 0 then
+    vim.fn.delete(log_file)
+    print("LSP log file cleaned: " .. log_file)
+  else
+    print("LSP log file not found or is not a regular file.")
+  end
+end, {})
