@@ -1,14 +1,9 @@
+---@diagnostic disable: undefined-global
 return {
-  name = "easifemRunTest",
-  builder = function(params)
+  name = "easifem run test",
+  builder = function()
     local file = vim.fn.expand("%:p")
     return {
-      -- strategy = {
-      --   "toggleterm",
-      --   use_shell = false,
-      --   open_on_start = false,
-      --   hidden = true,
-      -- },
       cmd = { "easifem" },
       args = { "run", file, "--rebuild", "-q" },
       name = "easifemRunTest",

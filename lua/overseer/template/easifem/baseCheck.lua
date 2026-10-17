@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 return {
   name = "base onetime",
   builder = function()

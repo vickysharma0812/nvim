@@ -70,6 +70,7 @@ return {
           os.getenv("HOME") .. "/.easifem/easifem/lint/include/",
           "-DDEBUG_VER",
           "-DUSE_SuperLU",
+          "-DUSE_LUA",
         },
       }
 
@@ -82,7 +83,7 @@ return {
           "--output-format",
           "json",
           "--ignore",
-          "superfluous-implicit-none,implicit-external-procedures,interface-implicit-typing",
+          "superfluous-implicit-none,implicit-external-procedures,interface-implicit-typing,bad-quote-string",
         },
         stream = nil,
         ignore_exitcode = true,
